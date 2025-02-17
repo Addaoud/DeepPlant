@@ -19,7 +19,7 @@ from src.dataset_utils import load_dataset
 from src.train_utils import trainer
 from src.results_utils import evaluate_model
 
-from src.DeepPlant_simpleV2 import build_model
+from src.DeepPlant_simple import build_model
 
 # from src.sei import build_model
 
