@@ -5,6 +5,7 @@ from datetime import datetime
 from .utils import save_model_log, save_data_to_csv, plot_loss, get_paths
 from .seed import set_seed
 from .ddp import is_main_process, is_dist_avail_and_initialized
+from .logger import configure_logging_format
 from fastprogress import progress_bar
 from typing import Optional
 import torch.distributed as dist
@@ -48,6 +49,7 @@ class trainer:
         self.use_scheduler = use_scheduler
         self.best_valid_loss = np.inf
         self.counter_for_early_stop = 0
+        self.logger = configure_logging_format(file_path=self.model_folder_path)
         if (
             self.n_accumulated_batches > len(self.train_dataloader)
             or self.batch_accumulation
@@ -57,21 +59,19 @@ class trainer:
     def train(self):
         if is_dist_avail_and_initialized():
             dist.barrier()
-        start_time = datetime.now()
         model_path, checkpoints_path, loss_csv_path, loss_plot_path = get_paths(
-            start_time, self.model_folder_path
+            datetime.now(), self.model_folder_path
         )
-        if is_main_process():
-            data_dict = dict()
-            data_dict["training for "] = "%i epochs" % self.max_epochs
-            data_dict["number of batches is"] = "%i batches" % len(
-                self.train_dataloader
-            )
-            data_dict["number of accumulated batches"] = (
-                "%i batches" % self.n_accumulated_batches
-            )
-            data_dict["started training on"] = start_time
-            save_model_log(log_dir=self.model_folder_path, data_dictionary=data_dict)
+        self.logger.info(
+            f"Device: {self.device} - Training for {self.max_epochs} epochs"
+        )
+        self.logger.info(
+            f"Device: {self.device} - Number of batches is {len(self.train_dataloader)} batches"
+        )
+        self.logger.info(
+            f"Device: {self.device} - Number of accumulated batches {self.n_accumulated_batches} batches"
+        )
+        self.logger.info(f"Device: {self.device} - Started training")
         early_stopping_flag = torch.zeros(1, device=self.device)
         for epoch in progress_bar(range(1, self.max_epochs + 1)):
             if is_dist_avail_and_initialized():
@@ -124,18 +124,13 @@ class trainer:
                 elif (
                     self.counter_for_early_stop == self.counter_for_early_stop_threshold
                 ):
-                    save_model_log(
-                        log_dir=self.model_folder_path,
-                        data_dictionary={"early stopping at epoch": epoch},
+                    self.logger.info(
+                        f"Device: {self.device} - Early stopping at epoch {epoch}"
                     )
                     early_stopping_flag += 1
 
         if is_main_process():
-            end_time = datetime.now()
-            save_model_log(
-                log_dir=self.model_folder_path,
-                data_dictionary={"finished training on": end_time},
-            )
+            self.logger.info(f"Device: {self.device} - Finished training")
             torch.save(self.best_model.state_dict(), model_path)
             plot_loss(loss_csv_path=loss_csv_path, loss_path=loss_plot_path)
         return self.best_model, model_path
@@ -146,7 +141,7 @@ class trainer:
         self.model.train()
         loss_per_epoch = 0
         self.optimizer.zero_grad()
-        for batch_idx, ((header, data, target), bit) in enumerate(
+        for batch_idx, ((_, data, target), bit) in enumerate(
             progress_bar(self.train_dataloader)
         ):
             data, target = {key: data[key].to(self.device) for key in data}, target.to(
@@ -181,9 +176,7 @@ class trainer:
         with torch.no_grad():
             self.model.eval()
             valid_loss = 0
-            for batch_idx, ((header, data, target), bit) in enumerate(
-                self.valid_dataloader
-            ):
+            for batch_idx, ((_, data, target), bit) in enumerate(self.valid_dataloader):
                 data, target = {
                     key: data[key].to(self.device) for key in data
                 }, target.to(self.device)

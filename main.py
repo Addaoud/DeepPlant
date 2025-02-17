@@ -19,7 +19,7 @@ from src.dataset_utils import load_dataset
 from src.train_utils import trainer
 from src.results_utils import evaluate_model
 
-from src.DeepPlant_simple import build_model
+from src.DeepPlant_simpleV2 import build_model
 
 # from src.sei import build_model
 
@@ -27,11 +27,11 @@ from src.seed import set_seed
 from src.config import DeepPlantConfig
 from src.optimizers import ScheduledOptim
 from src.losses import PoissonNLLLoss, MSE
+from src.logger import configure_logging_format
 from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
 import torch.distributed as dist
 
-# import logging
 
 set_seed()
 
@@ -75,7 +75,6 @@ def main(
     model = build_model(args=config, new_model=new_model, model_path=model_path).to(
         device=device
     )
-    print(f"Model path is {model_folder_path}")
     if n_gpu > 1:
 
         setup(device, n_gpu)
@@ -112,7 +111,7 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
-    loss_function = PoissonNLLLoss(config)
+    loss_function = MSE(config)
     # loss_function = torch.nn.MSELoss(reduction="mean")
 
     if train:
@@ -120,6 +119,7 @@ def main(
         print(f"Loading train data on device {device}")
         train_loader = data_class.get_dataloader(
             indices_paths=config.train_indices_path,
+            use_reverse_complement=config.use_reverse_complement,
             batchSize=config.batch_size,
             lazyLoad=config.lazy_loading,
             device=device,
@@ -147,8 +147,6 @@ def main(
             **config.dict(),
         )
         best_model, model_path = trainer_.train()
-        if is_main_process():
-            save_model_log(log_dir=model_folder_path, data_dictionary={})
 
         if n_gpu > 1:
             dist.barrier()
@@ -215,22 +213,24 @@ if __name__ == "__main__":
     config = DeepPlantConfig(**read_json(json_path=args.json))
     config_dict = config.dict()
     device = get_device()
-    config_dict["device"] = device
 
     # prepare the model
     if args.new:
         Udir = generate_UDir(path=config.results_path)
         model_folder_path = os.path.join(config.results_path, Udir)
         create_path(model_folder_path)
-        save_model_log(log_dir=model_folder_path, data_dictionary=config_dict)
     else:
         model_folder_path = os.path.dirname(args.model)
         model_path = args.model
 
+    logger = configure_logging_format(file_path=model_folder_path)
+    for key, value in config_dict.items():
+        logger.info(f"Device: {device} - {key}: {value}")
     data_class = load_dataset(
         sequences_paths=config.sequences_path,
         labels_paths=config.labels_path,
     )
+    print(f"Model path is {model_folder_path}")
 
     if device == "cuda":
         n_gpu = device_count()

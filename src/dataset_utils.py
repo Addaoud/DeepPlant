@@ -11,6 +11,7 @@ from src.utils import (
 )
 from Bio.Seq import reverse_complement
 from src.seed import set_seed
+import pickle
 
 set_seed()
 
@@ -21,7 +22,7 @@ class DatasetLoad(Dataset):
         sequences_df,
         labels_path,
         use_reverse_complement: Optional[bool] = False,
-        length_after_padding: Optional[int] = 2048,
+        length_after_padding: Optional[int] = 0,
         lazyLoad: Optional[bool] = False,
         device: Optional[Any] = "cpu",
     ):
@@ -73,7 +74,7 @@ class DatasetLoad(Dataset):
         else:
             labels = torch.from_numpy(
                 np.load(
-                    f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record)}.npy"
+                    f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record.replace('_r',''))}.npy"
                 )
             )
             return (
@@ -165,7 +166,7 @@ class load_dataset:
         shuffle: Optional[bool] = True,
         use_reverse_complement: Optional[bool] = False,
         batchSize: Optional[int] = 8,
-        length_after_padding: Optional[int] = 2048,
+        length_after_padding: Optional[int] = 0,
         device: Optional[int] = 0,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
