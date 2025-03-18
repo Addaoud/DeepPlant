@@ -76,7 +76,14 @@ class MSE(nn.Module):
             )
 
         else:
-            return self.PNLLloss(y_pred, y_true)
+            return self.mse(y_pred, y_true)
+
+
+def get_loss_fn(config):
+    if config.loss.upper() == "MSE":
+        return MSE(config)
+    else:
+        return PoissonNLLLoss(config)
 
 
 class PoissonLoss(nn.Module):

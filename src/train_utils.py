@@ -28,7 +28,6 @@ class trainer:
         valid_dataloader: torch.utils.data.dataloader = None,
         counter_for_early_stop_threshold: Optional[int] = 0,
         epochs_to_check_loss: Optional[int] = 0,
-        batch_accumulation: Optional[bool] = False,
         n_accumulated_batches: Optional[int] = 1,
         use_scheduler: Optional[bool] = False,
         **kwargs,
@@ -44,7 +43,6 @@ class trainer:
         self.valid_dataloader = valid_dataloader
         self.counter_for_early_stop_threshold = counter_for_early_stop_threshold
         self.epochs_to_check_loss = epochs_to_check_loss
-        self.batch_accumulation = batch_accumulation
         self.n_accumulated_batches = n_accumulated_batches
         self.use_scheduler = use_scheduler
         self.best_valid_loss = np.inf
@@ -52,7 +50,7 @@ class trainer:
         self.logger = configure_logging_format(file_path=self.model_folder_path)
         if (
             self.n_accumulated_batches > len(self.train_dataloader)
-            or self.batch_accumulation
+            or self.n_accumulated_batches == -1
         ):
             self.n_accumulated_batches = len(train_dataloader)
 
@@ -66,10 +64,10 @@ class trainer:
             f"Device: {self.device} - Training for {self.max_epochs} epochs"
         )
         self.logger.info(
-            f"Device: {self.device} - Number of batches is {len(self.train_dataloader)} batches"
+            f"Device: {self.device} - Number of training batches is {len(self.train_dataloader)} batches"
         )
         self.logger.info(
-            f"Device: {self.device} - Number of accumulated batches {self.n_accumulated_batches} batches"
+            f"Device: {self.device} - Number of accumulated batches is {self.n_accumulated_batches} batches"
         )
         self.logger.info(f"Device: {self.device} - Started training")
         early_stopping_flag = torch.zeros(1, device=self.device)

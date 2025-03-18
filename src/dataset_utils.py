@@ -126,7 +126,6 @@ class load_dataset:
         """
         Loads and processes the data.
         """
-        print("Processing data files")
         self.sequences_df = pd.concat(
             [read_excel_csv_file(sequences_path) for sequences_path in sequences_paths]
         )

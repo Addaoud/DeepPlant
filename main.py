@@ -6,7 +6,6 @@ sns.set_theme()
 import torch
 from src.utils import (
     create_path,
-    save_model_log,
     save_data_to_csv,
     generate_UDir,
     read_json,
@@ -26,7 +25,7 @@ from src.DeepPlant_simple import build_model
 from src.seed import set_seed
 from src.config import DeepPlantConfig
 from src.optimizers import ScheduledOptim
-from src.losses import PoissonNLLLoss, MSE
+from src.losses import get_loss_fn
 from src.logger import configure_logging_format
 from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
@@ -72,6 +71,7 @@ def main(
     evaluate: Optional[bool] = True,
     data_class: Optional[Any] = None,
 ):
+    logger = configure_logging_format(file_path=model_folder_path)
     model = build_model(args=config, new_model=new_model, model_path=model_path).to(
         device=device
     )
@@ -94,7 +94,10 @@ def main(
                     os.path.join(model_folder_path, "temp_checkpoint.pt"),
                 )
             dist.barrier()
-            map_location = {"cuda:%d" % 0: "cuda:%d" % device}
+            map_location = {
+                "cuda:%d" % 0: "cuda:%d" % device,
+                "cpu": "cuda:%d" % device,
+            }
             model.load_state_dict(
                 torch.load(
                     os.path.join(model_folder_path, "temp_checkpoint.pt"),
@@ -111,12 +114,12 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
-    loss_function = MSE(config)
+    loss_function = get_loss_fn(config)
     # loss_function = torch.nn.MSELoss(reduction="mean")
 
     if train:
         # Prepare the data
-        print(f"Loading train data on device {device}")
+        logger.info(f"Device: {device} - Loading train dataset")
         train_loader = data_class.get_dataloader(
             indices_paths=config.train_indices_path,
             use_reverse_complement=config.use_reverse_complement,
@@ -126,7 +129,7 @@ def main(
             n_gpu=n_gpu,
             num_workers=config.num_workers,
         )
-        print(f"Loading valid data on device {device}")
+        logger.info(f"Device: {device} - Loading valid dataset")
         valid_loader = data_class.get_dataloader(
             indices_paths=config.valid_indices_path,
             batchSize=config.batch_size,
@@ -166,7 +169,7 @@ def main(
     if evaluate:
         if n_gpu > 1:
             dist.barrier()
-        print(f"Loading test data on device {device}")
+        logger.info(f"Device: {device} - Loading test dataset")
         test_loader = data_class.get_dataloader(
             indices_paths=config.test_indices_path,
             batchSize=config.batch_size,
@@ -223,18 +226,19 @@ if __name__ == "__main__":
         model_folder_path = os.path.dirname(args.model)
         model_path = args.model
 
+    print(f"Model path is {model_folder_path}")
     logger = configure_logging_format(file_path=model_folder_path)
     for key, value in config_dict.items():
         logger.info(f"Device: {device} - {key}: {value}")
+    logger.info(f"Device: {device} - Processing data files")
     data_class = load_dataset(
         sequences_paths=config.sequences_path,
         labels_paths=config.labels_path,
     )
-    print(f"Model path is {model_folder_path}")
 
     if device == "cuda":
         n_gpu = device_count()
-        print(f"Using {n_gpu} gpu(s)")
+        logger.info(f"Using {n_gpu} gpu(s)")
         mp.spawn(
             main,
             args=(
@@ -251,6 +255,7 @@ if __name__ == "__main__":
             join=True,
         )
     else:
+        logger.info(f"Using cpu")
         main(
             device=device,
             n_gpu=0,

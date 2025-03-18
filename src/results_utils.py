@@ -8,6 +8,7 @@ from typing import List, Tuple, Optional
 from fastprogress import progress_bar
 from .seed import set_seed
 from .ddp import is_dist_avail_and_initialized, is_main_process
+from src.logger import configure_logging_format
 import os
 import pandas as pd
 import torch.distributed as dist
@@ -46,12 +47,13 @@ def evaluate_model(
     """
     evaluate the model on dataloader and return the mse, pearsonR, and SpearmanR
     """
-    print(f"Evaluating the model on device {device}")
+    logger = configure_logging_format(file_path=model_folder_path)
+    logger.info(f"Device: {device} - Evaluating the model")
     target_dict = dict()
     preds_dict = dict()
     with torch.no_grad():
         model.eval()
-        for idx, ((header, data, target), bit) in enumerate(progress_bar(dataloader)):
+        for idx, ((_, data, target), bit) in enumerate(progress_bar(dataloader)):
             data = {key: data[key].to(device) for key in data}
             if activation_function != None:
                 output = activation_function(model(**data))
@@ -60,8 +62,8 @@ def evaluate_model(
             preds = output.cpu().detach().numpy()
             target_dict[bit] = target_dict.get(bit, list()) + target.tolist()
             preds_dict[bit] = preds_dict.get(bit, list()) + preds.tolist()
-            # if idx == 200:
-            # break
+            if idx == 500:
+                break
     target_array_dict = {
         key: np.array(target_list) for key, target_list in target_dict.items()
     }
@@ -114,7 +116,10 @@ def evaluate_model(
                 list=pearsonr_list,
                 file_path=os.path.join(model_folder_path, f"distribution{key}.png"),
             )
-            target_list = load_targets(targets_file_path=experiment_names[key])
+            try:
+                target_list = load_targets(targets_file_path=experiment_names[key])
+            except:
+                target_list = np.arange(0, len(pearsonr_list))
             Correlation_csv_file = os.path.join(
                 model_folder_path, f"Correlation_df{key}.csv"
             )
