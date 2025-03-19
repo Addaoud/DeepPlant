@@ -12,7 +12,6 @@ from fastprogress import progress_bar
 from captum.attr import IntegratedGradients
 from typing import Optional
 from torch.utils.data import DataLoader
-import os
 
 sns.set_theme()
 
