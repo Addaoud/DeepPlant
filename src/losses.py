@@ -1,6 +1,48 @@
 import torch.nn as nn
 import torch
 from typing import Optional, List
+from numpy import triu_indices
+
+
+def pairwise_similarity(matrix_of_vectors, n, k):
+    dot_product = matrix_of_vectors @ matrix_of_vectors.t()
+    norms = torch.sqrt(torch.einsum("ii->i", dot_product))
+    similarities = dot_product / (norms[None] * norms[..., None])
+    return similarities[triu_indices(n, k=k)]
+
+
+class CustomCosineEmbeddingLoss(nn.Module):
+    """
+    custom semi-supervised loss for consistency regularization
+    """
+
+    def __init__(self, config):
+        super(CustomCosineEmbeddingLoss, self).__init__()
+        if config.loss.upper() == "MSE":
+            self.loss = torch.nn.MSELoss(reduction="mean")
+        else:
+            self.loss = torch.nn.PoissonNLLLoss(log_input=False)
+        self.alpha = config.alpha
+
+    def forward(
+        self,
+        y_pred,
+        y_true,
+    ):
+        n = 8
+        k = 1
+        FeatDistLoss = 0
+        for i in range(0, y_pred[1].shape[0], n):
+            FeatDistLoss += (
+                1 - pairwise_similarity(y_pred[1][i : i + n, :], n, k)
+            ).sum()
+        return (
+            self.loss(
+                y_pred[0],
+                y_true.view(y_true.shape[0] * y_true.shape[1], y_true.shape[2]),
+            )
+            + self.alpha * FeatDistLoss
+        )
 
 
 class PoissonNLLLoss(nn.Module):

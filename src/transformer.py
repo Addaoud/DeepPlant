@@ -2,10 +2,32 @@ import torch.nn as nn
 from typing import Optional
 import torch
 from src.seed import set_seed
+from mamba_ssm import Mamba
 from math import log
 import copy
 
 set_seed()
+
+
+class MambaRMSNorm(nn.Module):
+    def __init__(self, hidden_size, eps=1e-6):
+        """
+        MambaRMSNorm is equivalent to T5LayerNorm and LlamaRMSNorm
+        """
+        super().__init__()
+        self.weight = nn.Parameter(torch.ones(hidden_size))
+        self.variance_epsilon = eps
+
+    def forward(self, hidden_states):
+        input_dtype = hidden_states.dtype
+        hidden_states = hidden_states.to(torch.float32)
+        variance = hidden_states.pow(2).mean(-1, keepdim=True)
+        hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+        return self.weight * hidden_states.to(input_dtype)
+
+    def extra_repr(self):
+        return f"{self.weight.shape[0]}, eps={self.variance_epsilon}"
+
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, max_seq_length):
@@ -25,8 +47,10 @@ class PositionalEncoding(nn.Module):
     def forward(self, x):
         return x + self.pe[:, : x.size(1)]
 
+
 def clone_layer(layer, num_layers):
     return nn.ModuleList([copy.deepcopy(layer) for _ in range(num_layers)])
+
 
 class TransformerEncoder(nn.Module):
     def __init__(self, encoder_layer, num_layers, norm=None):
@@ -37,7 +61,7 @@ class TransformerEncoder(nn.Module):
 
     def add_pos_embed(self, src, pos_embed):
         return src if pos_embed == None else (src + pos_embed)
-    
+
     def forward(
         self,
         src: torch.Tensor,
@@ -47,7 +71,10 @@ class TransformerEncoder(nn.Module):
     ):
         encoder_output = self.add_pos_embed(src, pos_embed)
         for layer in self.encoder_layers:
-            encoder_output = layer(src, src_mask, src_key_padding_mask)
+            if src_mask != None or src_key_padding_mask != None:
+                encoder_output = layer(encoder_output, src_mask, src_key_padding_mask)
+            else:
+                encoder_output = layer(encoder_output)
         if self.norm != None:
             encoder_output = self.norm(encoder_output)
         return encoder_output
@@ -73,10 +100,10 @@ class TransformerDecoder(nn.Module):
         memory_key_padding_mask: Optional[torch.Tensor] = None,
         tgt_pos_embed: Optional[torch.Tensor] = None,
     ):
-        
+
         tgt = self.add_pos_embed(tgt, tgt_pos_embed)
         for layer in self.decoder_layers:
-            decoder_output = layer(
+            tgt = layer(
                 tgt,
                 memory,
                 tgt_mask,
@@ -85,8 +112,8 @@ class TransformerDecoder(nn.Module):
                 memory_key_padding_mask,
             )
         if self.norm != None:
-            decoder_output = self.norm(decoder_output)
-        return decoder_output
+            tgt = self.norm(tgt)
+        return tgt
 
 
 class Transformer(nn.Module):
@@ -96,6 +123,7 @@ class Transformer(nn.Module):
         nhead: Optional[int] = 8,
         dim_feedforward: Optional[int] = 2048,
         dropout: Optional[float] = 0.2,
+        encoder_type: Optional[str] = "mamba",
         encoder_num_layers: Optional[int] = 6,
         decoder_num_layers: Optional[int] = 6,
     ):
@@ -103,23 +131,39 @@ class Transformer(nn.Module):
         self.encoder_num_layers = encoder_num_layers
         self.decoder_num_layers = decoder_num_layers
         self.d_model = d_model
+        self.pos_encoder = PositionalEncoding(d_model, max_seq_length=500)
         if self.encoder_num_layers > 0:
-            encoder_norm = None  # nn.LayerNorm(d_model)
-            self.encoder = TransformerEncoder(
-                nn.TransformerEncoderLayer(
-                    d_model=d_model,
-                    nhead=nhead,
-                    dim_feedforward=dim_feedforward,
-                    dropout=dropout,
-                    norm_first=True,
-                    batch_first=True,
-                ),
-                encoder_num_layers,
-                encoder_norm,
-            )
+            if encoder_type == "mamba":
+                encoder_norm = MambaRMSNorm(
+                    d_model
+                )  # nn.RMSNorm(d_model)  # nn.LayerNorm(d_model)
+                self.encoder = TransformerEncoder(
+                    Mamba(
+                        d_model=d_model,
+                        d_state=16,
+                        d_conv=4,  # Local convolution width
+                        expand=2,  # Block expansion factor
+                    ),
+                    encoder_num_layers,
+                    encoder_norm,
+                )
+            else:
+                encoder_norm = None  # nn.LayerNorm(d_model)
+                self.encoder = TransformerEncoder(
+                    nn.TransformerEncoderLayer(
+                        d_model=d_model,
+                        nhead=nhead,
+                        dim_feedforward=dim_feedforward,
+                        dropout=dropout,
+                        norm_first=True,
+                        batch_first=True,
+                    ),
+                    encoder_num_layers,
+                    encoder_norm,
+                )
         if self.decoder_num_layers > 0:
-            #self.query_embed = nn.Embedding(num_class, d_model)
-            decoder_norm = None # nn.LayerNorm(d_model)
+            decoder_norm = None  # nn.LayerNorm(d_model)
+
             self.decoder = TransformerDecoder(
                 nn.TransformerDecoderLayer(
                     d_model=d_model,
@@ -128,23 +172,23 @@ class Transformer(nn.Module):
                     dropout=dropout,
                     norm_first=True,
                     batch_first=True,
-                ), 
-                decoder_num_layers, 
-                decoder_norm
+                ),
+                decoder_num_layers,
+                decoder_norm,
             )
 
     def forward(
         self,
         src: torch.Tensor,
-        tgt: Optional[torch.Tensor] = None,
+        tgt: Optional[torch.Tensor] = None,  # Query embeddings
         src_mask: Optional[torch.Tensor] = None,
         tgt_mask: Optional[torch.Tensor] = None,
         src_key_padding_mask: Optional[torch.Tensor] = None,
         tgt_key_padding_mask: Optional[torch.Tensor] = None,
-        pos_embed: Optional[torch.Tensor] = None,
         tgt_pos_embed: Optional[torch.Tensor] = None,
     ):
-        encoder_embed = self.encoder(src, src_mask, src_key_padding_mask, pos_embed)
+        src = self.pos_encoder(src)
+        encoder_embed = self.encoder(src, src_mask, src_key_padding_mask)
         if self.decoder_num_layers > 0:
             decoder_output = self.decoder(
                 tgt,
@@ -153,7 +197,6 @@ class Transformer(nn.Module):
                 tgt_mask,
                 src_key_padding_mask,
                 tgt_key_padding_mask,
-                pos_embed,
                 tgt_pos_embed,
             )
             return decoder_output
@@ -166,6 +209,7 @@ def build_transformer(args):
         nhead=args.num_heads,
         dim_feedforward=args.dim_forwardfeed,
         dropout=args.dropout,
+        encoder_type=args.encoder_type,
         encoder_num_layers=args.encoder_num_layers,
         decoder_num_layers=args.decoder_num_layers,
     )

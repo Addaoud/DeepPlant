@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import os
 from datetime import datetime
-from .utils import save_model_log, save_data_to_csv, plot_loss, get_paths
+from .utils import save_data_to_csv, plot_loss, get_paths
 from .seed import set_seed
 from .ddp import is_main_process, is_dist_avail_and_initialized
 from .logger import configure_logging_format
@@ -145,6 +145,7 @@ class trainer:
             data, target = {key: data[key].to(self.device) for key in data}, target.to(
                 self.device
             )
+
             pred = self.model(**data, bit=bit)
             if is_dist_avail_and_initialized():
                 loss = self.loss_fn(
@@ -162,7 +163,7 @@ class trainer:
             if ((batch_idx + 1) % self.n_accumulated_batches == 0) or (
                 batch_idx + 1 == len(self.train_dataloader)
             ):
-
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
                 self.optimizer.step()
                 self.optimizer.zero_grad()
         return loss_per_epoch / (batch_idx + 1)

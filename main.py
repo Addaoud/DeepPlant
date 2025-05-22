@@ -20,12 +20,11 @@ from src.results_utils import evaluate_model
 
 from src.DeepPlant_simple import build_model
 
-# from src.sei import build_model
 
 from src.seed import set_seed
 from src.config import DeepPlantConfig
 from src.optimizers import ScheduledOptim
-from src.losses import get_loss_fn
+from src.losses import CustomCosineEmbeddingLoss
 from src.logger import configure_logging_format
 from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
@@ -88,6 +87,10 @@ def main(
                 with open(
                     file=os.path.join(model_folder_path, "model.txt"), mode="w"
                 ) as f:
+                    print(
+                        sum(p.numel() for p in model.parameters() if p.requires_grad),
+                        file=f,
+                    )
                     print(model, file=f)
                 torch.save(
                     model.state_dict(),
@@ -114,7 +117,7 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
-    loss_function = get_loss_fn(config)
+    loss_function = CustomCosineEmbeddingLoss(config)
     # loss_function = torch.nn.MSELoss(reduction="mean")
 
     if train:
@@ -176,7 +179,8 @@ def main(
             lazyLoad=config.lazy_loading,
             device=device,
             n_gpu=n_gpu,
-            num_workers=config.num_workers,
+            num_workers=0,  # config.num_workers,
+            augment_data=False,
         )
         # Evaluate model
         mse, pearson, spearman = evaluate_model(

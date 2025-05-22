@@ -58,11 +58,13 @@ def evaluate_model(
             if activation_function != None:
                 output = activation_function(model(**data))
             else:
-                output = model(**data, bit=bit)
+                output = model(**data, bit=bit)[0]
             preds = output.cpu().detach().numpy()
+            if target.ndim == 3:
+                target = target.view(target.shape[0] * target.shape[1], target.shape[2])
             target_dict[bit] = target_dict.get(bit, list()) + target.tolist()
             preds_dict[bit] = preds_dict.get(bit, list()) + preds.tolist()
-            if idx == 500:
+            if idx == 800:
                 break
     target_array_dict = {
         key: np.array(target_list) for key, target_list in target_dict.items()

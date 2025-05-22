@@ -4,16 +4,54 @@ import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset, DataLoader, DistributedSampler
+from transformers import EsmTokenizer
 from src.utils import (
     hot_encode_sequence,
     read_excel_csv_file,
     read_fasta_file,
 )
 from Bio.Seq import reverse_complement
+from random import randint
 from src.seed import set_seed
 import pickle
 
+
 set_seed()
+
+
+def get_masked_sequence(sequence, n_regions):
+    size = len(sequence)
+    data = np.random.normal(loc=0, scale=1, size=size)
+    indices = np.argpartition(data, -n_regions)[-n_regions:]
+    sequence_list = list(sequence)
+    for index in indices:
+        sequence_list[index] = "N"
+    return "".join(sequence_list)
+
+
+def get_augmented_sequences(sequence):
+    reverse_complement_seq = reverse_complement(sequence)
+    random_int = randint(1, 3)
+    sequence_shifted_right = random_int * "N" + sequence[:-random_int]
+    sequence_shifted_left = sequence[random_int:] + random_int * "N"
+    reverse_sequence_shifted_right = (
+        random_int * "N" + reverse_complement_seq[:-random_int]
+    )
+    reverse_sequence_shifted_left = (
+        reverse_complement_seq[random_int:] + random_int * "N"
+    )
+    masked_sequence = get_masked_sequence(sequence, 25)
+    masked_reverse_sequence = get_masked_sequence(reverse_complement_seq, 25)
+    return (
+        sequence,
+        reverse_complement_seq,
+        sequence_shifted_right,
+        sequence_shifted_left,
+        reverse_sequence_shifted_right,
+        reverse_sequence_shifted_left,
+        masked_sequence,
+        masked_reverse_sequence,
+    )
 
 
 class DatasetLoad(Dataset):
@@ -21,29 +59,17 @@ class DatasetLoad(Dataset):
         self,
         sequences_df,
         labels_path,
-        use_reverse_complement: Optional[bool] = False,
         length_after_padding: Optional[int] = 0,
         lazyLoad: Optional[bool] = False,
         device: Optional[Any] = "cpu",
+        augment_data: Optional[bool] = True,
     ):
         self.lazyLoad = lazyLoad
         self.length_after_padding = length_after_padding
         self.labels_path = labels_path
         self.device = device
-        if use_reverse_complement:
-            reversed_dictionary_data = dict()
-            reversed_dictionary_data["record"] = [
-                record + "_r" for record in sequences_df.record
-            ]
-            reversed_dictionary_data["sequence"] = [
-                reverse_complement(sequence) for sequence in sequences_df.sequence
-            ]
-            self.sequences_df = pd.concat(
-                [sequences_df, pd.DataFrame.from_dict(reversed_dictionary_data)],
-                axis=0,
-            ).reset_index(drop=True)
-        else:
-            self.sequences_df = sequences_df.reset_index(drop=True)
+        self.augment_data = augment_data
+        self.sequences_df = sequences_df.reset_index(drop=True)
         if not lazyLoad:
             self.data = list()
             self.labels = list()
@@ -65,6 +91,7 @@ class DatasetLoad(Dataset):
         self.len = self.sequences_df.shape[0]
 
     def __getitem__(self, idx):
+        sequence = self.sequences_df.iloc[idx].sequence
         if not self.lazyLoad:
             return (
                 self.sequences_df.iloc[idx].record,
@@ -77,19 +104,116 @@ class DatasetLoad(Dataset):
                     f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record.replace('_r',''))}.npy"
                 )
             )
+            if self.augment_data:
+                return (
+                    [self.sequences_df.iloc[idx].record] * 8,
+                    dict(
+                        input=torch.tensor(
+                            np.array(
+                                [
+                                    hot_encode_sequence(
+                                        seq,
+                                        length_after_padding=self.length_after_padding,
+                                    )
+                                    for seq in get_augmented_sequences(sequence)
+                                ]
+                            ),
+                            dtype=torch.float,
+                        ),
+                    ),
+                    labels.float().repeat(8, 1),
+                )
+            else:
+                return (
+                    self.sequences_df.iloc[idx].record,
+                    dict(
+                        input=torch.tensor(
+                            hot_encode_sequence(
+                                sequence,
+                                length_after_padding=self.length_after_padding,
+                            ),
+                            dtype=torch.float,
+                        ),
+                    ),
+                    labels.float(),
+                )
+
+    def __len__(self):
+        return self.len
+
+
+class DatasetLoad_Kmer(Dataset):
+    def __init__(
+        self,
+        sequences_df,
+        labels_path,
+        length_after_padding: Optional[int] = 0,
+        lazyLoad: Optional[bool] = False,
+        device: Optional[Any] = "cpu",
+        tokenizer: Optional[EsmTokenizer] = None,
+        augment_data: Optional[bool] = True,
+    ):
+
+        self.lazyLoad = lazyLoad
+        self.length_after_padding = length_after_padding
+        self.labels_path = labels_path
+        self.device = device
+        self.sequences_df = sequences_df.reset_index(drop=True)
+        self.tokenizer = tokenizer
+        self.augment_data = augment_data
+        if not lazyLoad:
+            self.data = list()
+            self.labels = list()
+            for idx in range(0, self.sequences_df.shape[0]):
+                self.data.append(
+                    self.tokenizer(
+                        self.sequences_df.iloc[idx].sequence,
+                        return_tensors="pt",
+                        padding="max_length",
+                        max_length=tokenizer.model_max_length,
+                        truncation=True,
+                    )
+                )
+                self.labels.append(
+                    np.load(
+                        f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record)}.npy"
+                    )
+                )
+
+        self.len = self.sequences_df.shape[0]
+
+    def __getitem__(self, idx):
+        sequence = self.sequences_df.iloc[idx].sequence
+        if not self.lazyLoad:
             return (
                 self.sequences_df.iloc[idx].record,
-                dict(
-                    input=torch.tensor(
-                        hot_encode_sequence(
-                            sequence=self.sequences_df.iloc[idx].sequence,
-                            length_after_padding=self.length_after_padding,
-                        ),
-                        dtype=torch.float,
-                    ),
-                ),
-                labels.float(),
+                dict(input=self.data[idx].float()),
+                self.labels[idx].astype(np.float32),
             )
+        else:
+            labels = torch.from_numpy(
+                np.load(
+                    f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record.replace('_r',''))}.npy"
+                )
+            )
+            if self.augment_data:
+                return (
+                    [self.sequences_df.iloc[idx].record] * 8,
+                    self.tokenizer(
+                        get_augmented_sequences(sequence),
+                        return_tensors="pt",
+                    ),
+                    labels.float().repeat(8, 1),
+                )
+            else:
+                return (
+                    self.sequences_df.iloc[idx].record,
+                    self.tokenizer(
+                        sequence,
+                        return_tensors="pt",
+                    ),
+                    labels.float(),
+                )
 
     def __len__(self):
         return self.len
@@ -122,7 +246,11 @@ class MultiTaskDataLoader(DataLoader):
 
 
 class load_dataset:
-    def __init__(self, sequences_paths: List[str], labels_paths: List[str]):
+    def __init__(
+        self,
+        sequences_paths: List[str],
+        labels_paths: List[str],
+    ):
         """
         Loads and processes the data.
         """
@@ -136,11 +264,12 @@ class load_dataset:
         indices_paths: List[str],
         lazyLoad: Optional[bool] = True,
         shuffle: Optional[bool] = True,
-        use_reverse_complement: Optional[bool] = False,
         batchSize: Optional[int] = 8,
         length_after_padding: Optional[int] = 2048,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
+        tokenizer: Optional[EsmTokenizer] = None,
+        augment_data: Optional[bool] = True,
         **kwargs,
     ):
         dataloaders_list = list(
@@ -148,11 +277,12 @@ class load_dataset:
                 indices_paths=indices_paths,
                 lazyLoad=lazyLoad,
                 shuffle=shuffle,
-                use_reverse_complement=use_reverse_complement,
                 batchSize=batchSize,
                 length_after_padding=length_after_padding,
                 num_workers=num_workers,
                 n_gpu=n_gpu,
+                tokenizer=tokenizer,
+                augment_data=augment_data,
                 **kwargs,
             )
         )
@@ -163,26 +293,40 @@ class load_dataset:
         indices_paths: List[str],
         lazyLoad: Optional[bool] = True,
         shuffle: Optional[bool] = True,
-        use_reverse_complement: Optional[bool] = False,
         batchSize: Optional[int] = 8,
         length_after_padding: Optional[int] = 0,
         device: Optional[int] = 0,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
+        tokenizer: Optional[EsmTokenizer] = None,
+        augment_data: Optional[bool] = True,
         **kwargs,
     ):
         for indices_path, label_path in zip(indices_paths, self.labels_paths):
             indices = open(indices_path).read().splitlines()
-            dataset = DatasetLoad(
-                sequences_df=self.sequences_df.loc[
-                    self.sequences_df.record.isin(indices)
-                ],
-                labels_path=label_path,
-                use_reverse_complement=use_reverse_complement,
-                length_after_padding=length_after_padding,
-                lazyLoad=lazyLoad,
-                device=device,
-            )
+            if tokenizer == None:
+                dataset = DatasetLoad(
+                    sequences_df=self.sequences_df.loc[
+                        self.sequences_df.record.isin(indices)
+                    ],
+                    labels_path=label_path,
+                    length_after_padding=length_after_padding,
+                    lazyLoad=lazyLoad,
+                    device=device,
+                    augment_data=augment_data,
+                )
+            else:
+                dataset = DatasetLoad_Kmer(
+                    sequences_df=self.sequences_df.loc[
+                        self.sequences_df.record.isin(indices)
+                    ],
+                    labels_path=label_path,
+                    length_after_padding=length_after_padding,
+                    lazyLoad=lazyLoad,
+                    device=device,
+                    tokenizer=tokenizer,
+                    augment_data=augment_data,
+                )
             if n_gpu > 1:
                 sampler = DistributedSampler(dataset, num_replicas=n_gpu, rank=device)
                 yield DataLoader(
@@ -200,86 +344,3 @@ class load_dataset:
                     pin_memory=True,
                     num_workers=num_workers,
                 )
-
-
-class apa_dataset(Dataset):
-    def __init__(
-        self,
-        records_list,
-        sequences_list,
-        labels_list,
-        length_after_padding: Optional[int] = 400,
-        lazyLoad: Optional[bool] = False,
-    ):
-        self.lazyLoad = lazyLoad
-        self.length_after_padding = length_after_padding
-        self.records = records_list
-        self.sequences = sequences_list
-        self.labels = labels_list
-        if not lazyLoad:
-            self.data = []
-            for idx in range(0, len(self.sequences)):
-                self.data.append(
-                    torch.tensor(
-                        hot_encode_sequence(
-                            sequence=self.sequences[idx],
-                            length_after_padding=length_after_padding,
-                        )
-                    )
-                )
-        self.len = len(self.records)
-
-    def __getitem__(self, idx):
-        if not self.lazyLoad:
-            return (
-                self.records[idx],
-                dict(input=self.data[idx].float()),
-                self.labels[idx],
-            )
-        else:
-            return (
-                self.records[idx],
-                dict(
-                    input=torch.tensor(
-                        hot_encode_sequence(
-                            sequence=self.sequences[idx],
-                            length_after_padding=self.length_after_padding,
-                        )
-                    ).float()
-                ),
-                self.labels[idx],
-            )
-
-    def __len__(self):
-        return self.len
-
-
-def get_apa_dataset(
-    fasta_path: str,
-    lazyLoad: Optional[bool] = True,
-    shuffle: Optional[bool] = True,
-    batchSize: Optional[int] = 8,
-    length_after_padding: Optional[int] = 400,
-):
-    record_list = list()
-    sequence_list = list()
-    labels_list = list()
-    for record in read_fasta_file(fasta_path):
-        record_list.append(record.description)
-        sequence_list.append(record.seq)
-        labels_list.append(int(record.description.split("|")[1]))
-    dataset = apa_dataset(
-        records_list=record_list,
-        sequences_list=sequence_list,
-        labels_list=labels_list,
-        length_after_padding=length_after_padding,
-        lazyLoad=lazyLoad,
-    )
-    dataloader = DataLoader(
-        dataset,
-        batch_size=batchSize,
-        shuffle=shuffle,
-        pin_memory=True,
-        num_workers=6,
-    )
-    return MultiTaskDataLoader([dataloader], shuffler=np.random.RandomState(42))
