@@ -14,17 +14,16 @@ from src.utils import (
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 from torch.cuda import device_count
-from src.dataset_utils import load_dataset
+from src.expression_dataset_utils import load_dataset
 from src.train_utils import trainer
 from src.results_utils import evaluate_model
 
-from src.DeepPlant import build_model
-
+from src.DeepPlant_expression import build_model
 
 from src.seed import set_seed
-from src.config import DeepPlantConfig
+from src.config import ExpressionConfig
 from src.optimizers import ScheduledOptim
-from src.losses import CustomCosineEmbeddingLoss
+from src.losses import get_loss_fn
 from src.logger import configure_logging_format
 from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
@@ -40,7 +39,7 @@ def parse_arguments(parser):
         "-n",
         "--new",
         action="store_true",
-        help="Build a new logistic regression model",
+        help="Build a new expression model",
     )
     parser.add_argument("-m", "--model", type=str, help="Existing model path")
     parser.add_argument(
@@ -71,9 +70,9 @@ def main(
     data_class: Optional[Any] = None,
 ):
     logger = configure_logging_format(file_path=model_folder_path)
-    model = build_model(args=config, new_model=new_model, model_path=model_path).to(
-        device=device
-    )
+    model = build_model(
+        args=config, new_model=new_model, model_path=model_path, finetune=True
+    ).to(device=device)
     if n_gpu > 1:
 
         setup(device, n_gpu)
@@ -87,10 +86,6 @@ def main(
                 with open(
                     file=os.path.join(model_folder_path, "model.txt"), mode="w"
                 ) as f:
-                    print(
-                        sum(p.numel() for p in model.parameters() if p.requires_grad),
-                        file=f,
-                    )
                     print(model, file=f)
                 torch.save(
                     model.state_dict(),
@@ -117,7 +112,7 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
-    loss_function = CustomCosineEmbeddingLoss(config)
+    loss_function = get_loss_fn(config)
     # loss_function = torch.nn.MSELoss(reduction="mean")
 
     if train:
@@ -125,16 +120,20 @@ def main(
         logger.info(f"Device: {device} - Loading train dataset")
         train_loader = data_class.get_dataloader(
             indices_paths=config.train_indices_path,
+            batchSize=config.batch_size,
+            lazyLoad=config.lazy_loading,
             device=device,
             n_gpu=n_gpu,
-            **config.dict(),
+            num_workers=config.num_workers,
         )
         logger.info(f"Device: {device} - Loading valid dataset")
         valid_loader = data_class.get_dataloader(
             indices_paths=config.valid_indices_path,
+            batchSize=config.batch_size,
+            lazyLoad=config.lazy_loading,
             device=device,
             n_gpu=n_gpu,
-            **config.dict(),
+            num_workers=config.num_workers,
         )
         # Train model
         trainer_ = trainer(
@@ -173,10 +172,11 @@ def main(
         logger.info(f"Device: {device} - Loading test dataset")
         test_loader = data_class.get_dataloader(
             indices_paths=config.test_indices_path,
-            augment_data=False,
+            batchSize=config.batch_size,
+            lazyLoad=config.lazy_loading,
             device=device,
             n_gpu=n_gpu,
-            **config.dict(),
+            num_workers=config.num_workers,
         )
         # Evaluate model
         mse, pearson, spearman = evaluate_model(
@@ -184,7 +184,6 @@ def main(
             dataloader=test_loader,
             device=device,
             model_folder_path=model_folder_path,
-            experiment_names=config.experiment_name,
         )
         data_dict = {
             "path": model_path,
@@ -213,7 +212,7 @@ if __name__ == "__main__":
         (args.model) != None
     ), "Wrong arguments. Either include -n to build a new model or specify -m model_path"
 
-    config = DeepPlantConfig(**read_json(json_path=args.json))
+    config = ExpressionConfig(**read_json(json_path=args.json))
     config_dict = config.dict()
     device = get_device()
 

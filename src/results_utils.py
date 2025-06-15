@@ -13,6 +13,8 @@ import os
 import pandas as pd
 import torch.distributed as dist
 
+# from torchmetrics import AUROC, AveragePrecision
+
 
 sns.set_theme()
 set_seed()
@@ -56,7 +58,7 @@ def evaluate_model(
         for idx, ((_, data, target), bit) in enumerate(progress_bar(dataloader)):
             data = {key: data[key].to(device) for key in data}
             if activation_function != None:
-                output = activation_function(model(**data))
+                output = activation_function(model(**data))[0]
             else:
                 output = model(**data, bit=bit)[0]
             preds = output.cpu().detach().numpy()
@@ -64,7 +66,7 @@ def evaluate_model(
                 target = target.view(target.shape[0] * target.shape[1], target.shape[2])
             target_dict[bit] = target_dict.get(bit, list()) + target.tolist()
             preds_dict[bit] = preds_dict.get(bit, list()) + preds.tolist()
-            if idx == 800:
+            if idx == 1800:
                 break
     target_array_dict = {
         key: np.array(target_list) for key, target_list in target_dict.items()
@@ -159,13 +161,15 @@ def evaluate_model_classification(
     dataloader: torch.utils.data.dataloader,
     activation_function: torch.nn.modules.loss,
     device: str,
+    model_folder_path: Optional[str] = "",
 ) -> tuple[float, float, float]:
     """
     evaluate the model on dataloader and return the accuracy, auroc, and auprc
     """
+    logger = configure_logging_format(file_path=model_folder_path)
+    logger.info(f"Device: {device} - Evaluating the model")
     target_list = list()
     preds_list = list()
-    print("Evaluating model")
     with torch.no_grad():
         model.eval()
         for _, ((header, data, target), bit) in enumerate(progress_bar(dataloader)):
@@ -209,8 +213,14 @@ def evaluate_model_classification(
             np.array(preds_list),
             average="macro",
         )
-
-    print(f"accuracy is {accuracy}")
-    print(f"auroc is {auroc}")
-    print(f"auprc is {auprc}")
-    return (accuracy, auroc, auprc)
+    mean_auroc = torch.tensor(auroc).to(device)
+    mean_auprc = torch.tensor(auprc).to(device)
+    mean_accuracy = torch.tensor(accuracy).to(device)
+    if is_dist_avail_and_initialized():
+        dist.all_reduce(mean_auroc, dist.ReduceOp.SUM)
+        dist.all_reduce(mean_auprc, dist.ReduceOp.SUM)
+        dist.all_reduce(mean_accuracy, dist.ReduceOp.SUM)
+        mean_auroc /= dist.get_world_size()
+        mean_auprc /= dist.get_world_size()
+        mean_accuracy /= dist.get_world_size()
+    return (mean_accuracy.item(), mean_auroc.item(), mean_auprc.item())

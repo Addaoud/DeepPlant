@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from scipy.interpolate import splev
+import torch.nn.functional as F
 import math
 
 
@@ -16,119 +17,37 @@ class AttentionPool(nn.Module):
         return (x * attn).sum(dim=-2).squeeze(dim=-2)
 
 
-def bs(x, df=None, knots=None, degree=3, intercept=False):
-    """
-    df : int
-        The number of degrees of freedom to use for this spline. The
-        return value will have this many columns. You must specify at least
-        one of `df` and `knots`.
-    knots : list(float)
-        The interior knots of the spline. If unspecified, then equally
-        spaced quantiles of the input data are used. You must specify at least
-        one of `df` and `knots`.
-    degree : int
-        The degree of the piecewise polynomial. Default is 3 for cubic splines.
-    intercept : bool
-        If `True`, the resulting spline basis will span the intercept term
-        (i.e. the constant function). If `False` (the default) then this
-        will not be the case, which is useful for avoiding overspecification
-        in models that include multiple spline terms and/or an intercept term.
-    """
-    order = degree + 1
-    inner_knots = []
-    if df is not None and knots is None:
-        n_inner_knots = df - order + (1 - intercept)
-        if n_inner_knots < 0:
-            n_inner_knots = 0
-            print("df was too small; have used %d" % (order - (1 - intercept)))
-        if n_inner_knots > 0:
-            inner_knots = np.percentile(
-                x, 100 * np.linspace(0, 1, n_inner_knots + 2)[1:-1]
-            )
-    elif knots is not None:
-        inner_knots = knots
-    all_knots = np.concatenate(([np.min(x), np.max(x)] * order, inner_knots))
-    all_knots.sort()
-    n_basis = len(all_knots) - (degree + 1)
-    basis = np.empty((x.shape[0], n_basis), dtype=float)
-    for i in range(n_basis):
-        coefs = np.zeros((n_basis,))
-        coefs[i] = 1
-        basis[:, i] = splev(x, (all_knots, coefs, degree))
-    if not intercept:
-        basis = basis[:, 1:]
-    return basis
-
-
-def spline_factory(n, df, log=False):
-    if log:
-        dist = np.array(np.arange(n) - n / 2.0)
-        dist = np.log(np.abs(dist) + 1) * (2 * (dist > 0) - 1)
-        n_knots = df - 4
-        knots = np.linspace(np.min(dist), np.max(dist), n_knots + 2)[1:-1]
-        return torch.from_numpy(bs(dist, knots=knots, intercept=True)).float()
-    else:
-        dist = np.arange(n)
-        return torch.from_numpy(bs(dist, df=df, intercept=True)).float()
-
-
-class BSplineTransformation(nn.Module):
-    def __init__(self, bins, log=False, scaled=False):
-        super(BSplineTransformation, self).__init__()
-        self._spline_tr = None
-        self._log = log
-        self._scaled = scaled
-        self._df = bins
-
-    def forward(self, input: torch.Tensor):
-        if self._spline_tr is None:
-            spatial_dim = input.size()[-1]
-            self._spline_tr = spline_factory(spatial_dim, self._df, log=self._log)
-            if self._scaled:
-                self._spline_tr = self._spline_tr / spatial_dim
-            if input.is_cuda:
-                self._spline_tr = self._spline_tr.cuda()
-        return torch.matmul(input, self._spline_tr)
-
-
 class PredictionHead(nn.Module):
     def __init__(self, feedforward_dim, n_features):
         super(PredictionHead, self).__init__()
         self.embed_dim = feedforward_dim
         self.n_features = n_features
         self.n_genomes = len(self.n_features)
-        self.spline_bins = 16
-        self.spline_tr = BSplineTransformation(bins=self.spline_bins, scaled=False)
-        # self.attention_pool = AttentionPool(self.embed_dim)
         self.linear = nn.Sequential(
-            nn.Linear(16 * self.embed_dim, 16 * self.embed_dim),
+            nn.Linear(self.embed_dim, 4 * self.embed_dim),
             nn.ReLU(inplace=True),
-            nn.Dropout(p=0.4),
-            nn.Linear(16 * self.embed_dim, 12 * self.embed_dim),
+            nn.Dropout(p=0.2),
+            nn.Linear(4 * self.embed_dim, 4 * self.embed_dim),
             nn.ReLU(inplace=True),
-            nn.Dropout(p=0.4),
-            nn.Linear(12 * self.embed_dim, 8 * self.embed_dim),
-            nn.ReLU(inplace=True),
-            nn.Dropout(p=0.4),
+            nn.Dropout(p=0.2),
         )
         self.prediction_head = list()
         for i in range(self.n_genomes):
             self.prediction_head.append(
                 nn.Sequential(
-                    nn.Linear(8 * self.embed_dim, self.n_features[i]),
+                    nn.Linear(4 * self.embed_dim, self.n_features[i]),
                     nn.Softplus(),
                 )
+                # KANLinear(
+                #    4 * self.embed_dim,
+                #    self.n_features[i],
+                #    base_activation=torch.nn.Softplus,
+                # )
             )
         self.prediction_head = nn.ModuleList(self.prediction_head)
 
     def forward(self, input: torch.Tensor, bit: int = 0):
-        # reshape_out = input.mean(dim=-2).squeeze(dim=-2)
-        # reshape_out = self.attention_pool(input)
-        spline_out = self.spline_tr(input)
-        reshape_out = spline_out.view(
-            spline_out.size(0), self.spline_bins * self.embed_dim
-        )
-        pred = self.linear(reshape_out)
+        pred = self.linear(input)
         output = self.prediction_head[bit](pred)
         return output
 
@@ -166,3 +85,241 @@ class GroupWiseLinear(nn.Module):
 
 def build_predictionHead(args):
     return PredictionHead(feedforward_dim=args.embed_dim, n_features=args.n_features)
+
+
+class KANLinear(torch.nn.Module):
+    def __init__(
+        self,
+        in_features,
+        out_features,
+        grid_size=5,
+        spline_order=3,
+        scale_noise=0.1,
+        scale_base=1.0,
+        scale_spline=1.0,
+        enable_standalone_scale_spline=True,
+        base_activation=torch.nn.Softplus,
+        grid_eps=0.02,
+        grid_range=[-1, 1],
+    ):
+        super(KANLinear, self).__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.grid_size = grid_size
+        self.spline_order = spline_order
+
+        h = (grid_range[1] - grid_range[0]) / grid_size
+        grid = (
+            (
+                torch.arange(-spline_order, grid_size + spline_order + 1) * h
+                + grid_range[0]
+            )
+            .expand(in_features, -1)
+            .contiguous()
+        )
+        self.register_buffer("grid", grid)
+
+        self.base_weight = torch.nn.Parameter(torch.Tensor(out_features, in_features))
+        self.spline_weight = torch.nn.Parameter(
+            torch.Tensor(out_features, in_features, grid_size + spline_order)
+        )
+        if enable_standalone_scale_spline:
+            self.spline_scaler = torch.nn.Parameter(
+                torch.Tensor(out_features, in_features)
+            )
+
+        self.scale_noise = scale_noise
+        self.scale_base = scale_base
+        self.scale_spline = scale_spline
+        self.enable_standalone_scale_spline = enable_standalone_scale_spline
+        self.base_activation = base_activation()
+        self.grid_eps = grid_eps
+
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        torch.nn.init.kaiming_uniform_(
+            self.base_weight, a=math.sqrt(5) * self.scale_base
+        )
+        with torch.no_grad():
+            noise = (
+                (
+                    torch.rand(self.grid_size + 1, self.in_features, self.out_features)
+                    - 1 / 2
+                )
+                * self.scale_noise
+                / self.grid_size
+            )
+            self.spline_weight.data.copy_(
+                (self.scale_spline if not self.enable_standalone_scale_spline else 1.0)
+                * self.curve2coeff(
+                    self.grid.T[self.spline_order : -self.spline_order],
+                    noise,
+                )
+            )
+            if self.enable_standalone_scale_spline:
+                # torch.nn.init.constant_(self.spline_scaler, self.scale_spline)
+                torch.nn.init.kaiming_uniform_(
+                    self.spline_scaler, a=math.sqrt(5) * self.scale_spline
+                )
+
+    def b_splines(self, x: torch.Tensor):
+        """
+        Compute the B-spline bases for the given input tensor.
+
+        Args:
+            x (torch.Tensor): Input tensor of shape (batch_size, in_features).
+
+        Returns:
+            torch.Tensor: B-spline bases tensor of shape (batch_size, in_features, grid_size + spline_order).
+        """
+        assert x.dim() == 2 and x.size(1) == self.in_features
+
+        grid: torch.Tensor = (
+            self.grid
+        )  # (in_features, grid_size + 2 * spline_order + 1)
+        x = x.unsqueeze(-1)
+        bases = ((x >= grid[:, :-1]) & (x < grid[:, 1:])).to(x.dtype)
+        for k in range(1, self.spline_order + 1):
+            bases = (
+                (x - grid[:, : -(k + 1)])
+                / (grid[:, k:-1] - grid[:, : -(k + 1)])
+                * bases[:, :, :-1]
+            ) + (
+                (grid[:, k + 1 :] - x)
+                / (grid[:, k + 1 :] - grid[:, 1:(-k)])
+                * bases[:, :, 1:]
+            )
+
+        assert bases.size() == (
+            x.size(0),
+            self.in_features,
+            self.grid_size + self.spline_order,
+        )
+        return bases.contiguous()
+
+    def curve2coeff(self, x: torch.Tensor, y: torch.Tensor):
+        """
+        Compute the coefficients of the curve that interpolates the given points.
+
+        Args:
+            x (torch.Tensor): Input tensor of shape (batch_size, in_features).
+            y (torch.Tensor): Output tensor of shape (batch_size, in_features, out_features).
+
+        Returns:
+            torch.Tensor: Coefficients tensor of shape (out_features, in_features, grid_size + spline_order).
+        """
+        assert x.dim() == 2 and x.size(1) == self.in_features
+        assert y.size() == (x.size(0), self.in_features, self.out_features)
+
+        A = self.b_splines(x).transpose(
+            0, 1
+        )  # (in_features, batch_size, grid_size + spline_order)
+        B = y.transpose(0, 1)  # (in_features, batch_size, out_features)
+        solution = torch.linalg.lstsq(
+            A, B
+        ).solution  # (in_features, grid_size + spline_order, out_features)
+        result = solution.permute(
+            2, 0, 1
+        )  # (out_features, in_features, grid_size + spline_order)
+
+        assert result.size() == (
+            self.out_features,
+            self.in_features,
+            self.grid_size + self.spline_order,
+        )
+        return result.contiguous()
+
+    @property
+    def scaled_spline_weight(self):
+        return self.spline_weight * (
+            self.spline_scaler.unsqueeze(-1)
+            if self.enable_standalone_scale_spline
+            else 1.0
+        )
+
+    def forward(self, x: torch.Tensor):
+        assert x.size(-1) == self.in_features
+        original_shape = x.shape
+        x = x.reshape(-1, self.in_features)
+
+        base_output = F.linear(self.base_activation(x), self.base_weight)
+        spline_output = F.linear(
+            self.b_splines(x).view(x.size(0), -1),
+            self.scaled_spline_weight.view(self.out_features, -1),
+        )
+        output = base_output + spline_output
+
+        output = output.reshape(*original_shape[:-1], self.out_features)
+        return output
+
+    @torch.no_grad()
+    def update_grid(self, x: torch.Tensor, margin=0.01):
+        assert x.dim() == 2 and x.size(1) == self.in_features
+        batch = x.size(0)
+
+        splines = self.b_splines(x)  # (batch, in, coeff)
+        splines = splines.permute(1, 0, 2)  # (in, batch, coeff)
+        orig_coeff = self.scaled_spline_weight  # (out, in, coeff)
+        orig_coeff = orig_coeff.permute(1, 2, 0)  # (in, coeff, out)
+        unreduced_spline_output = torch.bmm(splines, orig_coeff)  # (in, batch, out)
+        unreduced_spline_output = unreduced_spline_output.permute(
+            1, 0, 2
+        )  # (batch, in, out)
+
+        # sort each channel individually to collect data distribution
+        x_sorted = torch.sort(x, dim=0)[0]
+        grid_adaptive = x_sorted[
+            torch.linspace(
+                0, batch - 1, self.grid_size + 1, dtype=torch.int64, device=x.device
+            )
+        ]
+
+        uniform_step = (x_sorted[-1] - x_sorted[0] + 2 * margin) / self.grid_size
+        grid_uniform = (
+            torch.arange(
+                self.grid_size + 1, dtype=torch.float32, device=x.device
+            ).unsqueeze(1)
+            * uniform_step
+            + x_sorted[0]
+            - margin
+        )
+
+        grid = self.grid_eps * grid_uniform + (1 - self.grid_eps) * grid_adaptive
+        grid = torch.concatenate(
+            [
+                grid[:1]
+                - uniform_step
+                * torch.arange(self.spline_order, 0, -1, device=x.device).unsqueeze(1),
+                grid,
+                grid[-1:]
+                + uniform_step
+                * torch.arange(1, self.spline_order + 1, device=x.device).unsqueeze(1),
+            ],
+            dim=0,
+        )
+
+        self.grid.copy_(grid.T)
+        self.spline_weight.data.copy_(self.curve2coeff(x, unreduced_spline_output))
+
+    def regularization_loss(self, regularize_activation=1.0, regularize_entropy=1.0):
+        """
+        Compute the regularization loss.
+
+        This is a dumb simulation of the original L1 regularization as stated in the
+        paper, since the original one requires computing absolutes and entropy from the
+        expanded (batch, in_features, out_features) intermediate tensor, which is hidden
+        behind the F.linear function if we want an memory efficient implementation.
+
+        The L1 regularization is now computed as mean absolute value of the spline
+        weights. The authors implementation also includes this term in addition to the
+        sample-based regularization.
+        """
+        l1_fake = self.spline_weight.abs().mean(-1)
+        regularization_loss_activation = l1_fake.sum()
+        p = l1_fake / regularization_loss_activation
+        regularization_loss_entropy = -torch.sum(p * p.log())
+        return (
+            regularize_activation * regularization_loss_activation
+            + regularize_entropy * regularization_loss_entropy
+        )

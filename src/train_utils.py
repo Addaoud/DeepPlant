@@ -10,7 +10,7 @@ from fastprogress import progress_bar
 from typing import Optional
 import torch.distributed as dist
 from copy import deepcopy
-
+from datetime import datetime
 
 set_seed()
 
@@ -48,6 +48,7 @@ class trainer:
         self.best_valid_loss = np.inf
         self.counter_for_early_stop = 0
         self.logger = configure_logging_format(file_path=self.model_folder_path)
+        self.is_distributed = is_dist_avail_and_initialized()
         if (
             self.n_accumulated_batches > len(self.train_dataloader)
             or self.n_accumulated_batches == -1
@@ -55,7 +56,7 @@ class trainer:
             self.n_accumulated_batches = len(train_dataloader)
 
     def train(self):
-        if is_dist_avail_and_initialized():
+        if self.is_distributed:
             dist.barrier()
         model_path, checkpoints_path, loss_csv_path, loss_plot_path = get_paths(
             datetime.now(), self.model_folder_path
@@ -72,7 +73,7 @@ class trainer:
         self.logger.info(f"Device: {self.device} - Started training")
         early_stopping_flag = torch.zeros(1, device=self.device)
         for epoch in progress_bar(range(1, self.max_epochs + 1)):
-            if is_dist_avail_and_initialized():
+            if self.is_distributed:
                 dist.all_reduce(early_stopping_flag, op=dist.ReduceOp.SUM)
             if early_stopping_flag == 1:
                 break
@@ -86,13 +87,7 @@ class trainer:
                 self.counter_for_early_stop_threshold > 0
             ):
                 valid_loss_per_epoch = self.get_valid_loss()
-            if is_dist_avail_and_initialized():
-                train_loss_per_epoch = torch.tensor([train_loss_per_epoch]).to(
-                    self.device
-                )
-                valid_loss_per_epoch = torch.tensor([valid_loss_per_epoch]).to(
-                    self.device
-                )
+            if self.is_distributed:
                 dist.all_reduce(train_loss_per_epoch, op=dist.ReduceOp.SUM)
                 dist.all_reduce(valid_loss_per_epoch, op=dist.ReduceOp.SUM)
                 train_loss_per_epoch = (
@@ -106,6 +101,7 @@ class trainer:
                 save_data_to_csv(
                     data_dictionary={
                         "epoch": epoch,
+                        "time": datetime.now(),
                         "train_loss": train_loss_per_epoch,
                         "valid_loss": valid_loss_per_epoch,
                     },
@@ -137,7 +133,7 @@ class trainer:
         # Executes a single epoch of training.
 
         self.model.train()
-        loss_per_epoch = 0
+        loss_per_epoch = torch.tensor(0.0, device=self.device)
         self.optimizer.zero_grad()
         for batch_idx, ((_, data, target), bit) in enumerate(
             progress_bar(self.train_dataloader)
@@ -145,9 +141,8 @@ class trainer:
             data, target = {key: data[key].to(self.device) for key in data}, target.to(
                 self.device
             )
-
             pred = self.model(**data, bit=bit)
-            if is_dist_avail_and_initialized():
+            if self.is_distributed:
                 loss = self.loss_fn(
                     pred, target  # , list(self.model.module.get_convlayers(bit))
                 )
@@ -156,14 +151,14 @@ class trainer:
                     pred, target
                 )  # , list(self.model.get_convlayers(bit)))
             # normalize loss to account for batch accumulation
+            loss_per_epoch += loss
             loss = loss / self.n_accumulated_batches
             loss.backward()
-            loss_per_epoch += loss.item() * self.n_accumulated_batches
             # weights update
             if ((batch_idx + 1) % self.n_accumulated_batches == 0) or (
                 batch_idx + 1 == len(self.train_dataloader)
             ):
-                torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+                # torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
                 self.optimizer.step()
                 self.optimizer.zero_grad()
         return loss_per_epoch / (batch_idx + 1)
@@ -174,16 +169,12 @@ class trainer:
         """
         with torch.no_grad():
             self.model.eval()
-            valid_loss = 0
+            valid_loss = torch.tensor(0.0, device=self.device)
             for batch_idx, ((_, data, target), bit) in enumerate(self.valid_dataloader):
                 data, target = {
                     key: data[key].to(self.device) for key in data
                 }, target.to(self.device)
                 output = self.model(**data, bit=bit)
-                if is_dist_avail_and_initialized():
-                    loss = self.loss_fn(output, target)
-                else:
-                    loss = self.loss_fn(output, target)
-                valid_loss += loss.item()
-        valid_loss /= batch_idx + 1
-        return valid_loss
+                loss = self.loss_fn(output, target)
+                valid_loss += loss
+        return valid_loss / (batch_idx + 1)

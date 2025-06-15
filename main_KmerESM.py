@@ -12,17 +12,17 @@ from src.utils import (
     get_device,
 )
 from torch.nn.parallel import DistributedDataParallel as DDP
+from src.tokenizers import KmerEsmTokenizer
 import torch.multiprocessing as mp
 from torch.cuda import device_count
 from src.dataset_utils import load_dataset
 from src.train_utils import trainer
 from src.results_utils import evaluate_model
 
-from src.DeepPlant import build_model
-
+from src.DeepPlant_kmers import build_model
 
 from src.seed import set_seed
-from src.config import DeepPlantConfig
+from src.config import DeepPlantKmerConfig
 from src.optimizers import ScheduledOptim
 from src.losses import CustomCosineEmbeddingLoss
 from src.logger import configure_logging_format
@@ -74,9 +74,13 @@ def main(
     model = build_model(args=config, new_model=new_model, model_path=model_path).to(
         device=device
     )
+    tokenizer = KmerEsmTokenizer.from_pretrained(
+        config.tokenizer_path,
+    )
     if n_gpu > 1:
 
         setup(device, n_gpu)
+
         model = DDP(
             model,
             device_ids=[device],
@@ -127,6 +131,7 @@ def main(
             indices_paths=config.train_indices_path,
             device=device,
             n_gpu=n_gpu,
+            tokenizer=tokenizer,
             **config.dict(),
         )
         logger.info(f"Device: {device} - Loading valid dataset")
@@ -134,6 +139,7 @@ def main(
             indices_paths=config.valid_indices_path,
             device=device,
             n_gpu=n_gpu,
+            tokenizer=tokenizer,
             **config.dict(),
         )
         # Train model
@@ -152,7 +158,7 @@ def main(
         if n_gpu > 1:
             dist.barrier()
             if not is_main_process():
-                map_location = {
+                 map_location = {
                     "cuda:%d" % 0: "cuda:%d" % device,
                     "cpu": "cuda:%d" % device,
                 }
@@ -173,9 +179,10 @@ def main(
         logger.info(f"Device: {device} - Loading test dataset")
         test_loader = data_class.get_dataloader(
             indices_paths=config.test_indices_path,
-            augment_data=False,
             device=device,
             n_gpu=n_gpu,
+            tokenizer=tokenizer,
+            augment_data=False,
             **config.dict(),
         )
         # Evaluate model
@@ -213,7 +220,7 @@ if __name__ == "__main__":
         (args.model) != None
     ), "Wrong arguments. Either include -n to build a new model or specify -m model_path"
 
-    config = DeepPlantConfig(**read_json(json_path=args.json))
+    config = DeepPlantKmerConfig(**read_json(json_path=args.json))
     config_dict = config.dict()
     device = get_device()
 
@@ -232,8 +239,8 @@ if __name__ == "__main__":
         logger.info(f"Device: {device} - {key}: {value}")
     logger.info(f"Device: {device} - Processing data files")
     data_class = load_dataset(
-        sequences_paths=config.sequences_path,
-        labels_paths=config.labels_path,
+        sequences_paths=config.sequences_paths,
+        labels_paths=config.labels_paths,
     )
 
     if device == "cuda":

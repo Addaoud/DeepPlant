@@ -37,9 +37,9 @@ class model(nn.Module):
             )
         src = self.backbone(input, bit).permute(0, 2, 1)
         attention_output = self.transformer(src)
-        hs = self.attention_pool(attention_output[:, 46:54, :])
+        hs = self.attention_pool(attention_output)
         out = self.fc(hs, bit)
-        return (out, hs)
+        return out
 
 
 def build_model(
@@ -63,16 +63,16 @@ def build_model(
         for i in range(len(keys_pretrained)):
             model_weights[keys_net[i]] = model_pretrained_dict[keys_pretrained[i]]
         network.load_state_dict(model_weights)
-        print("Model loaded with pretrained weights")
     if new_model and finetune:
-        print("Loading pretrained model")
+        print("Loading pretrained model state")
         model_pretrained_dict = torch.load(
-            "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simple/084124/model_25_02_12:15:43.pt"
+            "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simpleV5_SSL/083863/model_25_05_26:09:21.pt"
         )
         keys_pretrained = list(model_pretrained_dict.keys())[:-2]
         keys_net = list(network.state_dict())
         model_weights = network.state_dict()
         for i in range(len(keys_pretrained)):
             model_weights[keys_net[i]] = model_pretrained_dict[keys_pretrained[i]]
+            # model_weights[keys_net[i]].requires_grad = False
         network.load_state_dict(model_weights)
     return network

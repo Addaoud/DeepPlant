@@ -8,6 +8,9 @@ import numpy as np
 from torch import cuda
 import json
 from Bio import SeqIO
+import seaborn as sns
+
+sns.set_theme()
 
 
 def read_fasta_file(fasta_path: str, format: str = "fasta"):
@@ -151,42 +154,51 @@ def get_paths(start_time: str, model_folder_path: str) -> tuple[str]:
 def hot_encode_sequence(
     sequence: str,
     length_after_padding: Optional[int] = 0,
-    ambig_bp_coding_value: Optional[float] = 1.0,
-) -> None:
-    """
-    Takes in a sequence of chars and one-hot encodes it.
-    """
-    nucleotide_dict = {
-        "A": [1, 0, 0, 0],
-        "C": [0, 1, 0, 0],
-        "G": [0, 0, 1, 0],
-        "T": [0, 0, 0, 1],
-        "U": [0, 0, 0, 1],
-        "Y": [0, 0, 1, 1],
-        "R": [1, 1, 0, 0],
-        "W": [1, 0, 0, 1],
-        "S": [0, 1, 1, 0],
-        "K": [0, 1, 0, 1],
-        "M": [1, 0, 1, 0],
-        "D": [1, 1, 0, 1],
-        "V": [1, 1, 1, 0],
-        "H": [1, 0, 1, 1],
-        "B": [0, 1, 1, 1],
-        "N": [1, 1, 1, 1],
-    }
-    unambig_bases = {"A", "C", "G", "T"}
-    if (length_after_padding == 0) or (length_after_padding < len(sequence)):
+) -> np.ndarray:
+    if not hasattr(hot_encode_sequence, "nucleotide_dict"):
+        hot_encode_sequence.nucleotide_dict = {
+            "A": [1, 0, 0, 0],
+            "C": [0, 1, 0, 0],
+            "G": [0, 0, 1, 0],
+            "T": [0, 0, 0, 1],
+            "U": [0, 0, 0, 1],
+            "Y": [0, 0, 1 / 2, 1 / 2],
+            "R": [1 / 2, 1 / 2, 0, 0],
+            "W": [1 / 2, 0, 0, 1 / 2],
+            "S": [0, 1 / 2, 1 / 2, 0],
+            "K": [0, 1 / 2, 0, 1 / 2],
+            "M": [1 / 2, 0, 1 / 2, 0],
+            "D": [1 / 3, 1 / 3, 0, 1 / 3],
+            "V": [1 / 3, 1 / 3, 1 / 3, 0],
+            "H": [1 / 3, 0, 1 / 3, 1 / 3],
+            "B": [0, 1 / 3, 1 / 3, 1 / 3],
+            "N": [1 / 4, 1 / 4, 1 / 4, 1 / 4],
+        }
+
+    if length_after_padding == 0 or length_after_padding < len(sequence):
         hot_encoded_seq = np.zeros((4, len(sequence)), dtype=np.float32)
+        start_pos = 0
     else:
         hot_encoded_seq = np.zeros((4, length_after_padding), dtype=np.float32)
-    start_pos = int(max(0, 0.5 * (length_after_padding - len(sequence))))
-    end_pos = start_pos + len(sequence)
-    for i in range(start_pos, end_pos):
-        hot_encoded_seq[:, i] = nucleotide_dict.get(
-            sequence[i - start_pos], [0, 0, 0, 0]
-        )
-        if sequence[i - start_pos] not in unambig_bases:
-            hot_encoded_seq[:, i] *= ambig_bp_coding_value / max(
-                sum(nucleotide_dict.get(sequence[i - start_pos], [0, 0, 0, 0])), 1
-            )
+        start_pos = (length_after_padding - len(sequence)) // 2
+
+    hot_encoded_seq[:, start_pos : start_pos + len(sequence)] = np.array(
+        [
+            hot_encode_sequence.nucleotide_dict.get(base, [0, 0, 0, 0])
+            for base in sequence
+        ],
+        dtype=np.float32,
+    ).T
     return hot_encoded_seq
+
+
+def plot_motif_heat(param_matrix):
+    param_range = abs(param_matrix).max()
+    sns.set_theme(font_scale=2)
+    plt.figure(figsize=(param_matrix.shape[1], 4))
+    sns.heatmap(
+        param_matrix, cmap="PRGn", linewidths=0.2, vmin=-param_range, vmax=param_range
+    )
+    ax = plt.gca()
+    ax.set_xticklabels(range(1, param_matrix.shape[1] + 1))
+    ax.set_yticklabels("ACGT", rotation="horizontal")

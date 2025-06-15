@@ -1,12 +1,9 @@
 import torch.nn as nn
 from typing import Optional
 import torch
-from src.seed import set_seed
-from mamba_ssm import Mamba
+from mamba_ssm import Mamba2
 from math import log
 import copy
-
-set_seed()
 
 
 class MambaRMSNorm(nn.Module):
@@ -126,21 +123,27 @@ class Transformer(nn.Module):
         encoder_type: Optional[str] = "mamba",
         encoder_num_layers: Optional[int] = 6,
         decoder_num_layers: Optional[int] = 6,
+        use_pos_encoding: Optional[bool] = True,
+        max_seq_length: Optional[int] = 100,
     ):
         super(Transformer, self).__init__()
         self.encoder_num_layers = encoder_num_layers
         self.decoder_num_layers = decoder_num_layers
         self.d_model = d_model
-        self.pos_encoder = PositionalEncoding(d_model, max_seq_length=500)
+        self.use_pos_encoding = use_pos_encoding
+        self.encoder_type = encoder_type
+        self.max_seq_length = max_seq_length
+        if self.use_pos_encoding:
+            self.pos_encoder = PositionalEncoding(
+                d_model, max_seq_length=self.max_seq_length
+            )
         if self.encoder_num_layers > 0:
             if encoder_type == "mamba":
-                encoder_norm = MambaRMSNorm(
-                    d_model
-                )  # nn.RMSNorm(d_model)  # nn.LayerNorm(d_model)
+                encoder_norm = None  # MambaRMSNorm(d_model)  # nn.RMSNorm(d_model)  # nn.LayerNorm(d_model)
                 self.encoder = TransformerEncoder(
-                    Mamba(
+                    Mamba2(
                         d_model=d_model,
-                        d_state=16,
+                        d_state=64,
                         d_conv=4,  # Local convolution width
                         expand=2,  # Block expansion factor
                     ),
@@ -187,8 +190,12 @@ class Transformer(nn.Module):
         tgt_key_padding_mask: Optional[torch.Tensor] = None,
         tgt_pos_embed: Optional[torch.Tensor] = None,
     ):
-        src = self.pos_encoder(src)
-        encoder_embed = self.encoder(src, src_mask, src_key_padding_mask)
+        if self.use_pos_encoding:
+            src = self.pos_encoder(src)
+        if self.encoder_type == "mamba":
+            encoder_embed = self.encoder(src)
+        else:
+            encoder_embed = self.encoder(src, src_mask, src_key_padding_mask)
         if self.decoder_num_layers > 0:
             decoder_output = self.decoder(
                 tgt,
@@ -212,4 +219,6 @@ def build_transformer(args):
         encoder_type=args.encoder_type,
         encoder_num_layers=args.encoder_num_layers,
         decoder_num_layers=args.decoder_num_layers,
+        use_pos_encoding=args.use_pos_encoding,
+        max_seq_length=args.max_seq_length,
     )

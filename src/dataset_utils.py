@@ -8,25 +8,25 @@ from transformers import EsmTokenizer
 from src.utils import (
     hot_encode_sequence,
     read_excel_csv_file,
-    read_fasta_file,
 )
 from Bio.Seq import reverse_complement
 from random import randint
 from src.seed import set_seed
-import pickle
 
 
 set_seed()
 
 
-def get_masked_sequence(sequence, n_regions):
-    size = len(sequence)
+def get_masked_sequence(sequence: str, n_regions: int) -> str:
+    sequence = np.frombuffer(
+        sequence.encode("ascii"), dtype="S1"
+    ).copy()  # make writable
+    size = sequence.shape[0]
     data = np.random.normal(loc=0, scale=1, size=size)
     indices = np.argpartition(data, -n_regions)[-n_regions:]
-    sequence_list = list(sequence)
-    for index in indices:
-        sequence_list[index] = "N"
-    return "".join(sequence_list)
+
+    sequence[indices] = b"N"
+    return sequence.tobytes().decode("ascii")
 
 
 def get_augmented_sequences(sequence):
@@ -70,45 +70,45 @@ class DatasetLoad(Dataset):
         self.device = device
         self.augment_data = augment_data
         self.sequences_df = sequences_df.reset_index(drop=True)
+        self.records = self.sequences_df["record"].tolist()
+        self.sequences = self.sequences_df["sequence"].tolist()
         if not lazyLoad:
-            self.data = list()
-            self.labels = list()
-            for idx in range(0, self.sequences_df.shape[0]):
-                self.data.append(
-                    torch.tensor(
-                        hot_encode_sequence(
-                            sequence=self.sequences_df.iloc[idx].sequence,
-                            length_after_padding=length_after_padding,
-                        )
+            self.data = [
+                torch.from_numpy(
+                    hot_encode_sequence(
+                        sequence=seq,
+                        length_after_padding=length_after_padding,
                     )
                 )
-                self.labels.append(
-                    np.load(
-                        f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record)}.npy"
-                    )
+                for seq in self.sequences
+            ]
+            self.labels = [
+                torch.from_numpy(
+                    np.load(os.path.join(self.labels_path, f"{record}.npy"))
                 )
+                for record in self.records
+            ]
 
         self.len = self.sequences_df.shape[0]
 
     def __getitem__(self, idx):
-        sequence = self.sequences_df.iloc[idx].sequence
+        record = self.records[idx]
         if not self.lazyLoad:
             return (
-                self.sequences_df.iloc[idx].record,
-                dict(input=self.data[idx].float()),
-                self.labels[idx].astype(np.float32),
+                record,
+                dict(input=self.data[idx]),
+                self.labels[idx],
             )
         else:
+            sequence = self.sequences[idx]
             labels = torch.from_numpy(
-                np.load(
-                    f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record.replace('_r',''))}.npy"
-                )
+                np.load(os.path.join(self.labels_path, f"{record}.npy"))
             )
             if self.augment_data:
                 return (
-                    [self.sequences_df.iloc[idx].record] * 8,
+                    [record] * 8,
                     dict(
-                        input=torch.tensor(
+                        input=torch.from_numpy(
                             np.array(
                                 [
                                     hot_encode_sequence(
@@ -118,24 +118,22 @@ class DatasetLoad(Dataset):
                                     for seq in get_augmented_sequences(sequence)
                                 ]
                             ),
-                            dtype=torch.float,
                         ),
                     ),
-                    labels.float().repeat(8, 1),
+                    labels.repeat(8, 1),
                 )
             else:
                 return (
-                    self.sequences_df.iloc[idx].record,
+                    record,
                     dict(
-                        input=torch.tensor(
+                        input=torch.from_numpy(
                             hot_encode_sequence(
                                 sequence,
                                 length_after_padding=self.length_after_padding,
                             ),
-                            dtype=torch.float,
                         ),
                     ),
-                    labels.float(),
+                    labels,
                 )
 
     def __len__(self):
@@ -152,6 +150,8 @@ class DatasetLoad_Kmer(Dataset):
         device: Optional[Any] = "cpu",
         tokenizer: Optional[EsmTokenizer] = None,
         augment_data: Optional[bool] = True,
+        add_special_tokens: Optional[bool] = True,
+        **kwargs,
     ):
 
         self.lazyLoad = lazyLoad
@@ -160,59 +160,78 @@ class DatasetLoad_Kmer(Dataset):
         self.device = device
         self.sequences_df = sequences_df.reset_index(drop=True)
         self.tokenizer = tokenizer
+        self.add_special_tokens = add_special_tokens
         self.augment_data = augment_data
+        self.records = self.sequences_df["record"].tolist()
+        self.sequences = self.sequences_df["sequence"].tolist()
+
         if not lazyLoad:
-            self.data = list()
-            self.labels = list()
-            for idx in range(0, self.sequences_df.shape[0]):
-                self.data.append(
+            if self.augment_data:
+                self.data = [
                     self.tokenizer(
-                        self.sequences_df.iloc[idx].sequence,
+                        get_augmented_sequences(seq),
                         return_tensors="pt",
-                        padding="max_length",
-                        max_length=tokenizer.model_max_length,
-                        truncation=True,
+                        add_special_tokens=self.add_special_tokens,
                     )
-                )
-                self.labels.append(
-                    np.load(
-                        f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record)}.npy"
+                    for seq in self.sequences
+                ]
+                self.labels = [
+                    torch.from_numpy(
+                        np.load(os.path.join(self.labels_path, f"{record}.npy"))
+                    ).repeat(8, 1)
+                    for record in self.records
+                ]
+            else:
+                self.data = [
+                    self.tokenizer(
+                        seq,
+                        return_tensors="pt",
+                        add_special_tokens=self.add_special_tokens,
                     )
-                )
+                    for seq in self.sequences
+                ]
+                self.labels = [
+                    torch.from_numpy(
+                        np.load(os.path.join(self.labels_path, f"{record}.npy"))
+                    )
+                    for record in self.records
+                ]
 
         self.len = self.sequences_df.shape[0]
 
     def __getitem__(self, idx):
-        sequence = self.sequences_df.iloc[idx].sequence
+        record = self.records[idx]
         if not self.lazyLoad:
             return (
-                self.sequences_df.iloc[idx].record,
-                dict(input=self.data[idx].float()),
-                self.labels[idx].astype(np.float32),
+                record,
+                self.data[idx],
+                self.labels[idx],
             )
         else:
+            sequence = self.sequences[idx]
             labels = torch.from_numpy(
-                np.load(
-                    f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].record.replace('_r',''))}.npy"
-                )
+                np.load(os.path.join(self.labels_path, f"{record}.npy"))
             )
             if self.augment_data:
+                augmented_seqs = get_augmented_sequences(sequence)
                 return (
-                    [self.sequences_df.iloc[idx].record] * 8,
+                    [record] * 8,
                     self.tokenizer(
-                        get_augmented_sequences(sequence),
+                        augmented_seqs,
                         return_tensors="pt",
+                        add_special_tokens=self.add_special_tokens,
                     ),
-                    labels.float().repeat(8, 1),
+                    labels.repeat(8, 1),
                 )
             else:
                 return (
-                    self.sequences_df.iloc[idx].record,
+                    record,
                     self.tokenizer(
                         sequence,
                         return_tensors="pt",
+                        add_special_tokens=self.add_special_tokens,
                     ),
-                    labels.float(),
+                    labels,
                 )
 
     def __len__(self):
@@ -326,6 +345,7 @@ class load_dataset:
                     device=device,
                     tokenizer=tokenizer,
                     augment_data=augment_data,
+                    **kwargs,
                 )
             if n_gpu > 1:
                 sampler = DistributedSampler(dataset, num_replicas=n_gpu, rank=device)
