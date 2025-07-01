@@ -10,6 +10,7 @@ from src.utils import (
     generate_UDir,
     read_json,
     get_device,
+    parse_arguments,
 )
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
@@ -27,31 +28,6 @@ from src.ddp import setup, cleanup, is_main_process
 import torch.distributed as dist
 
 set_seed()
-
-
-def parse_arguments(parser):
-    parser.add_argument("--json", type=str, help="path to the json file")
-    parser.add_argument(
-        "-n",
-        "--new",
-        action="store_true",
-        help="Build a new enhancer model",
-    )
-    parser.add_argument("-m", "--model", type=str, help="Existing model path")
-    parser.add_argument(
-        "-t",
-        "--train",
-        action="store_true",
-        help="Train the model",
-    )
-    parser.add_argument(
-        "-e",
-        "--evaluate",
-        action="store_true",
-        help="Evaluate the model",
-    )
-    args = parser.parse_args()
-    return args
 
 
 def main(
@@ -155,7 +131,10 @@ def main(
         if n_gpu > 1:
             dist.barrier()
             if not is_main_process():
-                map_location = {"cuda:%d" % 0: "cuda:%d" % device}
+                map_location = {
+                    "cuda:%d" % 0: "cuda:%d" % device,
+                    "cpu": "cuda:%d" % device,
+                }
                 model.load_state_dict(
                     torch.load(
                         model_path,
@@ -201,20 +180,11 @@ def main(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Train and evaluate LR model")
-    args = parse_arguments(parser)
-    assert (
-        args.json != None
-    ), "Please specify the path to the json file with --json json_path"
-    assert os.path.exists(
-        args.json
-    ), f"The path to the json file {args.json} does not exist. Please verify"
-    assert (args.new == True) ^ (
-        (args.model) != None
-    ), "Wrong arguments. Either include -n to build a new model or specify -m model_path"
+    args = parse_arguments(
+        argparse.ArgumentParser(description="Train and evaluate Enhancer model")
+    )
 
     config = EnhancerConfig(**read_json(json_path=args.json))
-    config_dict = config.dict()
     device = get_device()
 
     # prepare the model
@@ -227,8 +197,9 @@ if __name__ == "__main__":
         model_path = args.model
 
     print(f"Model path is {model_folder_path}")
+
     logger = configure_logging_format(file_path=model_folder_path)
-    for key, value in config_dict.items():
+    for key, value in config.dict().items():
         logger.info(f"Device: {device} - {key}: {value}")
     logger.info(f"Device: {device} - Processing data files")
     data_class = load_dataset(

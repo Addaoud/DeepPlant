@@ -10,6 +10,7 @@ from src.utils import (
     generate_UDir,
     read_json,
     get_device,
+    parse_arguments,
 )
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
@@ -32,31 +33,6 @@ import torch.distributed as dist
 
 
 set_seed()
-
-
-def parse_arguments(parser):
-    parser.add_argument("--json", type=str, help="path to the json file")
-    parser.add_argument(
-        "-n",
-        "--new",
-        action="store_true",
-        help="Build a new logistic regression model",
-    )
-    parser.add_argument("-m", "--model", type=str, help="Existing model path")
-    parser.add_argument(
-        "-t",
-        "--train",
-        action="store_true",
-        help="Train the model",
-    )
-    parser.add_argument(
-        "-e",
-        "--evaluate",
-        action="store_true",
-        help="Evaluate the model",
-    )
-    args = parser.parse_args()
-    return args
 
 
 def main(
@@ -118,7 +94,6 @@ def main(
 
     # Prepare the loss function
     loss_function = CustomCosineEmbeddingLoss(config)
-    # loss_function = torch.nn.MSELoss(reduction="mean")
 
     if train:
         # Prepare the data
@@ -171,12 +146,13 @@ def main(
         if n_gpu > 1:
             dist.barrier()
         logger.info(f"Device: {device} - Loading test dataset")
+        config_dict = config.dict()
+        config_dict.update({"consistency_regularization": False})
         test_loader = data_class.get_dataloader(
             indices_paths=config.test_indices_path,
-            augment_data=False,
             device=device,
             n_gpu=n_gpu,
-            **config.dict(),
+            **config_dict,
         )
         # Evaluate model
         mse, pearson, spearman = evaluate_model(
@@ -201,20 +177,11 @@ def main(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Train and evaluate LR model")
-    args = parse_arguments(parser)
-    assert (
-        args.json != None
-    ), "Please specify the path to the json file with --json json_path"
-    assert os.path.exists(
-        args.json
-    ), f"The path to the json file {args.json} does not exist. Please verify"
-    assert (args.new == True) ^ (
-        (args.model) != None
-    ), "Wrong arguments. Either include -n to build a new model or specify -m model_path"
+    args = parse_arguments(
+        argparse.ArgumentParser(description="Train and evaluate DeepPlant model")
+    )
 
     config = DeepPlantConfig(**read_json(json_path=args.json))
-    config_dict = config.dict()
     device = get_device()
 
     # prepare the model
@@ -228,12 +195,12 @@ if __name__ == "__main__":
 
     print(f"Model path is {model_folder_path}")
     logger = configure_logging_format(file_path=model_folder_path)
-    for key, value in config_dict.items():
+    for key, value in config.dict().items():
         logger.info(f"Device: {device} - {key}: {value}")
     logger.info(f"Device: {device} - Processing data files")
     data_class = load_dataset(
-        sequences_paths=config.sequences_path,
-        labels_paths=config.labels_path,
+        sequences_paths=config.sequences_paths,
+        labels_paths=config.labels_paths,
     )
 
     if device == "cuda":

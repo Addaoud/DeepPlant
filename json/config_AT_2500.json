@@ -1,6 +1,6 @@
 {
-    "sequences_path": ["/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50/2500_Seq_10kb_masked.csv"],
-    "labels_path": ["/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50/Labels_10kb_masked_2500_cliped"],
+    "sequences_paths": ["/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50/2500_Seq_10kb_masked.csv"],
+    "labels_paths": ["/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50/Labels_10kb_masked_2500_cliped"],
     "train_indices_path": ["/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50/Train.txt"],
     "valid_indices_path": ["/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50/Val.txt"],
     "test_indices_path": ["/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50/Test.txt"],
@@ -14,7 +14,7 @@
     "warmup_begin_lr": 0.0001,
     "max_lr": 0.0005,
     "final_lr": 0.0001,
-    "loss": "huber",
+    "loss": "poisson",
     "use_scheduler": false,
     "alpha":0.5,
     "lazyLoad": true,
@@ -34,5 +34,6 @@
     "n_features": [2832],
     "find_unused_parameters": false,
     "use_pos_encoding": true,
-    "max_seq_length": 100
+    "max_seq_length": 100,
+    "consistency_regularization": true
 }

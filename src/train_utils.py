@@ -78,6 +78,11 @@ class trainer:
             if early_stopping_flag == 1:
                 break
             train_loss_per_epoch = self.train_loop()
+            if self.is_distributed:
+                dist.all_reduce(train_loss_per_epoch, op=dist.ReduceOp.SUM)
+                train_loss_per_epoch = (
+                    train_loss_per_epoch.item() / dist.get_world_size()
+                )
             if self.use_scheduler:
                 self.optimizer.update_lr(epoch)
             # if is_main_process():
@@ -87,15 +92,11 @@ class trainer:
                 self.counter_for_early_stop_threshold > 0
             ):
                 valid_loss_per_epoch = self.get_valid_loss()
-            if self.is_distributed:
-                dist.all_reduce(train_loss_per_epoch, op=dist.ReduceOp.SUM)
-                dist.all_reduce(valid_loss_per_epoch, op=dist.ReduceOp.SUM)
-                train_loss_per_epoch = (
-                    train_loss_per_epoch.item() / dist.get_world_size()
-                )
-                valid_loss_per_epoch = (
-                    valid_loss_per_epoch.item() / dist.get_world_size()
-                )
+                if self.is_distributed:
+                    dist.all_reduce(valid_loss_per_epoch, op=dist.ReduceOp.SUM)
+                    valid_loss_per_epoch = (
+                        valid_loss_per_epoch.item() / dist.get_world_size()
+                    )
             if is_main_process():
                 self.counter_for_early_stop += 1
                 save_data_to_csv(

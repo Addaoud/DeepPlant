@@ -101,7 +101,7 @@ def build_model(
     if new_model and finetune:
         print("Loading pretrained model")
         model_pretrained_dict = torch.load(
-            "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simpleV5_SSL/083863/model_25_05_26:09:21.pt"  # "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simpleV5_SSL/083863/model_25_06_18:09:42.pt"
+            "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simpleV5_SSL/083863/model_25_05_26:09:21.pt"  # "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simpleV5_SSL/083863/model_25_05_26:09:21.pt"
         )
         keys_pretrained = list(model_pretrained_dict.keys())[:-2]
         keys_net = list(network.state_dict())

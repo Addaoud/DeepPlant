@@ -12,24 +12,22 @@ from src.utils import (
     get_device,
     parse_arguments,
 )
+from src.config import APAConfig
+from src.apa_dataset_utils import get_apa_dataset
+from src.train_utils import trainer
+from src.seed import set_seed
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 from torch.cuda import device_count
-from src.expression_dataset_utils import load_dataset
 from src.train_utils import trainer
-from src.results_utils import evaluate_model
-
-from src.DeepPlant_expression import build_model
-
+from src.results_utils import evaluate_model_classification
+from src.DeepPlant_apa import build_model
 from src.seed import set_seed
-from src.config import ExpressionConfig
 from src.optimizers import ScheduledOptim
-from src.losses import get_loss_fn
 from src.logger import configure_logging_format
 from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
 import torch.distributed as dist
-
 
 set_seed()
 
@@ -43,12 +41,14 @@ def main(
     model_folder_path: Optional[str] = "",
     train: Optional[bool] = True,
     evaluate: Optional[bool] = True,
-    data_class: Optional[Any] = None,
 ):
     logger = configure_logging_format(file_path=model_folder_path)
     model = build_model(
-        args=config, new_model=new_model, model_path=model_path, finetune=True
-    ).to(device=device)
+        args=config,
+        new_model=new_model,
+        model_path=model_path,
+        finetune=True,
+    ).to(device)
     if n_gpu > 1:
 
         setup(device, n_gpu)
@@ -62,6 +62,10 @@ def main(
                 with open(
                     file=os.path.join(model_folder_path, "model.txt"), mode="w"
                 ) as f:
+                    print(
+                        sum(p.numel() for p in model.parameters() if p.requires_grad),
+                        file=f,
+                    )
                     print(model, file=f)
                 torch.save(
                     model.state_dict(),
@@ -88,21 +92,21 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
-    loss_function = get_loss_fn(config)
-    # loss_function = torch.nn.MSELoss(reduction="mean")
+    loss_function = torch.nn.CrossEntropyLoss(reduction="mean")
+    activation_function = torch.nn.Softmax(dim=1)
 
     if train:
         # Prepare the data
         logger.info(f"Device: {device} - Loading train dataset")
-        train_loader = data_class.get_dataloader(
-            indices_paths=config.train_indices_path,
+        train_loader = get_apa_dataset(
+            fasta_path=config.train_fasta_path,
             device=device,
             n_gpu=n_gpu,
             **config.dict(),
         )
         logger.info(f"Device: {device} - Loading valid dataset")
-        valid_loader = data_class.get_dataloader(
-            indices_paths=config.valid_indices_path,
+        valid_loader = get_apa_dataset(
+            fasta_path=config.valid_fasta_path,
             device=device,
             n_gpu=n_gpu,
             **config.dict(),
@@ -142,24 +146,24 @@ def main(
         if n_gpu > 1:
             dist.barrier()
         logger.info(f"Device: {device} - Loading test dataset")
-        test_loader = data_class.get_dataloader(
-            indices_paths=config.test_indices_path,
+        test_loader = get_apa_dataset(
+            fasta_path=config.test_fasta_path,
             device=device,
             n_gpu=n_gpu,
             **config.dict(),
         )
         # Evaluate model
-        mse, pearson, spearman = evaluate_model(
+        accuracy, auroc, auprc = evaluate_model_classification(
             model=best_model,
             dataloader=test_loader,
+            activation_function=activation_function,
             device=device,
-            model_folder_path=model_folder_path,
         )
         data_dict = {
             "path": model_path,
-            "mse": mse,
-            "pearson": pearson,
-            "spearman": spearman,
+            "accuracy": accuracy,
+            "auroc": auroc,
+            "auprc": auprc,
         }
         results_csv_path = os.path.join(config.results_path, "results.csv")
         # Save model performance
@@ -171,10 +175,10 @@ def main(
 
 if __name__ == "__main__":
     args = parse_arguments(
-        argparse.ArgumentParser(description="Train and evaluate Expression model")
+        argparse.ArgumentParser(description="Train and evaluate APA model")
     )
 
-    config = ExpressionConfig(**read_json(json_path=args.json))
+    config = APAConfig(**read_json(json_path=args.json))
     device = get_device()
 
     # prepare the model
@@ -187,15 +191,11 @@ if __name__ == "__main__":
         model_path = args.model
 
     print(f"Model path is {model_folder_path}")
+
     logger = configure_logging_format(file_path=model_folder_path)
     for key, value in config.dict().items():
         logger.info(f"Device: {device} - {key}: {value}")
     logger.info(f"Device: {device} - Processing data files")
-    data_class = load_dataset(
-        sequences_paths=config.sequences_path,
-        labels_paths=config.labels_path,
-    )
-
     if device == "cuda":
         n_gpu = device_count()
         logger.info(f"Using {n_gpu} gpu(s)")
@@ -209,7 +209,6 @@ if __name__ == "__main__":
                 model_folder_path,
                 args.train,
                 args.evaluate,
-                data_class,
             ),
             nprocs=n_gpu,
             join=True,
@@ -225,5 +224,4 @@ if __name__ == "__main__":
             model_folder_path=model_folder_path,
             train=args.train,
             evaluate=args.evaluate,
-            data_class=data_class,
         )

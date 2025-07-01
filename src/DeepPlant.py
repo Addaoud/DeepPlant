@@ -3,7 +3,6 @@ from typing import Optional
 import torch
 from src.seed import set_seed
 
-# from src.utils import get_device
 from src.transformer import build_transformer
 from src.ConvNet import build_ConvNet
 from src.layers import AttentionPool, build_predictionHead
@@ -12,13 +11,20 @@ set_seed()
 
 
 class model(nn.Module):
-    def __init__(self, backbone, transfomer, predictionHead):
+    def __init__(
+        self,
+        backbone,
+        transfomer,
+        predictionHead,
+        consistency_regularization: Optional[bool] = True,
+    ):
         super(model, self).__init__()
         self.backbone = backbone
         self.transformer = transfomer
         num_channels = backbone.num_channels
         embed_dim = predictionHead.embed_dim
         self.attention_pool = AttentionPool(embed_dim)
+        self.consistency_regularization = consistency_regularization
 
         self.fc = predictionHead
 
@@ -37,9 +43,12 @@ class model(nn.Module):
             )
         src = self.backbone(input, bit).permute(0, 2, 1)
         attention_output = self.transformer(src)
-        hs = self.attention_pool(attention_output[:, 46:54, :])
+        hs = self.attention_pool(attention_output)
         out = self.fc(hs, bit)
-        return (out, hs)
+        if self.consistency_regularization:
+            return (out, hs)
+        else:
+            return out
 
 
 def build_model(
@@ -52,7 +61,10 @@ def build_model(
     transformer = build_transformer(args)
     predictionHead = build_predictionHead(args)
     network = model(
-        backbone=backbone, transfomer=transformer, predictionHead=predictionHead
+        backbone=backbone,
+        transfomer=transformer,
+        predictionHead=predictionHead,
+        consistency_regularization=args.consistency_regularization,
     )
     if not new_model and model_path != None:
         print("Loading model state")

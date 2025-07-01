@@ -62,13 +62,13 @@ class DatasetLoad(Dataset):
         length_after_padding: Optional[int] = 0,
         lazyLoad: Optional[bool] = False,
         device: Optional[Any] = "cpu",
-        augment_data: Optional[bool] = True,
+        consistency_regularization: Optional[bool] = True,
     ):
         self.lazyLoad = lazyLoad
         self.length_after_padding = length_after_padding
         self.labels_path = labels_path
         self.device = device
-        self.augment_data = augment_data
+        self.consistency_regularization = consistency_regularization
         self.sequences_df = sequences_df.reset_index(drop=True)
         self.records = self.sequences_df["record"].tolist()
         self.sequences = self.sequences_df["sequence"].tolist()
@@ -104,7 +104,7 @@ class DatasetLoad(Dataset):
             labels = torch.from_numpy(
                 np.load(os.path.join(self.labels_path, f"{record}.npy"))
             )
-            if self.augment_data:
+            if self.consistency_regularization:
                 return (
                     [record] * 8,
                     dict(
@@ -149,7 +149,7 @@ class DatasetLoad_Kmer(Dataset):
         lazyLoad: Optional[bool] = False,
         device: Optional[Any] = "cpu",
         tokenizer: Optional[EsmTokenizer] = None,
-        augment_data: Optional[bool] = True,
+        consistency_regularization: Optional[bool] = True,
         add_special_tokens: Optional[bool] = True,
         **kwargs,
     ):
@@ -161,12 +161,12 @@ class DatasetLoad_Kmer(Dataset):
         self.sequences_df = sequences_df.reset_index(drop=True)
         self.tokenizer = tokenizer
         self.add_special_tokens = add_special_tokens
-        self.augment_data = augment_data
+        self.consistency_regularization = consistency_regularization
         self.records = self.sequences_df["record"].tolist()
         self.sequences = self.sequences_df["sequence"].tolist()
 
         if not lazyLoad:
-            if self.augment_data:
+            if self.consistency_regularization:
                 self.data = [
                     self.tokenizer(
                         get_augmented_sequences(seq),
@@ -212,7 +212,7 @@ class DatasetLoad_Kmer(Dataset):
             labels = torch.from_numpy(
                 np.load(os.path.join(self.labels_path, f"{record}.npy"))
             )
-            if self.augment_data:
+            if self.consistency_regularization:
                 augmented_seqs = get_augmented_sequences(sequence)
                 return (
                     [record] * 8,
@@ -288,7 +288,7 @@ class load_dataset:
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
         tokenizer: Optional[EsmTokenizer] = None,
-        augment_data: Optional[bool] = True,
+        consistency_regularization: Optional[bool] = True,
         **kwargs,
     ):
         dataloaders_list = list(
@@ -301,7 +301,7 @@ class load_dataset:
                 num_workers=num_workers,
                 n_gpu=n_gpu,
                 tokenizer=tokenizer,
-                augment_data=augment_data,
+                consistency_regularization=consistency_regularization,
                 **kwargs,
             )
         )
@@ -318,33 +318,33 @@ class load_dataset:
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
         tokenizer: Optional[EsmTokenizer] = None,
-        augment_data: Optional[bool] = True,
+        consistency_regularization: Optional[bool] = True,
         **kwargs,
     ):
-        for indices_path, label_path in zip(indices_paths, self.labels_paths):
+        for indices_path, labels_path in zip(indices_paths, self.labels_paths):
             indices = open(indices_path).read().splitlines()
             if tokenizer == None:
                 dataset = DatasetLoad(
                     sequences_df=self.sequences_df.loc[
                         self.sequences_df.record.isin(indices)
                     ],
-                    labels_path=label_path,
+                    labels_path=labels_path,
                     length_after_padding=length_after_padding,
                     lazyLoad=lazyLoad,
                     device=device,
-                    augment_data=augment_data,
+                    consistency_regularization=consistency_regularization,
                 )
             else:
                 dataset = DatasetLoad_Kmer(
                     sequences_df=self.sequences_df.loc[
                         self.sequences_df.record.isin(indices)
                     ],
-                    labels_path=label_path,
+                    labels_path=labels_path,
                     length_after_padding=length_after_padding,
                     lazyLoad=lazyLoad,
                     device=device,
                     tokenizer=tokenizer,
-                    augment_data=augment_data,
+                    consistency_regularization=consistency_regularization,
                     **kwargs,
                 )
             if n_gpu > 1:

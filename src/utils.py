@@ -202,3 +202,37 @@ def plot_motif_heat(param_matrix):
     ax = plt.gca()
     ax.set_xticklabels(range(1, param_matrix.shape[1] + 1))
     ax.set_yticklabels("ACGT", rotation="horizontal")
+
+
+def parse_arguments(parser):
+    parser.add_argument("--json", type=str, help="path to the json file")
+    parser.add_argument(
+        "-n",
+        "--new",
+        action="store_true",
+        help="Build a new model",
+    )
+    parser.add_argument("-m", "--model", type=str, help="Existing model path")
+    parser.add_argument(
+        "-t",
+        "--train",
+        action="store_true",
+        help="Train the model",
+    )
+    parser.add_argument(
+        "-e",
+        "--evaluate",
+        action="store_true",
+        help="Evaluate the model",
+    )
+    args = parser.parse_args()
+    assert (
+        args.json != None
+    ), "Please specify the path to the json file with --json json_path"
+    assert os.path.exists(
+        args.json
+    ), f"The path to the json file {args.json} does not exist. Please verify"
+    assert (args.new == True) ^ (
+        (args.model) != None
+    ), "Wrong arguments. Either include -n to build a new model or specify -m model_path"
+    return args

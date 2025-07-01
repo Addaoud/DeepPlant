@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("./../DeepPlant/")
+sys.path.append("/s/chromatin/m/nobackup/ahmed/DeepPlant/")
 from src.utils import create_path
 import os
 import numpy as np

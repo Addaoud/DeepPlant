@@ -73,7 +73,7 @@ class CustomCosineEmbeddingLoss(nn.Module):
 
 def get_loss_fn(config):
     if config.loss.upper() == "MSE":
-        return torch.nn.MSELoss()
+        return torch.nn.MSELoss(reduction="mean")
     elif config.loss.upper() == "HUBER":
         return torch.nn.HuberLoss()
     else:

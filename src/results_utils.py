@@ -12,9 +12,7 @@ from src.logger import configure_logging_format
 import os
 import pandas as pd
 import torch.distributed as dist
-
-# from torchmetrics import AUROC, AveragePrecision
-
+from torchmetrics import AUROC, AveragePrecision
 
 sns.set_theme()
 set_seed()
@@ -53,21 +51,20 @@ def evaluate_model(
     logger.info(f"Device: {device} - Evaluating the model")
     target_dict = dict()
     preds_dict = dict()
+    if activation_function == None:
+        activation_function = torch.nn.Identity()
     with torch.no_grad():
         model.eval()
         for idx, ((_, data, target), bit) in enumerate(progress_bar(dataloader)):
             data = {key: data[key].to(device) for key in data}
-            if activation_function != None:
-                output = activation_function(model(**data))[0]
-            else:
-                output = model(**data, bit=bit)[0]
+            output = activation_function(model(**data, bit=bit))
+            if type(output) == tuple:
+                output = output[0]
             preds = output.cpu().detach().numpy()
             if target.ndim == 3:
                 target = target.view(target.shape[0] * target.shape[1], target.shape[2])
             target_dict[bit] = target_dict.get(bit, list()) + target.tolist()
             preds_dict[bit] = preds_dict.get(bit, list()) + preds.tolist()
-            if idx == 1800:
-                break
     target_array_dict = {
         key: np.array(target_list) for key, target_list in target_dict.items()
     }
@@ -159,8 +156,8 @@ def plot_distribution(
 def evaluate_model_classification(
     model: torch.nn.Module,
     dataloader: torch.utils.data.dataloader,
-    activation_function: torch.nn.modules.loss,
     device: str,
+    activation_function: torch.nn.modules.loss = None,
     model_folder_path: Optional[str] = "",
 ) -> tuple[float, float, float]:
     """
@@ -170,57 +167,47 @@ def evaluate_model_classification(
     logger.info(f"Device: {device} - Evaluating the model")
     target_list = list()
     preds_list = list()
+    auroc_fn = AUROC(task="binary")
+    aupr_fn = AveragePrecision(task="binary")
+    if activation_function == None:
+        activation_function = torch.nn.Identity()
     with torch.no_grad():
         model.eval()
         for _, ((header, data, target), bit) in enumerate(progress_bar(dataloader)):
             data = {key: data[key].to(device) for key in data}
-            output = activation_function(model(**data))
+            output = activation_function(model(**data, bit=bit))
             preds = output.cpu().detach().numpy()
             target_list.extend(target)
             preds_list.extend(preds)
     if preds.shape[1] == 1:
-        fpr, tpr, _ = metrics.roc_curve(target_list, preds_list)
-        auroc = np.mean(metrics.auc(fpr, tpr))
+        auroc = auroc_fn(
+            torch.from_numpy(np.array(preds_list)),
+            torch.from_numpy(np.array(target_list)),
+        ).to(device)
+
+        auprc = aupr_fn(
+            torch.from_numpy(np.array(preds_list)),
+            torch.from_numpy(np.array(target_list)),
+        ).to(device)
         amax = np.round(preds_list) == target_list
         accuracy = sum(list(amax)).item() / len(target_list)
-        precision, recall, _ = metrics.precision_recall_curve(target_list, preds_list)
-        auprc = np.mean(metrics.auc(recall, precision))
     elif preds.shape[1] == 2:
-        fpr, tpr, _ = metrics.roc_curve(target_list, np.array(preds_list)[:, 1])
-        auroc = np.mean(metrics.auc(fpr, tpr))
+        auroc = auroc_fn(
+            torch.from_numpy(np.array(preds_list)[:, 1]),
+            torch.from_numpy(np.array(target_list)),
+        ).to(device)
+
+        auprc = aupr_fn(
+            torch.from_numpy(np.array(preds_list)[:, 1]),
+            torch.from_numpy(np.array(target_list)),
+        ).to(device)
         amax = np.round(np.array(preds_list)[:, 1]) == target_list
-        accuracy = sum(list(amax)).item() / len(target_list)
-        precision, recall, _ = metrics.precision_recall_curve(
-            target_list, np.array(preds_list)[:, 1]
-        )
-        auprc = np.mean(metrics.auc(recall, precision))
-    else:
-        auroc_list = []
-        accuracy_list = []
-        onehot_encoded_labels = onehot_encode_labels(target_list, preds.shape[1])
-        for i in range(preds.shape[1]):
-            auroc_list.append(
-                metrics.roc_auc_score(
-                    onehot_encoded_labels[:, i], np.array(preds_list)[:, i]
-                )
-            )
-            amax = np.array(preds_list)[:, i].argmax(1) == onehot_encoded_labels[:, i]
-            accuracy_list.append(sum(list(amax)).item() / len(target_list))
-        accuracy = np.mean(accuracy_list)
-        auroc = np.mean(auroc_list)
-        auprc = metrics.average_precision_score(
-            onehot_encode_labels(target_list, preds.shape[1]),
-            np.array(preds_list),
-            average="macro",
-        )
-    mean_auroc = torch.tensor(auroc).to(device)
-    mean_auprc = torch.tensor(auprc).to(device)
-    mean_accuracy = torch.tensor(accuracy).to(device)
+        accuracy = torch.tensor(sum(list(amax)).item() / len(target_list)).to(device)
     if is_dist_avail_and_initialized():
-        dist.all_reduce(mean_auroc, dist.ReduceOp.SUM)
-        dist.all_reduce(mean_auprc, dist.ReduceOp.SUM)
-        dist.all_reduce(mean_accuracy, dist.ReduceOp.SUM)
-        mean_auroc /= dist.get_world_size()
-        mean_auprc /= dist.get_world_size()
-        mean_accuracy /= dist.get_world_size()
-    return (mean_accuracy.item(), mean_auroc.item(), mean_auprc.item())
+        dist.all_reduce(auroc, dist.ReduceOp.SUM)
+        dist.all_reduce(auprc, dist.ReduceOp.SUM)
+        dist.all_reduce(accuracy, dist.ReduceOp.SUM)
+        auroc /= dist.get_world_size()
+        auprc /= dist.get_world_size()
+        accuracy /= dist.get_world_size()
+    return (accuracy.item(), auroc.item(), auprc.item())

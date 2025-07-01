@@ -1,10 +1,21 @@
 from transformers import EsmTokenizer
-from src.tokenizers import KmerEsmTokenizer
 import itertools
 from typing import List
 from src.utils import create_path
 import os
 from typing import Optional
+
+
+class KmerEsmTokenizer(EsmTokenizer):
+    def __init__(self, vocab_file, **kwargs):
+        super().__init__(vocab_file=vocab_file, **kwargs)
+
+    def tokenize(self, text: str, k: Optional[int] = 5, **kwargs) -> List[str]:
+        """Override to tokenize into overlapping k-mers."""
+        return [
+            kmer if kmer in self.all_tokens else self.unk_token
+            for kmer in [text[i : i + k] for i in range(0, len(text) - k + 1, k)]
+        ]
 
 
 def generate_kmers(k=4):
