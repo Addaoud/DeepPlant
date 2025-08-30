@@ -17,17 +17,95 @@ class AttentionPool(nn.Module):
         return (x * attn).sum(dim=-2).squeeze(dim=-2)
 
 
+def bs(x, df=None, knots=None, degree=3, intercept=False):
+    """
+    df : int
+        The number of degrees of freedom to use for this spline. The
+        return value will have this many columns. You must specify at least
+        one of `df` and `knots`.
+    knots : list(float)
+        The interior knots of the spline. If unspecified, then equally
+        spaced quantiles of the input data are used. You must specify at least
+        one of `df` and `knots`.
+    degree : int
+        The degree of the piecewise polynomial. Default is 3 for cubic splines.
+    intercept : bool
+        If `True`, the resulting spline basis will span the intercept term
+        (i.e. the constant function). If `False` (the default) then this
+        will not be the case, which is useful for avoiding overspecification
+        in models that include multiple spline terms and/or an intercept term.
+    """
+    order = degree + 1
+    inner_knots = []
+    if df is not None and knots is None:
+        n_inner_knots = df - order + (1 - intercept)
+        if n_inner_knots < 0:
+            n_inner_knots = 0
+            print("df was too small; have used %d" % (order - (1 - intercept)))
+        if n_inner_knots > 0:
+            inner_knots = np.percentile(
+                x, 100 * np.linspace(0, 1, n_inner_knots + 2)[1:-1]
+            )
+    elif knots is not None:
+        inner_knots = knots
+    all_knots = np.concatenate(([np.min(x), np.max(x)] * order, inner_knots))
+    all_knots.sort()
+    n_basis = len(all_knots) - (degree + 1)
+    basis = np.empty((x.shape[0], n_basis), dtype=float)
+    for i in range(n_basis):
+        coefs = np.zeros((n_basis,))
+        coefs[i] = 1
+        basis[:, i] = splev(x, (all_knots, coefs, degree))
+    if not intercept:
+        basis = basis[:, 1:]
+    return basis
+
+
+def spline_factory(n, df, log=False):
+    if log:
+        dist = np.array(np.arange(n) - n / 2.0)
+        dist = np.log(np.abs(dist) + 1) * (2 * (dist > 0) - 1)
+        n_knots = df - 4
+        knots = np.linspace(np.min(dist), np.max(dist), n_knots + 2)[1:-1]
+        return torch.from_numpy(bs(dist, knots=knots, intercept=True)).float()
+    else:
+        dist = np.arange(n)
+        return torch.from_numpy(bs(dist, df=df, intercept=True)).float()
+
+
+class BSplineTransformation(nn.Module):
+    def __init__(self, bins, log=False, scaled=False):
+        super(BSplineTransformation, self).__init__()
+        self._spline_tr = None
+        self._log = log
+        self._scaled = scaled
+        self._df = bins
+
+    def forward(self, input: torch.Tensor):
+        if self._spline_tr is None:
+            spatial_dim = input.size()[-1]
+            self._spline_tr = spline_factory(spatial_dim, self._df, log=self._log)
+            if self._scaled:
+                self._spline_tr = self._spline_tr / spatial_dim
+            if input.is_cuda:
+                self._spline_tr = self._spline_tr.cuda()
+        return torch.matmul(input, self._spline_tr)
+
+
 class PredictionHead(nn.Module):
     def __init__(self, feedforward_dim, n_features):
         super(PredictionHead, self).__init__()
         self.embed_dim = feedforward_dim
         self.n_features = n_features
         self.n_genomes = len(self.n_features)
+        self.expand_factor = 4
         self.linear = nn.Sequential(
-            nn.Linear(self.embed_dim, 4 * self.embed_dim),
+            nn.Linear(self.embed_dim, self.expand_factor * self.embed_dim),
             nn.ReLU(inplace=True),
             nn.Dropout(p=0.2),
-            nn.Linear(4 * self.embed_dim, 4 * self.embed_dim),
+            nn.Linear(
+                self.expand_factor * self.embed_dim, self.expand_factor * self.embed_dim
+            ),
             nn.ReLU(inplace=True),
             nn.Dropout(p=0.2),
         )
@@ -35,8 +113,8 @@ class PredictionHead(nn.Module):
         for i in range(self.n_genomes):
             self.prediction_head.append(
                 nn.Sequential(
-                    nn.Linear(4 * self.embed_dim, self.n_features[i]),
-                    nn.Softplus(),
+                    nn.Linear(self.expand_factor * self.embed_dim, self.n_features[i]),
+                    nn.ReLU(),
                 )
                 # KANLinear(
                 #    4 * self.embed_dim,

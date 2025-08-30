@@ -43,7 +43,7 @@ class model(nn.Module):
             )
         src = self.backbone(input, bit).permute(0, 2, 1)
         attention_output = self.transformer(src)
-        hs = self.attention_pool(attention_output)
+        hs = self.attention_pool(attention_output[:, 46:55, :])  #
         out = self.fc(hs, bit)
         if self.consistency_regularization:
             return (out, hs)
@@ -79,7 +79,7 @@ def build_model(
     if new_model and finetune:
         print("Loading pretrained model")
         model_pretrained_dict = torch.load(
-            "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simple/084124/model_25_02_12:15:43.pt"
+            "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/DeepPlant/184959/checkpoints/model_25.pt"  # "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simpleV5_SSL/083863/model_25_05_26:09:21.pt"
         )
         keys_pretrained = list(model_pretrained_dict.keys())[:-2]
         keys_net = list(network.state_dict())

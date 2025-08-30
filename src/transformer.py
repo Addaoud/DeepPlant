@@ -1,7 +1,8 @@
 import torch.nn as nn
 from typing import Optional
 import torch
-from mamba_ssm import Mamba2
+
+# from mamba_ssm import Mamba2
 from math import log
 import copy
 
@@ -140,7 +141,7 @@ class Transformer(nn.Module):
         if self.encoder_num_layers > 0:
             if encoder_type == "mamba":
                 encoder_norm = None  # MambaRMSNorm(d_model)  # nn.RMSNorm(d_model)  # nn.LayerNorm(d_model)
-                self.encoder = TransformerEncoder(
+                """self.encoder = TransformerEncoder(
                     Mamba2(
                         d_model=d_model,
                         d_state=64,
@@ -149,7 +150,7 @@ class Transformer(nn.Module):
                     ),
                     encoder_num_layers,
                     encoder_norm,
-                )
+                )"""
             else:
                 encoder_norm = None  # nn.LayerNorm(d_model)
                 self.encoder = TransformerEncoder(

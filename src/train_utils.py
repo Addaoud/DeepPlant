@@ -83,6 +83,8 @@ class trainer:
                 train_loss_per_epoch = (
                     train_loss_per_epoch.item() / dist.get_world_size()
                 )
+            else:
+                train_loss_per_epoch = train_loss_per_epoch.item()
             if self.use_scheduler:
                 self.optimizer.update_lr(epoch)
             # if is_main_process():
@@ -97,6 +99,8 @@ class trainer:
                     valid_loss_per_epoch = (
                         valid_loss_per_epoch.item() / dist.get_world_size()
                     )
+                else:
+                    valid_loss_per_epoch = valid_loss_per_epoch.item()
             if is_main_process():
                 self.counter_for_early_stop += 1
                 save_data_to_csv(

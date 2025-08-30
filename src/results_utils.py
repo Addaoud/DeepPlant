@@ -13,6 +13,9 @@ import os
 import pandas as pd
 import torch.distributed as dist
 from torchmetrics import AUROC, AveragePrecision
+import warnings
+
+warnings.filterwarnings("ignore")
 
 sns.set_theme()
 set_seed()

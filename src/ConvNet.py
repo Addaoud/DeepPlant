@@ -126,26 +126,5 @@ class ConvNet(nn.Module):
 
 
 def build_ConvNet(args):
-    if len(args.n_features) > 1:
-        n_filters = len(args.n_features) * args.n_filters
-    else:
-        n_filters = args.n_filters
-    convnet = ConvNet(n_filters=n_filters, n_genomes=len(args.n_features))
-    if args.use_pretrained_filter:
-        filters_list = [
-            torch.load(model_path, map_location=torch.device("cpu"))[
-                "module.backbone.conv_network.0.weight"
-            ]
-            for model_path in args.models_list
-        ]
-        with torch.no_grad():
-            for i in range(2):
-                for j, conv_layer in zip(range(2), filters_list):
-                    convnet.conv_features[i][0].weight[
-                        j
-                        * (n_filters // len(args.n_features)) : (j + 1)
-                        * (n_filters // len(args.n_features)),
-                        :,
-                        :,
-                    ] = conv_layer
+    convnet = ConvNet(n_filters=args.n_filters, n_genomes=len(args.n_features))
     return convnet

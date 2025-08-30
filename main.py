@@ -47,9 +47,9 @@ def main(
     data_class: Optional[Any] = None,
 ):
     logger = configure_logging_format(file_path=model_folder_path)
-    model = build_model(args=config, new_model=new_model, model_path=model_path).to(
-        device=device
-    )
+    model = build_model(
+        args=config, new_model=new_model, model_path=model_path, finetune=True
+    ).to(device=device)
     if n_gpu > 1:
 
         setup(device, n_gpu)
@@ -192,6 +192,7 @@ if __name__ == "__main__":
     else:
         model_folder_path = os.path.dirname(args.model)
         model_path = args.model
+        config.update({"consistency_regularization": False})
 
     print(f"Model path is {model_folder_path}")
     logger = configure_logging_format(file_path=model_folder_path)

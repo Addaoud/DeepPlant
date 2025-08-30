@@ -40,8 +40,8 @@ def get_augmented_sequences(sequence):
     reverse_sequence_shifted_left = (
         reverse_complement_seq[random_int:] + random_int * "N"
     )
-    masked_sequence = get_masked_sequence(sequence, 25)
-    masked_reverse_sequence = get_masked_sequence(reverse_complement_seq, 25)
+    # masked_sequence = get_masked_sequence(sequence, 25)
+    # masked_reverse_sequence = get_masked_sequence(reverse_complement_seq, 25)
     return (
         sequence,
         reverse_complement_seq,
@@ -49,8 +49,8 @@ def get_augmented_sequences(sequence):
         sequence_shifted_left,
         reverse_sequence_shifted_right,
         reverse_sequence_shifted_left,
-        masked_sequence,
-        masked_reverse_sequence,
+        # masked_sequence,
+        # masked_reverse_sequence,
     )
 
 
@@ -72,6 +72,10 @@ class DatasetLoad(Dataset):
         self.sequences_df = sequences_df.reset_index(drop=True)
         self.records = self.sequences_df["record"].tolist()
         self.sequences = self.sequences_df["sequence"].tolist()
+        self.n_augment = 6
+        # self.col_indices = np.load(
+        #     "/s/chromatin/m/nobackup/ahmed/DeepPlant/data/arabidopsis/col.npy"
+        # )
         if not lazyLoad:
             self.data = [
                 torch.from_numpy(
@@ -103,10 +107,10 @@ class DatasetLoad(Dataset):
             sequence = self.sequences[idx]
             labels = torch.from_numpy(
                 np.load(os.path.join(self.labels_path, f"{record}.npy"))
-            )
+            ).float()
             if self.consistency_regularization:
                 return (
-                    [record] * 8,
+                    [record] * self.n_augment,
                     dict(
                         input=torch.from_numpy(
                             np.array(
@@ -120,7 +124,7 @@ class DatasetLoad(Dataset):
                             ),
                         ),
                     ),
-                    labels.repeat(8, 1),
+                    labels.repeat(self.n_augment, 1),
                 )
             else:
                 return (
