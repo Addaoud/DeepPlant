@@ -25,7 +25,7 @@ from src.DeepPlant import build_model
 from src.seed import set_seed
 from src.config import DeepPlantConfig
 from src.optimizers import ScheduledOptim
-from src.losses import CustomCosineEmbeddingLoss
+from src.losses import CustomEmbeddingLoss
 from src.logger import configure_logging_format
 from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
@@ -48,8 +48,15 @@ def main(
 ):
     logger = configure_logging_format(file_path=model_folder_path)
     model = build_model(
-        args=config, new_model=new_model, model_path=model_path, finetune=True
+        args=config, new_model=new_model, model_path=model_path, finetune=False
     ).to(device=device)
+    if new_model and is_main_process():
+        with open(file=os.path.join(model_folder_path, "model.txt"), mode="w") as f:
+            print(
+                sum(p.numel() for p in model.parameters() if p.requires_grad),
+                file=f,
+            )
+            print(model, file=f)
     if n_gpu > 1:
 
         setup(device, n_gpu)
@@ -60,14 +67,7 @@ def main(
         )
         if new_model:
             if is_main_process():
-                with open(
-                    file=os.path.join(model_folder_path, "model.txt"), mode="w"
-                ) as f:
-                    print(
-                        sum(p.numel() for p in model.parameters() if p.requires_grad),
-                        file=f,
-                    )
-                    print(model, file=f)
+
                 torch.save(
                     model.state_dict(),
                     os.path.join(model_folder_path, "temp_checkpoint.pt"),
@@ -93,7 +93,7 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
-    loss_function = CustomCosineEmbeddingLoss(config)
+    loss_function = CustomEmbeddingLoss(config)
 
     if train:
         # Prepare the data
@@ -155,23 +155,25 @@ def main(
             **config_dict,
         )
         # Evaluate model
-        mse, pearson, spearman = evaluate_model(
+        for mse, pearson, spearman in evaluate_model(
             model=best_model,
             dataloader=test_loader,
             device=device,
             model_folder_path=model_folder_path,
             experiment_names=config.experiment_name,
-        )
-        data_dict = {
-            "path": model_path,
-            "mse": mse,
-            "pearson": pearson,
-            "spearman": spearman,
-        }
-        results_csv_path = os.path.join(config.results_path, "results.csv")
-        # Save model performance
-        if is_main_process():
-            save_data_to_csv(data_dictionary=data_dict, csv_file_path=results_csv_path)
+        ):
+            data_dict = {
+                "path": model_path,
+                "mse": mse,
+                "pearson": pearson,
+                "spearman": spearman,
+            }
+            results_csv_path = os.path.join(config.results_path, "results.csv")
+            # Save model performance
+            if is_main_process():
+                save_data_to_csv(
+                    data_dictionary=data_dict, csv_file_path=results_csv_path
+                )
     if n_gpu > 1:
         cleanup()
 
@@ -192,7 +194,6 @@ if __name__ == "__main__":
     else:
         model_folder_path = os.path.dirname(args.model)
         model_path = args.model
-        config.update({"consistency_regularization": False})
 
     print(f"Model path is {model_folder_path}")
     logger = configure_logging_format(file_path=model_folder_path)

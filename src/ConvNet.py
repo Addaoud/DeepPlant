@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch
+from src.layers import Conv1dWithRC
 
 
 class Residual(nn.Module):
@@ -26,7 +27,9 @@ class ConvNet(nn.Module):
         for _ in range(self.n_genomes):
             self.conv_features.append(
                 nn.Sequential(
-                    nn.Conv1d(4, self.n_filters, kernel_size=11, padding=5),
+                    Conv1dWithRC(
+                        4, self.n_filters, kernel_size=11, complement=True, padding=5
+                    ),
                     nn.BatchNorm1d(self.n_filters),
                     nn.MaxPool1d(kernel_size=5, stride=5),
                     nn.ReLU(inplace=True),
@@ -70,7 +73,6 @@ class ConvNet(nn.Module):
                         4 * self.n_filters,
                         kernel_size=9,
                         padding=4,
-                        bias=False,
                     ),
                     nn.BatchNorm1d(4 * self.n_filters),
                 ),
@@ -112,7 +114,6 @@ class ConvNet(nn.Module):
                         kernel_size=5,
                         padding=4,
                         dilation=2,
-                        bias=False,
                     ),
                     nn.BatchNorm1d(4 * self.n_filters),
                 ),

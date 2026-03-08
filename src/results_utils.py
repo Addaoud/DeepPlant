@@ -5,6 +5,7 @@ import torch
 from sklearn import metrics
 from scipy.stats import pearsonr, spearmanr
 from typing import List, Tuple, Optional
+from .utils import save_data_to_csv
 from fastprogress import progress_bar
 from .seed import set_seed
 from .ddp import is_dist_avail_and_initialized, is_main_process
@@ -46,7 +47,7 @@ def evaluate_model(
     activation_function: torch.nn.modules.loss = None,
     model_folder_path: Optional[str] = "",
     experiment_names: Optional[List[str]] = [],
-) -> Tuple[float, float, float]:
+):
     """
     evaluate the model on dataloader and return the mse, pearsonR, and SpearmanR
     """
@@ -66,6 +67,10 @@ def evaluate_model(
             preds = output.cpu().detach().numpy()
             if target.ndim == 3:
                 target = target.view(target.shape[0] * target.shape[1], target.shape[2])
+            # try:
+            #     target = torch.concat([target[:, :1574], target[:, 1576:]], dim=1)
+            # except:
+            #     print(target.shape)
             target_dict[bit] = target_dict.get(bit, list()) + target.tolist()
             preds_dict[bit] = preds_dict.get(bit, list()) + preds.tolist()
     target_array_dict = {
@@ -138,11 +143,11 @@ def evaluate_model(
                 }
             ).sort_values(by="Pearsonr correlation", ascending=False)
             df.to_csv(Correlation_csv_file, index=False)
-    return (
-        mean_mse.item() / len(target_array_dict),
-        pearson_corr.item() / len(target_array_dict),
-        spearman_corr.item() / len(target_array_dict),
-    )
+            yield (
+                mean_mse.item(),
+                pearson_corr.item(),
+                spearman_corr.item(),
+            )
 
 
 def plot_distribution(
@@ -170,8 +175,10 @@ def evaluate_model_classification(
     logger.info(f"Device: {device} - Evaluating the model")
     target_list = list()
     preds_list = list()
+    seq_idx_list = list()
     auroc_fn = AUROC(task="binary")
     aupr_fn = AveragePrecision(task="binary")
+    print(len(dataloader))
     if activation_function == None:
         activation_function = torch.nn.Identity()
     with torch.no_grad():
@@ -182,7 +189,8 @@ def evaluate_model_classification(
             preds = output.cpu().detach().numpy()
             target_list.extend(target)
             preds_list.extend(preds)
-    if preds.shape[1] == 1:
+            seq_idx_list.extend(header)
+    if preds.ndim == 1:
         auroc = auroc_fn(
             torch.from_numpy(np.array(preds_list)),
             torch.from_numpy(np.array(target_list)),
@@ -194,12 +202,22 @@ def evaluate_model_classification(
         ).to(device)
         amax = np.round(preds_list) == target_list
         accuracy = sum(list(amax)).item() / len(target_list)
+    elif preds.shape[1] == 1:
+        auroc = auroc_fn(
+            torch.from_numpy(np.array(preds_list)),
+            torch.from_numpy(np.array(target_list)),
+        ).to(device)
+        auprc = aupr_fn(
+            torch.from_numpy(np.array(preds_list)),
+            torch.from_numpy(np.array(target_list)),
+        ).to(device)
+        amax = np.round(preds_list) == target_list
+        accuracy = sum(list(amax)).item() / len(target_list)
     elif preds.shape[1] == 2:
         auroc = auroc_fn(
             torch.from_numpy(np.array(preds_list)[:, 1]),
             torch.from_numpy(np.array(target_list)),
         ).to(device)
-
         auprc = aupr_fn(
             torch.from_numpy(np.array(preds_list)[:, 1]),
             torch.from_numpy(np.array(target_list)),
@@ -213,4 +231,13 @@ def evaluate_model_classification(
         auroc /= dist.get_world_size()
         auprc /= dist.get_world_size()
         accuracy /= dist.get_world_size()
+    if model_folder_path:
+        target_list = [tar.item() for tar in target_list]
+        if preds.shape[1] == 2:
+            preds_list = np.array(preds_list)[:, 1].tolist()
+        results_csv_file = os.path.join(model_folder_path, f"predictions.csv")
+        save_data_to_csv(
+            {"seq_idx": seq_idx_list, "label": target_list, "prediction": preds_list},
+            csv_file_path=results_csv_file,
+        )
     return (accuracy.item(), auroc.item(), auprc.item())

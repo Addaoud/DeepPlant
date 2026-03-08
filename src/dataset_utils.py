@@ -166,6 +166,7 @@ class DatasetLoad_Kmer(Dataset):
         self.tokenizer = tokenizer
         self.add_special_tokens = add_special_tokens
         self.consistency_regularization = consistency_regularization
+        self.n_augment = 6
         self.records = self.sequences_df["record"].tolist()
         self.sequences = self.sequences_df["sequence"].tolist()
 
@@ -182,7 +183,7 @@ class DatasetLoad_Kmer(Dataset):
                 self.labels = [
                     torch.from_numpy(
                         np.load(os.path.join(self.labels_path, f"{record}.npy"))
-                    ).repeat(8, 1)
+                    ).repeat(self.n_augment, 1)
                     for record in self.records
                 ]
             else:
@@ -219,13 +220,13 @@ class DatasetLoad_Kmer(Dataset):
             if self.consistency_regularization:
                 augmented_seqs = get_augmented_sequences(sequence)
                 return (
-                    [record] * 8,
+                    [record] * self.n_augment,
                     self.tokenizer(
                         augmented_seqs,
                         return_tensors="pt",
                         add_special_tokens=self.add_special_tokens,
                     ),
-                    labels.repeat(8, 1),
+                    labels.repeat(self.n_augment, 1),
                 )
             else:
                 return (

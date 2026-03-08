@@ -1,8 +1,5 @@
 import argparse
 import os
-import seaborn as sns
-
-sns.set_theme()
 import torch
 from src.utils import (
     create_path,
@@ -13,24 +10,20 @@ from src.utils import (
     parse_arguments,
 )
 from torch.nn.parallel import DistributedDataParallel as DDP
-from src.tokenizers import KmerEsmTokenizer
 import torch.multiprocessing as mp
 from torch.cuda import device_count
-from src.dataset_utils_SSL import load_dataset
+from src.config import EnhancerConfig
+from src.enhancer_dataset_utils import load_dataset
 from src.train_utils import trainer
-from src.results_utils import evaluate_model
-
-from src.DeepPlant_kmers_SSL import build_model
-
+from src.results_utils import evaluate_model_classification
+from src.DeepPlant_enhancer_output import build_model
 from src.seed import set_seed
-from src.config import DeepPlantKmerConfig
 from src.optimizers import ScheduledOptim
-from src.losses import CustomCosineEmbeddingLoss
 from src.logger import configure_logging_format
 from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
 import torch.distributed as dist
-
+from src.losses import CrossEntropyWithL1, BCEWithL1
 
 set_seed()
 
@@ -47,16 +40,22 @@ def main(
     data_class: Optional[Any] = None,
 ):
     logger = configure_logging_format(file_path=model_folder_path)
-    model = build_model(args=config, new_model=new_model, model_path=model_path).to(
-        device=device
-    )
-    tokenizer = KmerEsmTokenizer.from_pretrained(
-        config.tokenizer_path,
-    )
+    model = build_model(
+        args=config,
+        new_model=new_model,
+        model_path=model_path,
+        targets="HM",  # TF, HM, ALL
+    ).to(device)
+    if new_model and is_main_process():
+        with open(file=os.path.join(model_folder_path, "model.txt"), mode="w") as f:
+            print(
+                sum(p.numel() for p in model.parameters() if p.requires_grad),
+                file=f,
+            )
+            print(model, file=f)
     if n_gpu > 1:
 
         setup(device, n_gpu)
-
         model = DDP(
             model,
             device_ids=[device],
@@ -64,14 +63,6 @@ def main(
         )
         if new_model:
             if is_main_process():
-                with open(
-                    file=os.path.join(model_folder_path, "model.txt"), mode="w"
-                ) as f:
-                    print(
-                        sum(p.numel() for p in model.parameters() if p.requires_grad),
-                        file=f,
-                    )
-                    print(model, file=f)
                 torch.save(
                     model.state_dict(),
                     os.path.join(model_folder_path, "temp_checkpoint.pt"),
@@ -94,28 +85,26 @@ def main(
 
     # prepare the optimizer
     optimizer = ScheduledOptim(config)
-    optimizer(model.parameters())
+    optimizer(filter(lambda p: p.requires_grad, model.parameters()))
 
     # Prepare the loss function
-    loss_function = CustomCosineEmbeddingLoss(config)
+    # loss_function = torch.nn.CrossEntropyLoss(reduction="mean")
+    if config.n_features[0] == 1:
+        loss_function = BCEWithL1(model, config.l1_lambda)
+        activation_function = torch.nn.Sigmoid()
+    else:
+        loss_function = CrossEntropyWithL1(model, config.l1_lambda)
+        activation_function = torch.nn.Softmax(dim=1)
 
     if train:
         # Prepare the data
         logger.info(f"Device: {device} - Loading train dataset")
         train_loader = data_class.get_dataloader(
-            indices_paths=config.train_indices_path,
-            device=device,
-            n_gpu=n_gpu,
-            tokenizer=tokenizer,
-            **config.dict(),
+            dataset="Train", device=device, n_gpu=n_gpu, **config.dict()
         )
         logger.info(f"Device: {device} - Loading valid dataset")
         valid_loader = data_class.get_dataloader(
-            indices_paths=config.valid_indices_path,
-            device=device,
-            n_gpu=n_gpu,
-            tokenizer=tokenizer,
-            **config.dict(),
+            dataset="Val", device=device, n_gpu=n_gpu, **config.dict()
         )
         # Train model
         trainer_ = trainer(
@@ -153,26 +142,21 @@ def main(
             dist.barrier()
         logger.info(f"Device: {device} - Loading test dataset")
         test_loader = data_class.get_dataloader(
-            indices_paths=config.test_indices_path,
-            device=device,
-            n_gpu=n_gpu,
-            tokenizer=tokenizer,
-            augment_data=False,
-            **config.dict(),
+            dataset="Test", device=device, n_gpu=n_gpu, **config.dict()
         )
         # Evaluate model
-        mse, pearson, spearman = evaluate_model(
+        accuracy, auroc, auprc = evaluate_model_classification(
             model=best_model,
             dataloader=test_loader,
+            activation_function=activation_function,
             device=device,
             model_folder_path=model_folder_path,
-            experiment_names=config.experiment_name,
         )
         data_dict = {
             "path": model_path,
-            "mse": mse,
-            "pearson": pearson,
-            "spearman": spearman,
+            "accuracy": accuracy,
+            "auroc": auroc,
+            "auprc": auprc,
         }
         results_csv_path = os.path.join(config.results_path, "results.csv")
         # Save model performance
@@ -184,9 +168,10 @@ def main(
 
 if __name__ == "__main__":
     args = parse_arguments(
-        argparse.ArgumentParser(description="Train and evaluate Kmer DeepPlant model")
+        argparse.ArgumentParser(description="Train and evaluate Enhancer model")
     )
-    config = DeepPlantKmerConfig(**read_json(json_path=args.json))
+
+    config = EnhancerConfig(**read_json(json_path=args.json))
     device = get_device()
 
     # prepare the model
@@ -199,15 +184,14 @@ if __name__ == "__main__":
         model_path = args.model
 
     print(f"Model path is {model_folder_path}")
+
     logger = configure_logging_format(file_path=model_folder_path)
     for key, value in config.dict().items():
         logger.info(f"Device: {device} - {key}: {value}")
     logger.info(f"Device: {device} - Processing data files")
     data_class = load_dataset(
         sequences_paths=config.sequences_paths,
-        labels_paths=config.labels_paths,
     )
-
     if device == "cuda":
         n_gpu = device_count()
         logger.info(f"Using {n_gpu} gpu(s)")

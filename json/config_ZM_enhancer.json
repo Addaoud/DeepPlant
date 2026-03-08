@@ -1,6 +1,6 @@
 {
-    "sequences_paths": ["/s/chromatin/m/nobackup/ahmed/DeepPlant/data/arabidopsis/enhancer/new_enhancer_dataset_C1.csv"],
-    "results_path": "/s/chromatin/a/nobackup/ahmed/DeepPlant/results/DeepPlant_AT_enhancer",
+    "sequences_paths": ["/s/chromatin/m/nobackup/ahmed/DeepPlant/data/mays/enhancer/Enhancer_Zea_mays_sliced_w_sequence_intergenic_promoter_gene.csv"],
+    "results_path": "/s/chromatin/a/nobackup/ahmed/DeepPlant/results/DeepPlant_ZM_enhancer",
     "use_reverse_complement": false,
     "optimizer_type": "adamw",
     "weight_decay": 0.01,

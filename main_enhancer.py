@@ -1,8 +1,5 @@
 import argparse
 import os
-import seaborn as sns
-
-sns.set_theme()
 import torch
 from src.utils import (
     create_path,
@@ -46,8 +43,14 @@ def main(
         args=config,
         new_model=new_model,
         model_path=model_path,
-        finetune=True,
     ).to(device)
+    if new_model and is_main_process():
+        with open(file=os.path.join(model_folder_path, "model.txt"), mode="w") as f:
+            print(
+                sum(p.numel() for p in model.parameters() if p.requires_grad),
+                file=f,
+            )
+            print(model, file=f)
     if n_gpu > 1:
 
         setup(device, n_gpu)
@@ -58,14 +61,6 @@ def main(
         )
         if new_model:
             if is_main_process():
-                with open(
-                    file=os.path.join(model_folder_path, "model.txt"), mode="w"
-                ) as f:
-                    print(
-                        sum(p.numel() for p in model.parameters() if p.requires_grad),
-                        file=f,
-                    )
-                    print(model, file=f)
                 torch.save(
                     model.state_dict(),
                     os.path.join(model_folder_path, "temp_checkpoint.pt"),
@@ -91,29 +86,22 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
-    loss_function = torch.nn.CrossEntropyLoss(reduction="mean")
-    activation_function = torch.nn.Softmax(dim=1)
+    if config.n_features[0] == 1:
+        loss_function = torch.nn.BCEWithLogitsLoss()
+        activation_function = torch.nn.Sigmoid()
+    else:
+        loss_function = torch.nn.CrossEntropyLoss(reduction="mean")
+        activation_function = torch.nn.Softmax(dim=1)
 
     if train:
         # Prepare the data
         logger.info(f"Device: {device} - Loading train dataset")
         train_loader = data_class.get_dataloader(
-            dataset="Train",
-            use_reverse_complement=config.use_reverse_complement,
-            batchSize=config.batch_size,
-            lazyLoad=config.lazy_loading,
-            device=device,
-            n_gpu=n_gpu,
-            num_workers=config.num_workers,
+            dataset="Train", device=device, n_gpu=n_gpu, **config.dict()
         )
         logger.info(f"Device: {device} - Loading valid dataset")
         valid_loader = data_class.get_dataloader(
-            dataset="Val",
-            batchSize=config.batch_size,
-            lazyLoad=config.lazy_loading,
-            device=device,
-            n_gpu=n_gpu,
-            num_workers=config.num_workers,
+            dataset="Val", device=device, n_gpu=n_gpu, **config.dict()
         )
         # Train model
         trainer_ = trainer(
@@ -151,12 +139,7 @@ def main(
             dist.barrier()
         logger.info(f"Device: {device} - Loading test dataset")
         test_loader = data_class.get_dataloader(
-            dataset="Test",
-            batchSize=config.batch_size,
-            lazyLoad=config.lazy_loading,
-            device=device,
-            n_gpu=n_gpu,
-            num_workers=config.num_workers,
+            dataset="Test", device=device, n_gpu=n_gpu, **config.dict()
         )
         # Evaluate model
         accuracy, auroc, auprc = evaluate_model_classification(
@@ -164,6 +147,7 @@ def main(
             dataloader=test_loader,
             activation_function=activation_function,
             device=device,
+            model_folder_path=model_folder_path,
         )
         data_dict = {
             "path": model_path,

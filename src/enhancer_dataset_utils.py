@@ -43,6 +43,7 @@ class MultiTaskDataLoader(DataLoader):
 class EnhancerDatasetLoad(Dataset):
     def __init__(
         self,
+        sequences_idx,
         sequences_list,
         labels_list,
         use_reverse_complement: Optional[bool] = False,
@@ -50,6 +51,7 @@ class EnhancerDatasetLoad(Dataset):
         lazyLoad: Optional[bool] = False,
     ):
         self.lazyLoad = lazyLoad
+        self.sequences_idx = sequences_idx
         self.length_after_padding = length_after_padding
         self.sequences = sequences_list
         self.labels = labels_list
@@ -73,13 +75,13 @@ class EnhancerDatasetLoad(Dataset):
     def __getitem__(self, idx):
         if not self.lazyLoad:
             return (
-                "_",
+                self.sequences_idx[idx],
                 dict(input=self.data[idx].float()),
                 self.labels[idx],
             )
         else:
             return (
-                "_",
+                self.sequences_idx[idx],
                 dict(
                     input=torch.tensor(
                         hot_encode_sequence(
@@ -152,6 +154,9 @@ class load_dataset:
     ):
         if tokenizer == None:
             dataset = EnhancerDatasetLoad(
+                sequences_idx=self.sequences_df.loc[
+                    self.sequences_df.dataset == dataset
+                ].seq_idx.values.tolist(),
                 sequences_list=self.sequences_df.loc[
                     self.sequences_df.dataset == dataset
                 ].Sequence.values.tolist(),

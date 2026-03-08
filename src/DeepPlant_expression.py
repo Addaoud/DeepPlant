@@ -6,7 +6,7 @@ from src.seed import set_seed
 # from src.utils import get_device
 from src.transformer import build_transformer
 from src.ConvNet import build_ConvNet
-from src.layers import AttentionPool, build_predictionHead
+from src.layers import AttentionPool
 
 set_seed()
 
@@ -37,16 +37,56 @@ class model(nn.Module):
             )
         src = self.backbone(input, bit).permute(0, 2, 1)
         attention_output = self.transformer(src)
-        hs = self.attention_pool(attention_output)
+        hs = self.attention_pool(attention_output)  # [:, 45:55, :])
         out = self.fc(hs, bit)
         return out
+
+
+class PredictionHead(nn.Module):
+    def __init__(self, embed_dim, expand_factor, n_features):
+        super(PredictionHead, self).__init__()
+        self.embed_dim = embed_dim
+        self.n_features = n_features
+        self.n_genomes = len(self.n_features)
+        self.expand_factor = expand_factor
+        self.linear = nn.Sequential(
+            nn.Linear(self.embed_dim, self.expand_factor * self.embed_dim),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.2),
+            nn.Linear(
+                self.expand_factor * self.embed_dim, self.expand_factor * self.embed_dim
+            ),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.2),
+        )
+        self.prediction_head = list()
+        for i in range(self.n_genomes):
+            self.prediction_head.append(
+                nn.Sequential(
+                    nn.Linear(self.expand_factor * self.embed_dim, self.n_features[i]),
+                    nn.ReLU(inplace=True),
+                )
+            )
+        self.prediction_head = nn.ModuleList(self.prediction_head)
+
+    def forward(self, input: torch.Tensor, bit: int = 0):
+        pred = self.linear(input)
+        output = self.prediction_head[bit](pred)
+        return output
+
+
+def build_predictionHead(args):
+    return PredictionHead(
+        embed_dim=args.embed_dim,
+        expand_factor=args.expand_factor,
+        n_features=args.n_features,
+    )
 
 
 def build_model(
     args,
     new_model: bool,
     model_path: Optional[str] = None,
-    finetune: Optional[str] = False,
 ):
     backbone = build_ConvNet(args)
     transformer = build_transformer(args)
@@ -54,25 +94,22 @@ def build_model(
     network = model(
         backbone=backbone, transfomer=transformer, predictionHead=predictionHead
     )
-    if not new_model and model_path != None:
+    if model_path != None:
         print("Loading model state")
         model_pretrained_dict = torch.load(model_path)
         keys_pretrained = list(model_pretrained_dict.keys())
         keys_net = list(network.state_dict())
         model_weights = network.state_dict()
-        for i in range(len(keys_pretrained)):
+        for i in range(len(keys_pretrained[:-2])):
             model_weights[keys_net[i]] = model_pretrained_dict[keys_pretrained[i]]
+        if not new_model:
+            model_weights[keys_net[-2]] = model_pretrained_dict[keys_pretrained[-2]]
+            model_weights[keys_net[-1]] = model_pretrained_dict[keys_pretrained[-1]]
+            print("Model state loaded")
+
         network.load_state_dict(model_weights)
-    if new_model and finetune:
-        print("Loading pretrained model state")
-        model_pretrained_dict = torch.load(
-            "/s/chromatin/m/nobackup/ahmed/DeepPlant/results/results_DeepPlant_simpleV5_SSL/083863/model_25_05_26:09:21.pt"
-        )
-        keys_pretrained = list(model_pretrained_dict.keys())[:-2]
-        keys_net = list(network.state_dict())
-        model_weights = network.state_dict()
-        for i in range(len(keys_pretrained)):
-            model_weights[keys_net[i]] = model_pretrained_dict[keys_pretrained[i]]
-            # model_weights[keys_net[i]].requires_grad = False
-        network.load_state_dict(model_weights)
+        # for name, param in network.named_parameters():
+        #     if name.startswith("fc"):
+        #         break
+        #     param.requires_grad = False
     return network

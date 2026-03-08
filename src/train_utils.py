@@ -6,13 +6,47 @@ from .utils import save_data_to_csv, plot_loss, get_paths
 from .seed import set_seed
 from .ddp import is_main_process, is_dist_avail_and_initialized
 from .logger import configure_logging_format
+from torchmetrics import AveragePrecision
 from fastprogress import progress_bar
 from typing import Optional
 import torch.distributed as dist
 from copy import deepcopy
 from datetime import datetime
+from scipy.stats import pearsonr
 
 set_seed()
+
+
+def pearson(preds_array: np.array, target_array: np.array) -> torch.Tensor:
+    if target_array.ndim == 3:
+        target_array = target_array.reshape(-1, target_array.shape[2])
+    pearsonr_list = list()
+    for i in range(target_array.shape[1]):
+        pcc, _ = pearsonr(preds_array[:, i], target_array[:, i])
+        pearsonr_list.append(pcc)
+    pearson_corr = torch.zeros(1)
+    pearson_corr += np.nanmean(pearsonr_list)
+    return pearson_corr
+
+
+def auprc(preds_array: np.array, target_array: np.array) -> torch.Tensor:
+    aupr_fn = AveragePrecision(task="binary")
+    if preds_array.ndim == 1:
+        auprc_value = aupr_fn(
+            torch.from_numpy(preds_array),
+            torch.from_numpy(target_array),
+        )
+    elif preds_array.shape[1] == 1:
+        auprc_value = aupr_fn(
+            torch.from_numpy(preds_array),
+            torch.from_numpy(target_array),
+        )
+    elif preds_array.shape[1] == 2:
+        auprc_value = aupr_fn(
+            torch.from_numpy(preds_array[:, 1]),
+            torch.from_numpy(target_array),
+        )
+    return auprc_value
 
 
 class trainer:
@@ -26,6 +60,7 @@ class trainer:
         max_epochs: int,
         train_dataloader: torch.utils.data.dataloader,
         valid_dataloader: torch.utils.data.dataloader = None,
+        metric: Optional[str] = "pearson",
         counter_for_early_stop_threshold: Optional[int] = 0,
         epochs_to_check_loss: Optional[int] = 0,
         n_accumulated_batches: Optional[int] = 1,
@@ -41,11 +76,13 @@ class trainer:
         self.loss_fn = loss_fn
         self.train_dataloader = train_dataloader
         self.valid_dataloader = valid_dataloader
+        self.metric = metric
         self.counter_for_early_stop_threshold = counter_for_early_stop_threshold
         self.epochs_to_check_loss = epochs_to_check_loss
         self.n_accumulated_batches = n_accumulated_batches
         self.use_scheduler = use_scheduler
         self.best_valid_loss = np.inf
+        self.best_metric_value = -1.0
         self.counter_for_early_stop = 0
         self.logger = configure_logging_format(file_path=self.model_folder_path)
         self.is_distributed = is_dist_avail_and_initialized()
@@ -75,7 +112,7 @@ class trainer:
         for epoch in progress_bar(range(1, self.max_epochs + 1)):
             if self.is_distributed:
                 dist.all_reduce(early_stopping_flag, op=dist.ReduceOp.SUM)
-            if early_stopping_flag == 1:
+            if early_stopping_flag.item() == 1:
                 break
             train_loss_per_epoch = self.train_loop()
             if self.is_distributed:
@@ -90,17 +127,23 @@ class trainer:
             # if is_main_process():
             # Initialize loss
             valid_loss_per_epoch = float("nan")
-            if (epoch % self.epochs_to_check_loss == 0) and (
-                self.counter_for_early_stop_threshold > 0
+            metric_value = float("nan")
+            if (
+                (epoch % self.epochs_to_check_loss == 0)
+                and (self.counter_for_early_stop_threshold > 0)
+                and self.valid_dataloader != None
             ):
-                valid_loss_per_epoch = self.get_valid_loss()
+                valid_loss_per_epoch, metric_value = self.get_valid_loss()
                 if self.is_distributed:
                     dist.all_reduce(valid_loss_per_epoch, op=dist.ReduceOp.SUM)
+                    dist.all_reduce(metric_value, op=dist.ReduceOp.SUM)
                     valid_loss_per_epoch = (
                         valid_loss_per_epoch.item() / dist.get_world_size()
                     )
+                    metric_value = metric_value.item() / dist.get_world_size()
                 else:
                     valid_loss_per_epoch = valid_loss_per_epoch.item()
+                    metric_value = metric_value.item()
             if is_main_process():
                 self.counter_for_early_stop += 1
                 save_data_to_csv(
@@ -109,12 +152,13 @@ class trainer:
                         "time": datetime.now(),
                         "train_loss": train_loss_per_epoch,
                         "valid_loss": valid_loss_per_epoch,
+                        self.metric: metric_value,
                     },
                     csv_file_path=loss_csv_path,
                 )
-                if valid_loss_per_epoch < self.best_valid_loss:
+                if metric_value > self.best_metric_value:
                     self.counter_for_early_stop = 0
-                    self.best_valid_loss = valid_loss_per_epoch
+                    self.best_metric_value = metric_value
                     self.best_model = deepcopy(self.model)
                     torch.save(
                         self.best_model.state_dict(),
@@ -172,6 +216,8 @@ class trainer:
         """
         get the average loss function on valid dataloader
         """
+        y_pred = []
+        y_true = []
         with torch.no_grad():
             self.model.eval()
             valid_loss = torch.tensor(0.0, device=self.device)
@@ -182,4 +228,25 @@ class trainer:
                 output = self.model(**data, bit=bit)
                 loss = self.loss_fn(output, target)
                 valid_loss += loss
-        return valid_loss / (batch_idx + 1)
+                if isinstance(output, tuple):
+                    output = output[0]
+                if self.metric == "pearson" or self.metric == "auprc":
+                    y_pred.append(output)
+                    y_true.append(target)
+        if self.metric == "pearson":
+            pred = torch.cat(y_pred, dim=0)
+            true = torch.cat(y_true, dim=0)
+            pred = pred.detach().cpu().numpy()
+            true = true.detach().cpu().numpy()
+            metric_value = pearson(pred, true).to(self.device)
+        elif self.metric == "auprc":
+            pred = torch.cat(y_pred, dim=0)
+            true = torch.cat(y_true, dim=0)
+            pred = pred.detach().cpu().numpy()
+            true = true.detach().cpu().numpy()
+            metric_value = auprc(pred, true).to(self.device)
+        elif self.metric == "loss":
+            metric_value = -valid_loss / (batch_idx + 1)
+        else:
+            metric_value = None
+        return valid_loss / (batch_idx + 1), metric_value

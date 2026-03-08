@@ -9,6 +9,7 @@ from torch import cuda
 import json
 from Bio import SeqIO
 import seaborn as sns
+from collections.abc import Iterable
 
 sns.set_theme()
 
@@ -46,21 +47,61 @@ def generate_UDir(path: str, UID_length: Optional[int] = 6) -> str:
     return UID
 
 
+# def save_data_to_csv(data_dictionary: Dict[str, Any], csv_file_path: str) -> None:
+#     """
+#     Save data_dictionary as a new line in a csv file @ csv_file_path
+#     """
+#     header = data_dictionary.keys()
+#     if not os.path.exists(csv_file_path):
+#         with open(csv_file_path, "w") as fd:
+#             writer = csv.writer(fd)
+#             writer.writerow(header)
+#             writer = csv.DictWriter(fd, fieldnames=header)
+#             writer.writerow(data_dictionary)
+#     else:
+#         with open(csv_file_path, "a", newline="") as fd:
+#             writer = csv.DictWriter(fd, fieldnames=header)
+#             writer.writerow(data_dictionary)
+
+
 def save_data_to_csv(data_dictionary: Dict[str, Any], csv_file_path: str) -> None:
     """
-    Save data_dictionary as a new line in a csv file @ csv_file_path
+    Save data_dictionary to CSV.
+    If any value is a list/tuple, expand into multiple rows.
+    Scalar values are repeated.
     """
-    header = data_dictionary.keys()
-    if not os.path.exists(csv_file_path):
-        with open(csv_file_path, "w") as fd:
-            writer = csv.writer(fd)
-            writer.writerow(header)
-            writer = csv.DictWriter(fd, fieldnames=header)
-            writer.writerow(data_dictionary)
-    else:
-        with open(csv_file_path, "a", newline="") as fd:
-            writer = csv.DictWriter(fd, fieldnames=header)
-            writer.writerow(data_dictionary)
+
+    header = list(data_dictionary.keys())
+
+    # Detect list-like values (but exclude strings)
+    list_keys = [
+        k
+        for k, v in data_dictionary.items()
+        if isinstance(v, Iterable) and not isinstance(v, (str, bytes))
+    ]
+
+    # Number of rows to write
+    n_rows = max(len(data_dictionary[k]) for k in list_keys) if list_keys else 1
+
+    rows = []
+    for i in range(n_rows):
+        row = {}
+        for key, value in data_dictionary.items():
+            if key in list_keys:
+                row[key] = value[i]
+            else:
+                row[key] = value
+        rows.append(row)
+
+    file_exists = os.path.exists(csv_file_path)
+
+    with open(csv_file_path, "a", newline="") as fd:
+        writer = csv.DictWriter(fd, fieldnames=header)
+
+        if not file_exists:
+            writer.writeheader()
+
+        writer.writerows(rows)
 
 
 def read_excel_csv_file(file_path: str) -> pd.DataFrame:
@@ -172,17 +213,24 @@ def hot_encode_sequence(
             "V": [1 / 3, 1 / 3, 1 / 3, 0],
             "H": [1 / 3, 0, 1 / 3, 1 / 3],
             "B": [0, 1 / 3, 1 / 3, 1 / 3],
-            "N": [1 / 4, 1 / 4, 1 / 4, 1 / 4],
+            "N": [0, 0, 0, 0],
         }
 
-    if length_after_padding == 0 or length_after_padding < len(sequence):
+    if length_after_padding == 0:
         hot_encoded_seq = np.zeros((4, len(sequence)), dtype=np.float32)
         start_pos = 0
+        end_pos = start_pos + len(sequence)
+    elif length_after_padding < len(sequence):
+        hot_encoded_seq = np.zeros((4, length_after_padding), dtype=np.float32)
+        sequence = sequence[:length_after_padding]
+        start_pos = 0
+        end_pos = start_pos + length_after_padding
     else:
         hot_encoded_seq = np.zeros((4, length_after_padding), dtype=np.float32)
         start_pos = (length_after_padding - len(sequence)) // 2
+        end_pos = start_pos + len(sequence)
 
-    hot_encoded_seq[:, start_pos : start_pos + len(sequence)] = np.array(
+    hot_encoded_seq[:, start_pos:end_pos] = np.array(
         [
             hot_encode_sequence.nucleotide_dict.get(base, [0, 0, 0, 0])
             for base in sequence
@@ -232,7 +280,4 @@ def parse_arguments(parser):
     assert os.path.exists(
         args.json
     ), f"The path to the json file {args.json} does not exist. Please verify"
-    assert (args.new == True) ^ (
-        (args.model) != None
-    ), "Wrong arguments. Either include -n to build a new model or specify -m model_path"
     return args

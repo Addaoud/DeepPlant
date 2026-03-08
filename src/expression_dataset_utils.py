@@ -56,8 +56,10 @@ class DatasetLoad(Dataset):
             )
         else:
             labels = torch.from_numpy(
-                np.load(
-                    f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].header.replace('_r',''))}.npy"
+                np.log1p(
+                    np.load(
+                        f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].header.replace('_r',''))}.npy"
+                    )
                 )
             )
             return (
@@ -120,7 +122,7 @@ class load_dataset:
         lazyLoad: Optional[bool] = True,
         shuffle: Optional[bool] = True,
         batchSize: Optional[int] = 8,
-        length_after_padding: Optional[int] = 2048,
+        length_after_padding: Optional[int] = 2500,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
         **kwargs,

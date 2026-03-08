@@ -68,7 +68,7 @@ def main():
 
         # determine chunksize
         n_workers = multiprocessing.cpu_count()
-        print(n_workers)
+        print(f"Working with {n_workers} CPU workers")
         chunksize = ceil(n_files / n_workers)
 
         # create the process pool

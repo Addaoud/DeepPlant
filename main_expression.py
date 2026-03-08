@@ -1,8 +1,5 @@
 import argparse
 import os
-import seaborn as sns
-
-sns.set_theme()
 import torch
 from src.utils import (
     create_path,
@@ -46,9 +43,16 @@ def main(
     data_class: Optional[Any] = None,
 ):
     logger = configure_logging_format(file_path=model_folder_path)
-    model = build_model(
-        args=config, new_model=new_model, model_path=model_path, finetune=True
-    ).to(device=device)
+    model = build_model(args=config, new_model=new_model, model_path=model_path).to(
+        device=device
+    )
+    if new_model and is_main_process():
+        with open(file=os.path.join(model_folder_path, "model.txt"), mode="w") as f:
+            print(
+                sum(p.numel() for p in model.parameters() if p.requires_grad),
+                file=f,
+            )
+            print(model, file=f)
     if n_gpu > 1:
 
         setup(device, n_gpu)
@@ -59,10 +63,6 @@ def main(
         )
         if new_model:
             if is_main_process():
-                with open(
-                    file=os.path.join(model_folder_path, "model.txt"), mode="w"
-                ) as f:
-                    print(model, file=f)
                 torch.save(
                     model.state_dict(),
                     os.path.join(model_folder_path, "temp_checkpoint.pt"),
@@ -149,22 +149,24 @@ def main(
             **config.dict(),
         )
         # Evaluate model
-        mse, pearson, spearman = evaluate_model(
+        for mse, pearson, spearman in evaluate_model(
             model=best_model,
             dataloader=test_loader,
             device=device,
             model_folder_path=model_folder_path,
-        )
-        data_dict = {
-            "path": model_path,
-            "mse": mse,
-            "pearson": pearson,
-            "spearman": spearman,
-        }
-        results_csv_path = os.path.join(config.results_path, "results.csv")
-        # Save model performance
-        if is_main_process():
-            save_data_to_csv(data_dictionary=data_dict, csv_file_path=results_csv_path)
+        ):
+            data_dict = {
+                "path": model_path,
+                "mse": mse,
+                "pearson": pearson,
+                "spearman": spearman,
+            }
+            results_csv_path = os.path.join(config.results_path, "results.csv")
+            # Save model performance
+            if is_main_process():
+                save_data_to_csv(
+                    data_dictionary=data_dict, csv_file_path=results_csv_path
+                )
     if n_gpu > 1:
         cleanup()
 
@@ -187,6 +189,7 @@ if __name__ == "__main__":
         model_path = args.model
 
     print(f"Model path is {model_folder_path}")
+
     logger = configure_logging_format(file_path=model_folder_path)
     for key, value in config.dict().items():
         logger.info(f"Device: {device} - {key}: {value}")
