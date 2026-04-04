@@ -88,9 +88,9 @@ class AttentionPool(nn.Module):
         return (x * attn).sum(dim=-2).squeeze(dim=-2)
 
 
-class PredictionHead(nn.Module):
+class CSPHead(nn.Module):
     def __init__(self, embed_dim, expand_factor, n_features):
-        super(PredictionHead, self).__init__()
+        super(CSPHead, self).__init__()
         self.embed_dim = embed_dim
         self.n_features = n_features
         self.n_genomes = len(self.n_features)
@@ -112,11 +112,38 @@ class PredictionHead(nn.Module):
                     nn.Linear(self.expand_factor * self.embed_dim, self.n_features[i]),
                     nn.Softplus(beta=1.0, threshold=10.0),
                 )
-                # KANLinear(
-                #    4 * self.embed_dim,
-                #    self.n_features[i],
-                #    base_activation=torch.nn.Softplus,
-                # )
+            )
+        self.prediction_head = nn.ModuleList(self.prediction_head)
+
+    def forward(self, input: torch.Tensor, bit: int = 0):
+        pred = self.linear(input)
+        output = self.prediction_head[bit](pred)
+        return output
+
+
+class ClassificationHead(nn.Module):
+    def __init__(self, embed_dim, expand_factor, n_features):
+        super(ClassificationHead, self).__init__()
+        self.embed_dim = embed_dim
+        self.n_features = n_features
+        self.n_genomes = len(self.n_features)
+        self.expand_factor = expand_factor
+        self.linear = nn.Sequential(
+            nn.Linear(self.embed_dim, self.expand_factor * self.embed_dim),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.2),
+            nn.Linear(
+                self.expand_factor * self.embed_dim, self.expand_factor * self.embed_dim
+            ),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.2),
+        )
+        self.prediction_head = list()
+        for i in range(self.n_genomes):
+            self.prediction_head.append(
+                nn.Sequential(
+                    nn.Linear(self.expand_factor * self.embed_dim, self.n_features[i]),
+                )
             )
         self.prediction_head = nn.ModuleList(self.prediction_head)
 

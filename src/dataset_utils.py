@@ -73,9 +73,6 @@ class DatasetLoad(Dataset):
         self.records = self.sequences_df["record"].tolist()
         self.sequences = self.sequences_df["sequence"].tolist()
         self.n_augment = 6
-        # self.col_indices = np.load(
-        #     "/s/chromatin/m/nobackup/ahmed/DeepPlant/data/arabidopsis/col.npy"
-        # )
         if not lazyLoad:
             self.data = [
                 torch.from_numpy(

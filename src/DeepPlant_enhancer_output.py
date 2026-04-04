@@ -6,7 +6,7 @@ import numpy as np
 
 # from src.utils import get_device
 from src.transformer import build_transformer
-from src.ConvNetRC1 import build_ConvNet
+from src.ConvNet import build_ConvNet
 from src.layers import AttentionPool
 
 set_seed()

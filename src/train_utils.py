@@ -13,6 +13,7 @@ import torch.distributed as dist
 from copy import deepcopy
 from datetime import datetime
 from scipy.stats import pearsonr
+from contextlib import nullcontext
 
 set_seed()
 
@@ -82,7 +83,7 @@ class trainer:
         self.n_accumulated_batches = n_accumulated_batches
         self.use_scheduler = use_scheduler
         self.best_valid_loss = np.inf
-        self.best_metric_value = -1.0
+        self.best_metric_value = -np.inf
         self.counter_for_early_stop = 0
         self.logger = configure_logging_format(file_path=self.model_folder_path)
         self.is_distributed = is_dist_avail_and_initialized()
@@ -187,26 +188,25 @@ class trainer:
         for batch_idx, ((_, data, target), bit) in enumerate(
             progress_bar(self.train_dataloader)
         ):
-            data, target = {key: data[key].to(self.device) for key in data}, target.to(
-                self.device
+            data, target = {
+                key: data[key].to(self.device, non_blocking=True) for key in data
+            }, target.to(self.device, non_blocking=True)
+            is_accumulating = ((batch_idx + 1) % self.n_accumulated_batches != 0) and (
+                batch_idx + 1 != len(self.train_dataloader)
             )
-            pred = self.model(**data, bit=bit)
-            if self.is_distributed:
-                loss = self.loss_fn(
-                    pred, target  # , list(self.model.module.get_convlayers(bit))
-                )
-            else:
-                loss = self.loss_fn(
-                    pred, target
-                )  # , list(self.model.get_convlayers(bit)))
-            # normalize loss to account for batch accumulation
-            loss_per_epoch += loss
-            loss = loss / self.n_accumulated_batches
-            loss.backward()
+            sync_context = (
+                self.model.no_sync()
+                if (self.is_distributed and is_accumulating)
+                else nullcontext()
+            )
+            with sync_context:
+                pred = self.model(**data, bit=bit)
+                loss = self.loss_fn(pred, target)
+                loss_per_epoch += loss.detach()
+                loss = loss / self.n_accumulated_batches
+                loss.backward()
             # weights update
-            if ((batch_idx + 1) % self.n_accumulated_batches == 0) or (
-                batch_idx + 1 == len(self.train_dataloader)
-            ):
+            if not is_accumulating:
                 # torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
                 self.optimizer.step()
                 self.optimizer.zero_grad()

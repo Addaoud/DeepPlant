@@ -1,1 +1,5 @@
-*/*.ipynb
+*/test.ipynb
+data*
+models*
+data_scripts
+notebooks

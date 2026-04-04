@@ -47,23 +47,6 @@ def generate_UDir(path: str, UID_length: Optional[int] = 6) -> str:
     return UID
 
 
-# def save_data_to_csv(data_dictionary: Dict[str, Any], csv_file_path: str) -> None:
-#     """
-#     Save data_dictionary as a new line in a csv file @ csv_file_path
-#     """
-#     header = data_dictionary.keys()
-#     if not os.path.exists(csv_file_path):
-#         with open(csv_file_path, "w") as fd:
-#             writer = csv.writer(fd)
-#             writer.writerow(header)
-#             writer = csv.DictWriter(fd, fieldnames=header)
-#             writer.writerow(data_dictionary)
-#     else:
-#         with open(csv_file_path, "a", newline="") as fd:
-#             writer = csv.DictWriter(fd, fieldnames=header)
-#             writer.writerow(data_dictionary)
-
-
 def save_data_to_csv(data_dictionary: Dict[str, Any], csv_file_path: str) -> None:
     """
     Save data_dictionary to CSV.
@@ -113,21 +96,6 @@ def read_excel_csv_file(file_path: str) -> pd.DataFrame:
     except:
         dataframe = pd.read_excel(file_path)
     return dataframe
-
-
-def save_model_log(log_dir: str, data_dictionary: Dict[str, Any]) -> None:
-    """
-    save the model logs in the log file
-    """
-    log_file_path = os.path.join(log_dir, "log_file")
-    with open(log_file_path, "a") as log_file:
-        if len(data_dictionary) > 0:
-            for key, value in data_dictionary.items():
-                print("{0}: {1}".format(key, value), file=log_file)
-        else:
-            print("\n", file=log_file)
-            print("".join(["#" for i in range(50)]), file=log_file)
-            print("\n", file=log_file)
 
 
 def plot_loss(loss_csv_path: str, loss_path: str) -> None:
