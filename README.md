@@ -57,9 +57,8 @@ unzip models.zip
 
 ## Usage & Tutorials
 We provide several Jupyter Notebooks to help you get started with DeepPlant's capabilities:
-
-    * [usage.ipynb](https://github.com/Addaoud/DeepPlant/blob/main/usage.ipynb): A comprehensive tutorial introducing how to use DeepPlant to predict multiple genomic modalities.
-    * [do_ISM_on_gene.ipynb](https://github.com/Addaoud/DeepPlant/blob/main/do_ISM_on_gene.ipynb): A notebook demonstrating how to identify positions and potential regulators of all 32,201 Arabidopsis genes using a comprehensive JASPAR database.
+* [usage.ipynb](https://github.com/Addaoud/DeepPlant/blob/main/usage.ipynb): A comprehensive tutorial introducing how to use DeepPlant to predict multiple genomic modalities.
+* [do_ISM_on_gene.ipynb](https://github.com/Addaoud/DeepPlant/blob/main/do_ISM_on_gene.ipynb): A notebook demonstrating how to identify positions and potential regulators of all 32,201 Arabidopsis genes using a comprehensive JASPAR database.
 
 **In-Silico Mutagenesis (ISM) Analysis**
 
