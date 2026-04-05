@@ -10,8 +10,8 @@
 This repository contains the official codebase to reproduce the analyses performed in the DeepPlant paper, including data processing, model training, and evaluation across various genomic tasks.
 
 **Try it out:** We have developed resources to assist users in predicting other genomic modalities from ATAC-seq without writing code:
-*  **[Google Colab Notebook](#)** *(Link your Colab here)*
-*  **[DeepPlant Web Portal](#)** *(Link your webpage here)*
+*  **[Google Colab Notebook](#)**
+*  **[DeepPlant Web Portal](#)**
 
 ## Setup & Installation
 ### 1. Clone the Repository
@@ -30,7 +30,7 @@ pip install -r requirements.txt
 pip install -e
 python3 setup_env.py
 ```
-> **PyTorch Note:** If you encounter issues with PyTorch, ensure you install a version compatible with your specific CUDA version. Visit the [PyTorch Get Started]((https://pytorch.org/)) page for the latest instructions, or check the [Previous Versions](https://pytorch.org/get-started/previous-versions/) archive.
+> **PyTorch Note:** If you encounter issues with PyTorch, ensure you install a version compatible with your specific CUDA version. Visit the [PyTorch Get Started](https://pytorch.org/) page for the latest instructions, or check the [Previous Versions](https://pytorch.org/get-started/previous-versions/) archive.
 
 ## Data & Pre-trained Models
 ### 1. Download the Training Data
