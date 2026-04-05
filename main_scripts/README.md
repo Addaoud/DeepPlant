@@ -11,14 +11,15 @@ Make sure to place the unzipped folder in the root `DeepPlant` directory. You ca
 
 ```bash
 # Navigate to the main DeepPlant directory
-gdown [https://drive.google.com/file/d/1_BmKIF9h9YqxynJUldfHd7e9Fox8iqn6/view?usp=drive_link](https://drive.google.com/file/d/1_BmKIF9h9YqxynJUldfHd7e9Fox8iqn6/view?usp=drive_link)
+gdown https://drive.google.com/file/d/1_BmKIF9h9YqxynJUldfHd7e9Fox8iqn6/view?usp=drive_link
 unzip data.zip
 ```
 
 ### Download Pre-trained Models (Optional)
 If you wish to use our pre-trained models rather than training from scratch, download them from [Google Drive](https://drive.google.com/file/d/11pZKSEHv0ECaSp-l_BAQwoPKfeHxt9rR/view?usp=sharing) into the root directory:
 ```bash
-gdown [https://drive.google.com/file/d/11pZKSEHv0ECaSp-l_BAQwoPKfeHxt9rR/view?usp=sharing](https://drive.google.com/file/d/11pZKSEHv0ECaSp-l_BAQwoPKfeHxt9rR/view?usp=sharing)
+# Navigate to the main DeepPlant directory
+gdown https://drive.google.com/file/d/11pZKSEHv0ECaSp-l_BAQwoPKfeHxt9rR/view?usp=sharing
 unzip models.zip
 ```
 
@@ -26,7 +27,7 @@ unzip models.zip
 If you want to train and evaluate our models from scratch, you can use the scripts provided in this directory. All the main*.py scripts share a similar help guide and accept the following arguments:
 
 ```bash
-usage: *script*.py [-h] [--json JSON] [-n] [-m MODEL] [-t] [-e]
+usage: *main*.py [-h] [--json JSON] [-n] [-m MODEL] [-t] [-e]
 
 Train and evaluate the DeepPlant models on chromatin state
 
@@ -64,14 +65,15 @@ python main_expressions.py --json "PATH_TO_JSON_FILE" -m "PATH_TO_CSP_MODEL" -nt
 
 ### Downstream Tasks (Enhancer Activity)
 We provide two separate scripts for enhancer activity predictions:
-    1. [main_enhancer.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main_enhancer.py): Uses DeepPlant embeddings to predict enhancer activity.
-    2. [main_enhancer_output.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main_enhancer_output.py): Uses DeepPlant outputs to predict enhancer activity.
+1. [main_enhancer.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main_enhancer.py): Uses DeepPlant embeddings to predict enhancer activity.
+2. [main_enhancer_output.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main_enhancer_output.py): Uses DeepPlant outputs to predict enhancer activity.
 
-This table summarizes the scripts and config files used to train the different task models on different plant species
+Refer to the table below for the specific scripts and configurations needed to train models for each task and plant species depending on the available data.
 
-| Task     |Script               |Arabidopsis thaliana | Oryza sativa        | Zea mays            |
+| Task     |Script               |Arabidopsis thaliana | Oryza sativa        | Joint (AT+OS)       |Zea mays            |
 |----------|---------------------|---------------------|---------------------|---------------------|
-| CSP      |[main.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main.py) | [config/config_AT_2500.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_AT_2500.json)|[config/config_AT_2500.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_OS_2500.json)| --- |
-|----------|---------------------|---------------------|---------------------|---------------------|
-| GEP      |[main_expression.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main_expression.py) | [config/config_AT_expression.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_AT_expression.json)|[config/config_AT_2500.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_OS_2500.json)| --- |
+| CSP      |[main.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main.py) | [config/config_AT_2500.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_AT_2500.json)|[config/config_AT_2500.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_OS_2500.json)|---------------------|
+| GEP      |[main_expression.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main_expression.py) | [config/config_AT_expression.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_AT_expression.json)|[config/config_AT_2500.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_OS_2500.json)|---------------------|---------------------|
+| EAP      |[main_enhancer.py](https://github.com/Addaoud/DeepPlant/blob/main/main_scripts/main_enhancer.py) | [config/config_AT_enhancer.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_AT_enhancer.json)|---------------------|---------------------|---------------------|[config/config_AT_enhancer.json](https://github.com/Addaoud/DeepPlant/blob/main/config/config_AT_enhancer.json)
 
+> **Note:** When using `main_enhancer_output.py`, you must configure the `targets` attribute in `config/config_AT_enhancer_output.json`. This determines which DeepPlant output factors are used to predict enhancer activity. Valid options are: `ALL`, `TF`, or `HM`.
