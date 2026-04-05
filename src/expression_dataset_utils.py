@@ -6,8 +6,9 @@ import torch
 from torch.utils.data import Dataset, DataLoader, DistributedSampler
 from src.utils import (
     hot_encode_sequence,
-    read_excel_csv_file,
 )
+import h5py
+
 from src.seed import set_seed
 
 set_seed()
@@ -16,65 +17,68 @@ set_seed()
 class DatasetLoad(Dataset):
     def __init__(
         self,
-        sequences_df,
-        labels_path,
+        h5_path,
+        indices_path: Optional[str] = None,
         length_after_padding: Optional[int] = 0,
         lazyLoad: Optional[bool] = False,
         device: Optional[Any] = "cpu",
+        consistency_regularization: Optional[bool] = True,
     ):
+        self.h5_path = h5_path
+        self.indices_path = indices_path
         self.lazyLoad = lazyLoad
         self.length_after_padding = length_after_padding
-        self.labels_path = labels_path
         self.device = device
-        self.sequences_df = sequences_df.reset_index(drop=True)
-        if not lazyLoad:
-            self.data = list()
-            self.labels = list()
-            for idx in range(0, self.sequences_df.shape[0]):
-                self.data.append(
-                    torch.tensor(
-                        hot_encode_sequence(
-                            sequence=self.sequences_df.iloc[idx].sequence,
-                            length_after_padding=length_after_padding,
-                        )
-                    )
-                )
-                self.labels.append(
-                    np.load(
-                        f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].header)}.npy"
-                    )
-                )
+        self.consistency_regularization = consistency_regularization
+        self.h5 = None
+        self.records = None
+        self.sequences = None
+        self.labels = None
+        self.n_augment = 6
+        # Open file briefly to get ALL record names and identify indices
+        with h5py.File(self.h5_path, "r") as f:
+            all_records = [r.decode("ascii") for r in f["records"][:]]
 
-        self.len = self.sequences_df.shape[0]
+            if self.indices_path and os.path.exists(self.indices_path):
+                # If a Train.txt is provided, filter the indices
+                with open(self.indices_path, "r") as t:
+                    wanted_records = set(line.strip() for line in t if line.strip())
+
+                # Map the record name to its position in the H5 file
+                self.valid_indices = [
+                    i for i, name in enumerate(all_records) if name in wanted_records
+                ]
+            else:
+                # If no file provided, use everything
+                self.valid_indices = list(range(len(all_records)))
+
+        self.len = len(self.valid_indices)
+
+    def _init_h5(self):
+        if self.h5 is None:
+            self.h5 = h5py.File(self.h5_path, "r", swmr=True, libver="latest")
+            self.records = self.h5["records"]
+            self.sequences = self.h5["sequences"]
+            self.labels = self.h5["labels"]
 
     def __getitem__(self, idx):
-        if not self.lazyLoad:
-            return (
-                self.sequences_df.iloc[idx].header,
-                dict(input=self.data[idx].float()),
-                self.labels[idx].astype(np.float32),
-            )
-        else:
-            labels = torch.from_numpy(
-                np.log1p(
-                    np.load(
-                        f"{os.path.join(self.labels_path,self.sequences_df.iloc[idx].header.replace('_r',''))}.npy"
-                    )
-                )
-            )
-            return (
-                self.sequences_df.iloc[idx].header,
-                dict(
-                    input=torch.tensor(
-                        hot_encode_sequence(
-                            sequence=self.sequences_df.iloc[idx].sequence,
-                            length_after_padding=self.length_after_padding,
-                        ),
-                        dtype=torch.float,
+        self._init_h5()
+        real_idx = self.valid_indices[idx]
+        record = self.records[real_idx].decode("ascii")
+        sequence = self.sequences[real_idx].decode("ascii")
+        labels = torch.from_numpy(np.log1p(self.labels[real_idx])).float()
+        return (
+            record,
+            dict(
+                input=torch.from_numpy(
+                    hot_encode_sequence(
+                        sequence,
+                        length_after_padding=self.length_after_padding,
                     ),
                 ),
-                labels.float(),
-            )
+            ),
+            labels,
+        )
 
     def __len__(self):
         return self.len
@@ -107,14 +111,16 @@ class MultiTaskDataLoader(DataLoader):
 
 
 class load_dataset:
-    def __init__(self, sequences_paths: List[str], labels_paths: List[str]):
+    def __init__(
+        self,
+        h5_paths: List[str],
+    ):
         """
         Loads and processes the data.
         """
-        self.sequences_df = pd.concat(
-            [read_excel_csv_file(sequences_path) for sequences_path in sequences_paths]
-        )
-        self.labels_paths = labels_paths
+        self.h5_paths = [
+            os.path.join(os.getenv("DEEPPLANTPATH"), h5_path) for h5_path in h5_paths
+        ]
 
     def get_dataloader(
         self,
@@ -153,13 +159,10 @@ class load_dataset:
         n_gpu: Optional[int] = 0,
         **kwargs,
     ):
-        for indices_path, label_path in zip(indices_paths, self.labels_paths):
-            indices = open(indices_path).read().splitlines()
+        for indices_path, h5_path in zip(indices_paths, self.h5_paths):
             dataset = DatasetLoad(
-                sequences_df=self.sequences_df.loc[
-                    self.sequences_df.header.isin(indices)
-                ],
-                labels_path=label_path,
+                h5_path=h5_path,
+                indices_path=indices_path,
                 length_after_padding=length_after_padding,
                 lazyLoad=lazyLoad,
                 device=device,

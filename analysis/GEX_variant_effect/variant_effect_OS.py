@@ -1,9 +1,6 @@
 import pandas as pd
 import sys
 
-# adding Folder_2 to the system path
-sys.path.insert(0, "/s/chromatin/m/nobackup/ahmed/DeepPlant/")
-
 from Bio import motifs
 import os
 from typing import Optional

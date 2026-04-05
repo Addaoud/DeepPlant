@@ -10,36 +10,42 @@ git clone https://github.com/Addaoud/DeepPlant.git
 ```
 
 ## Dependencies
-1) You can create a conda environment and install the dependencies using pip:
+1) You can create a conda environment, install the dependencies using pip, and set global variables using the following commands:
 ```bash
+cd DeepPlant
 conda create -n DeepPlant python==3.11
 conda activate DeepPlant
 pip install -r requirements.txt
+pip install -e
+python3 setup_env.py
 ```
-2) You need to install a pytorch version compatible with your cuda version. You can follow the steps in [here](https://pytorch.org/) to install the latest pytorch version or you can refer to [previous versions](https://pytorch.org/get-started/previous-versions/) to install an older pytorch version. 
+2) If you have issues with pytorch, try to to install a pytorch version compatible with your cuda version. You can follow the steps in [here](https://pytorch.org/) to install the latest pytorch version or you can refer to [previous versions](https://pytorch.org/get-started/previous-versions/) to install an older pytorch version. 
 
 ## Data Availability
 The training data for DeepPlant can be downloaded from the following URL: 
 
-## DeepPlant Model Training & Evaluation
-To replicate the results presented in the paper, you can run the main main scripts for model training in [main_scripts]()
-Model architecture, config, training parameters are in [config]()
-Main scripts for model training are in 
+Note: The folder contains metadata, dataset split files (to train, validation, and test datasets), genome file sequences (.fasta files), and data files in .h5 format (for CSP and GEP) and .csv format (for EAP).
+
 
 ## Paper results
+To replicate the results presented in the paper, you can run the main main scripts for model training in [main_scripts]()
+Model architecture, config, training parameters are in [config]().
+
+We also provide the  This repository contains scripts for training, evaluating, and analyzing the published model, and for processing the training data.
 
 
 ## Usage
 ### Download the pre-training model and downstream models
 You can download all DeepPlant models trained on chromatin state, gene expression, and enhancer activity in Arabidopsis thaliana, Oryza sativa, and Zea mays from [Google Drive](https://drive.google.com/drive/folders/1SvfHva4ll2ueiyWM6tS5xnJWB27Wg7O9?usp=sharing)
-For the trained downstream models and how to train downstream models from scratch, you can go to each correspoding directory
+
+We prepare a Google Colab Notebook to introduce how to use EPCOT to predict multiple modalities.
 
 ### Tutorials: ISM
-DeepPlant has been shown to identify, with precision, the regulators (upregulators and suppressors) of Arabidopsis genes under normal conditions and in different stress conditions (cold, heat, wounding, drought) using in-silico-mutagenesis and the Arabidopsis DeepPlant expression model.
+DeepPlant is accurately identifying the regulators (upregulators and suppressors) of Arabidopsis genes under normal conditions and in different stress conditions (cold, heat, wounding, drought) using in-silico-mutagenesis and the Arabidopsis DeepPlant expression model.
 We provide results of our analysis on the DREB1 (DREB1A, DREB1B, DREB1C) and the RD29A genes in different conditions in [ISM]().
 
 We also provide a notebook [do_ISM_on_gene.ipynb] to identify the positions and the potential regulators of all the different 32201 Arabidopsis genes included in our gene expression data using a comprehensive Jaspar database and 
 
 
 ## Contributing
-Contributions to this repository are welcome! If you find any bugs, have suggestions for new features, or want to improve the existing code, please create an issue or submit a pull request. You can post in the Github issues or e-mail Ahmed Daoud (Ahmed.Daoud@colostate.edu) or Asa Ben-Hur (Asa.Ben-Hur@colostate.edu).
+Contributions to this repository are welcome! If you find any bugs, have suggestions for new features, or want to improve the existing code, please create an issue or submit a pull request. You can post in the Github issues or e-mail Ahmed Daoud (Ahmed.Daoud@colostate.edu).

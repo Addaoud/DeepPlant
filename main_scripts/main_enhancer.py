@@ -1,11 +1,6 @@
 import argparse
 import os
 import torch
-import sys
-
-# Get the directory of the current script, then go one level up
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.append(parent_dir)
 from src.utils import (
     create_path,
     save_data_to_csv,
@@ -13,6 +8,7 @@ from src.utils import (
     read_json,
     get_device,
     parse_arguments,
+    update_paths,
 )
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
@@ -174,6 +170,13 @@ if __name__ == "__main__":
     )
 
     config = EnhancerConfig(**read_json(json_path=args.json))
+    update_paths(
+        config=config,
+        attributes_to_update=[
+            "sequences_paths",
+            "results_path",
+        ],
+    )
     device = get_device()
 
     # prepare the model

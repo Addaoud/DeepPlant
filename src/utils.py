@@ -10,6 +10,9 @@ import json
 from Bio import SeqIO
 import seaborn as sns
 from collections.abc import Iterable
+from dotenv import load_dotenv
+
+load_dotenv()
 
 sns.set_theme()
 
@@ -53,6 +56,7 @@ def save_data_to_csv(data_dictionary: Dict[str, Any], csv_file_path: str) -> Non
     If any value is a list/tuple, expand into multiple rows.
     Scalar values are repeated.
     """
+    create_path(os.path.dirname(csv_file_path))
 
     header = list(data_dictionary.keys())
 
@@ -249,3 +253,27 @@ def parse_arguments(parser):
         args.json
     ), f"The path to the json file {args.json} does not exist. Please verify"
     return args
+
+
+def update_paths(config, attributes_to_update):
+    base_path = os.getenv("DEEPPLANTPATH")
+    for attr_name in attributes_to_update:
+        # Get the current value from the config object
+        current_path = getattr(config, attr_name)
+
+        if isinstance(current_path, list):
+            new_val = [
+                os.path.join(base_path, p) if (not os.path.exists(p)) else p
+                for p in current_path
+            ]
+        elif isinstance(current_path, str):
+            new_val = (
+                os.path.join(base_path, current_path)
+                if (not os.path.exists(current_path))
+                else current_path
+            )
+        else:
+            continue
+
+        # Write the new value back to the config object
+        setattr(config, attr_name, new_val)

@@ -94,6 +94,7 @@ class ExpressionConfig:
 class EnhancerConfig:
     sequences_paths: list = field(default_factory=lambda: [""])
     results_path: str = "results/results_DeepPlant"
+    targets: str = "ALL"
     use_reverse_complement: bool = False
     optimizer_type: str = ("sgd",)
     weight_decay: float = (0.001,)
@@ -104,6 +105,7 @@ class EnhancerConfig:
     warmup_begin_lr: float = (0.0001,)
     max_lr: float = (0.01,)
     final_lr: float = (0.0001,)
+    l1_lambda: float = 0.01
     lazyLoad: bool = (False,)
     metric: str = "auprc"
     batchSize: int = (512,)

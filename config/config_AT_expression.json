@@ -1,5 +1,5 @@
 {
-    "h5_paths": ["data/arabidopsis/GEP/arabidopsis_expression_data.h5"],
+    "h5_paths": ["data/arabidopsis/GEP/expression_data_TSS.h5"],
     "train_indices_path": ["data/arabidopsis/GEP/Train.txt"],
     "valid_indices_path": ["data/arabidopsis/GEP/Val.txt"],
     "test_indices_path": ["data/arabidopsis/GEP/Test.txt"],

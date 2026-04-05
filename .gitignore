@@ -3,3 +3,8 @@ data*
 models*
 data_scripts
 notebooks
+*pycache*
+DeepPlant.egg-info
+.env
+results/
+.ipynb

@@ -1,6 +1,7 @@
 {
     "sequences_paths": ["data/arabidopsis/EAP/enhancer_dataset_C1.csv"],
     "results_path": "results/EAP_AT_output",
+    "targets": "ALL",
     "use_reverse_complement": false,
     "optimizer_type": "adamw",
     "weight_decay": 0.01,

@@ -8,7 +8,10 @@ import numpy as np
 from src.transformer import build_transformer
 from src.ConvNet import build_ConvNet
 from src.layers import AttentionPool
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 set_seed()
 
 
@@ -21,50 +24,28 @@ class PredictionHead(nn.Module):
         self.expand_factor = expand_factor
         self.n_targets = 2835
         self.targets = targets  # 'ALL' 'HM'
-        if self.targets == "TF":
+        self.base_path = os.getenv("DEEPPLANTPATH")
+        if self.targets != "ALL":
             self.ind = np.load(
-                "/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/TF_idx.npy"
-            )
-            self.n_targets = self.ind.shape[0]
-            self.means = torch.from_numpy(
-                np.load("/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/TF_mean.npy")
-            ).float()
-            self.stds = torch.from_numpy(
-                np.load("/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/TF_std.npy")
-            ).float()
-        elif self.targets == "HM":
-            self.ind = np.load(
-                "/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/HM_idx.npy"
-            )
-            self.n_targets = self.ind.shape[0]
-            self.means = torch.from_numpy(
-                np.load("/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/HM_mean.npy")
-            ).float()
-            self.stds = torch.from_numpy(
-                np.load("/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/HM_std.npy")
-            ).float()
-        elif self.targets == "TF_withTET1":
-            self.ind = np.load(
-                "/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/TF_idx_withTET1.npy"
-            )
-            self.n_targets = self.ind.shape[0]
-            self.means = torch.from_numpy(
-                np.load(
-                    "/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/TF_withTET1_mean.npy"
+                os.path.join(
+                    self.base_path, f"data/arabidopsis/EAP/{self.targets}_idx.npy"
                 )
-            ).float()
-            self.stds = torch.from_numpy(
-                np.load(
-                    "/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/TF_withTET1_std.npy"
+            )
+            self.n_targets = self.ind.shape[0]
+        self.means = torch.from_numpy(
+            np.load(
+                os.path.join(
+                    self.base_path, f"data/arabidopsis/EAP/{self.targets}_mean.npy"
                 )
-            ).float()
-        else:
-            self.means = torch.from_numpy(
-                np.load("/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/All_mean.npy")
-            ).float()
-            self.stds = torch.from_numpy(
-                np.load("/s/chromatin/m/nobackup/ahmed/DeepPlant/Metadata/All_std.npy")
-            ).float()
+            )
+        ).float()
+        self.stds = torch.from_numpy(
+            np.load(
+                os.path.join(
+                    self.base_path, f"data/arabidopsis/EAP/{self.targets}_std.npy"
+                )
+            )
+        ).float()
 
         self.linear = nn.Sequential(
             nn.Linear(self.embed_dim, self.expand_factor * self.embed_dim),
@@ -158,7 +139,6 @@ def build_model(
         backbone=backbone, transfomer=transformer, predictionHead=predictionHead
     )
     if not new_model and model_path != None:
-        print("Loading model state")
         model_pretrained_dict = torch.load(model_path)
         keys_pretrained = list(model_pretrained_dict.keys())
         keys_net = list(network.state_dict())
@@ -168,9 +148,10 @@ def build_model(
         network.load_state_dict(model_weights)
         print("Model loaded with pretrained weights")
     if new_model:
+        base_path = os.getenv("DEEPPLANTPATH")
         print("Loading pretrained model state")
         model_pretrained_dict = torch.load(
-            "/s/chromatin/a/nobackup/ahmed/DeepPlant/results/DeepPlant_AT/177318/model_25_12_18:05:28_new.pt"
+            os.path.join(base_path, f"models/model_AT_CSP.pt")
         )
         keys_pretrained = list(model_pretrained_dict.keys())
         keys_net = list(network.state_dict())

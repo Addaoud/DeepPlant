@@ -7,7 +7,6 @@ from src.utils import (
     hot_encode_sequence,
     read_excel_csv_file,
 )
-from transformers import EsmTokenizer
 from Bio.Seq import reverse_complement
 from src.seed import set_seed
 
@@ -119,7 +118,6 @@ class load_dataset:
         length_after_padding: Optional[int] = 2500,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
-        tokenizer: Optional[EsmTokenizer] = None,
         **kwargs,
     ):
         dataloaders_list = list(
@@ -132,7 +130,6 @@ class load_dataset:
                 length_after_padding=length_after_padding,
                 num_workers=num_workers,
                 n_gpu=n_gpu,
-                tokenizer=tokenizer,
                 **kwargs,
             )
         )
@@ -149,26 +146,22 @@ class load_dataset:
         device: Optional[int] = 0,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
-        tokenizer: Optional[EsmTokenizer] = None,
         **kwargs,
     ):
-        if tokenizer == None:
-            dataset = EnhancerDatasetLoad(
-                sequences_idx=self.sequences_df.loc[
-                    self.sequences_df.dataset == dataset
-                ].seq_idx.values.tolist(),
-                sequences_list=self.sequences_df.loc[
-                    self.sequences_df.dataset == dataset
-                ].Sequence.values.tolist(),
-                labels_list=self.sequences_df.loc[
-                    self.sequences_df.dataset == dataset
-                ].Label.values.tolist(),
-                use_reverse_complement=use_reverse_complement,
-                length_after_padding=length_after_padding,
-                lazyLoad=lazyLoad,
-            )
-        else:
-            pass
+        dataset = EnhancerDatasetLoad(
+            sequences_idx=self.sequences_df.loc[
+                self.sequences_df.dataset == dataset
+            ].seq_idx.values.tolist(),
+            sequences_list=self.sequences_df.loc[
+                self.sequences_df.dataset == dataset
+            ].Sequence.values.tolist(),
+            labels_list=self.sequences_df.loc[
+                self.sequences_df.dataset == dataset
+            ].Label.values.tolist(),
+            use_reverse_complement=use_reverse_complement,
+            length_after_padding=length_after_padding,
+            lazyLoad=lazyLoad,
+        )
         if n_gpu > 1:
             sampler = DistributedSampler(dataset, num_replicas=n_gpu, rank=device)
             yield DataLoader(

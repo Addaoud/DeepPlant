@@ -1,14 +1,12 @@
 from typing import Optional, List, Any
 import os
 import numpy as np
-import pandas as pd
 import torch
 from torch.utils.data import Dataset, DataLoader, DistributedSampler
-from transformers import EsmTokenizer
 from src.utils import (
     hot_encode_sequence,
-    read_excel_csv_file,
 )
+import h5py
 from Bio.Seq import reverse_complement
 from random import randint
 from src.seed import set_seed
@@ -57,184 +55,87 @@ def get_augmented_sequences(sequence):
 class DatasetLoad(Dataset):
     def __init__(
         self,
-        sequences_df,
-        labels_path,
+        h5_path,
+        indices_path: Optional[str] = None,
         length_after_padding: Optional[int] = 0,
         lazyLoad: Optional[bool] = False,
         device: Optional[Any] = "cpu",
         consistency_regularization: Optional[bool] = True,
     ):
+        self.h5_path = h5_path
+        self.indices_path = indices_path
         self.lazyLoad = lazyLoad
         self.length_after_padding = length_after_padding
-        self.labels_path = labels_path
         self.device = device
         self.consistency_regularization = consistency_regularization
-        self.sequences_df = sequences_df.reset_index(drop=True)
-        self.records = self.sequences_df["record"].tolist()
-        self.sequences = self.sequences_df["sequence"].tolist()
+        self.h5 = None
+        self.records = None
+        self.sequences = None
+        self.labels = None
         self.n_augment = 6
-        if not lazyLoad:
-            self.data = [
-                torch.from_numpy(
-                    hot_encode_sequence(
-                        sequence=seq,
-                        length_after_padding=length_after_padding,
-                    )
-                )
-                for seq in self.sequences
-            ]
-            self.labels = [
-                torch.from_numpy(
-                    np.load(os.path.join(self.labels_path, f"{record}.npy"))
-                )
-                for record in self.records
-            ]
+        # Open file briefly to get ALL record names and identify indices
+        with h5py.File(self.h5_path, "r") as f:
+            all_records = [r.decode("ascii") for r in f["records"][:]]
 
-        self.len = self.sequences_df.shape[0]
+            if self.indices_path and os.path.exists(self.indices_path):
+                # If a Train.txt is provided, filter the indices
+                with open(self.indices_path, "r") as t:
+                    wanted_records = set(line.strip() for line in t if line.strip())
+
+                # Map the record name to its position in the H5 file
+                self.valid_indices = [
+                    i for i, name in enumerate(all_records) if name in wanted_records
+                ]
+            else:
+                # If no file provided, use everything
+                self.valid_indices = list(range(len(all_records)))
+
+        self.len = len(self.valid_indices)
+
+    def _init_h5(self):
+        if self.h5 is None:
+            self.h5 = h5py.File(self.h5_path, "r", swmr=True, libver="latest")
+            self.records = self.h5["records"]
+            self.sequences = self.h5["sequences"]
+            self.labels = self.h5["labels"]
 
     def __getitem__(self, idx):
-        record = self.records[idx]
-        if not self.lazyLoad:
+        self._init_h5()
+        real_idx = self.valid_indices[idx]
+        record = self.records[real_idx].decode("ascii")
+        sequence = self.sequences[real_idx].decode("ascii")
+        labels = torch.from_numpy(self.labels[real_idx]).float()
+        if self.consistency_regularization:
             return (
-                record,
-                dict(input=self.data[idx]),
-                self.labels[idx],
+                [record] * self.n_augment,
+                dict(
+                    input=torch.from_numpy(
+                        np.array(
+                            [
+                                hot_encode_sequence(
+                                    seq,
+                                    length_after_padding=self.length_after_padding,
+                                )
+                                for seq in get_augmented_sequences(sequence)
+                            ]
+                        )
+                    ),
+                ),
+                labels.repeat(self.n_augment, 1),
             )
         else:
-            sequence = self.sequences[idx]
-            labels = torch.from_numpy(
-                np.load(os.path.join(self.labels_path, f"{record}.npy"))
-            ).float()
-            if self.consistency_regularization:
-                return (
-                    [record] * self.n_augment,
-                    dict(
-                        input=torch.from_numpy(
-                            np.array(
-                                [
-                                    hot_encode_sequence(
-                                        seq,
-                                        length_after_padding=self.length_after_padding,
-                                    )
-                                    for seq in get_augmented_sequences(sequence)
-                                ]
-                            ),
-                        ),
-                    ),
-                    labels.repeat(self.n_augment, 1),
-                )
-            else:
-                return (
-                    record,
-                    dict(
-                        input=torch.from_numpy(
-                            hot_encode_sequence(
-                                sequence,
-                                length_after_padding=self.length_after_padding,
-                            ),
-                        ),
-                    ),
-                    labels,
-                )
-
-    def __len__(self):
-        return self.len
-
-
-class DatasetLoad_Kmer(Dataset):
-    def __init__(
-        self,
-        sequences_df,
-        labels_path,
-        length_after_padding: Optional[int] = 0,
-        lazyLoad: Optional[bool] = False,
-        device: Optional[Any] = "cpu",
-        tokenizer: Optional[EsmTokenizer] = None,
-        consistency_regularization: Optional[bool] = True,
-        add_special_tokens: Optional[bool] = True,
-        **kwargs,
-    ):
-
-        self.lazyLoad = lazyLoad
-        self.length_after_padding = length_after_padding
-        self.labels_path = labels_path
-        self.device = device
-        self.sequences_df = sequences_df.reset_index(drop=True)
-        self.tokenizer = tokenizer
-        self.add_special_tokens = add_special_tokens
-        self.consistency_regularization = consistency_regularization
-        self.n_augment = 6
-        self.records = self.sequences_df["record"].tolist()
-        self.sequences = self.sequences_df["sequence"].tolist()
-
-        if not lazyLoad:
-            if self.consistency_regularization:
-                self.data = [
-                    self.tokenizer(
-                        get_augmented_sequences(seq),
-                        return_tensors="pt",
-                        add_special_tokens=self.add_special_tokens,
-                    )
-                    for seq in self.sequences
-                ]
-                self.labels = [
-                    torch.from_numpy(
-                        np.load(os.path.join(self.labels_path, f"{record}.npy"))
-                    ).repeat(self.n_augment, 1)
-                    for record in self.records
-                ]
-            else:
-                self.data = [
-                    self.tokenizer(
-                        seq,
-                        return_tensors="pt",
-                        add_special_tokens=self.add_special_tokens,
-                    )
-                    for seq in self.sequences
-                ]
-                self.labels = [
-                    torch.from_numpy(
-                        np.load(os.path.join(self.labels_path, f"{record}.npy"))
-                    )
-                    for record in self.records
-                ]
-
-        self.len = self.sequences_df.shape[0]
-
-    def __getitem__(self, idx):
-        record = self.records[idx]
-        if not self.lazyLoad:
             return (
                 record,
-                self.data[idx],
-                self.labels[idx],
-            )
-        else:
-            sequence = self.sequences[idx]
-            labels = torch.from_numpy(
-                np.load(os.path.join(self.labels_path, f"{record}.npy"))
-            )
-            if self.consistency_regularization:
-                augmented_seqs = get_augmented_sequences(sequence)
-                return (
-                    [record] * self.n_augment,
-                    self.tokenizer(
-                        augmented_seqs,
-                        return_tensors="pt",
-                        add_special_tokens=self.add_special_tokens,
+                dict(
+                    input=torch.from_numpy(
+                        hot_encode_sequence(
+                            sequence,
+                            length_after_padding=self.length_after_padding,
+                        ),
                     ),
-                    labels.repeat(self.n_augment, 1),
-                )
-            else:
-                return (
-                    record,
-                    self.tokenizer(
-                        sequence,
-                        return_tensors="pt",
-                        add_special_tokens=self.add_special_tokens,
-                    ),
-                    labels,
-                )
+                ),
+                labels,
+            )
 
     def __len__(self):
         return self.len
@@ -269,16 +170,12 @@ class MultiTaskDataLoader(DataLoader):
 class load_dataset:
     def __init__(
         self,
-        sequences_paths: List[str],
-        labels_paths: List[str],
+        h5_paths: List[str],
     ):
         """
         Loads and processes the data.
         """
-        self.sequences_df = pd.concat(
-            [read_excel_csv_file(sequences_path) for sequences_path in sequences_paths]
-        )
-        self.labels_paths = labels_paths
+        self.h5_paths = h5_paths
 
     def get_dataloader(
         self,
@@ -286,10 +183,9 @@ class load_dataset:
         lazyLoad: Optional[bool] = True,
         shuffle: Optional[bool] = True,
         batchSize: Optional[int] = 8,
-        length_after_padding: Optional[int] = 2048,
+        length_after_padding: Optional[int] = 2500,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
-        tokenizer: Optional[EsmTokenizer] = None,
         consistency_regularization: Optional[bool] = True,
         **kwargs,
     ):
@@ -302,7 +198,6 @@ class load_dataset:
                 length_after_padding=length_after_padding,
                 num_workers=num_workers,
                 n_gpu=n_gpu,
-                tokenizer=tokenizer,
                 consistency_regularization=consistency_regularization,
                 **kwargs,
             )
@@ -319,36 +214,18 @@ class load_dataset:
         device: Optional[int] = 0,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
-        tokenizer: Optional[EsmTokenizer] = None,
         consistency_regularization: Optional[bool] = True,
         **kwargs,
     ):
-        for indices_path, labels_path in zip(indices_paths, self.labels_paths):
-            indices = open(indices_path).read().splitlines()
-            if tokenizer == None:
-                dataset = DatasetLoad(
-                    sequences_df=self.sequences_df.loc[
-                        self.sequences_df.record.isin(indices)
-                    ],
-                    labels_path=labels_path,
-                    length_after_padding=length_after_padding,
-                    lazyLoad=lazyLoad,
-                    device=device,
-                    consistency_regularization=consistency_regularization,
-                )
-            else:
-                dataset = DatasetLoad_Kmer(
-                    sequences_df=self.sequences_df.loc[
-                        self.sequences_df.record.isin(indices)
-                    ],
-                    labels_path=labels_path,
-                    length_after_padding=length_after_padding,
-                    lazyLoad=lazyLoad,
-                    device=device,
-                    tokenizer=tokenizer,
-                    consistency_regularization=consistency_regularization,
-                    **kwargs,
-                )
+        for indices_path, h5_path in zip(indices_paths, self.h5_paths):
+            dataset = DatasetLoad(
+                h5_path=h5_path,
+                indices_path=indices_path,
+                length_after_padding=length_after_padding,
+                lazyLoad=lazyLoad,
+                device=device,
+                consistency_regularization=consistency_regularization,
+            )
             if n_gpu > 1:
                 sampler = DistributedSampler(dataset, num_replicas=n_gpu, rank=device)
                 yield DataLoader(
