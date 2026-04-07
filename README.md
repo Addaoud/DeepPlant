@@ -9,9 +9,8 @@
 
 This repository contains the official codebase to reproduce the analyses performed in the DeepPlant paper, including data processing, model training, and evaluation across various genomic tasks.
 
-**Try it out:** We have developed resources to assist users in predicting other genomic modalities from ATAC-seq without writing code:
-*  **[Google Colab Notebook](#)**
-*  **[DeepPlant Web Portal](#)**
+**Try it out:** We developed a Hugging Face web portal that allows you to view and compare DeepPlant's epigenomic predictions against real, genome-wide tracks. The tool automatically generates ready-to-use Integrative Genomics Viewer (IGV) links for seamless exploration.
+*  **[DeepPlant Web Portal](https://huggingface.co/spaces/soumya160497/plant_genome_1)**
 
 ## Setup & Installation
 ### 1. Clone the Repository
@@ -29,6 +28,7 @@ conda activate DeepPlant
 pip install -r requirements.txt
 pip install -e
 python3 setup_env.py
+conda install bioconda::bedtools
 ```
 > **PyTorch Note:** If you encounter issues with PyTorch, ensure you install a version compatible with your specific CUDA version. Visit the [PyTorch Get Started](https://pytorch.org/) page for the latest instructions, or check the [Previous Versions](https://pytorch.org/get-started/previous-versions/) archive.
 
@@ -58,7 +58,7 @@ unzip models.zip
 ## Usage & Tutorials
 We provide several Jupyter Notebooks to help you get started with DeepPlant's capabilities:
 * [usage.ipynb](https://github.com/Addaoud/DeepPlant/blob/main/usage.ipynb): A comprehensive tutorial introducing how to use DeepPlant to predict multiple genomic modalities.
-* [do_ISM_on_gene.ipynb](https://github.com/Addaoud/DeepPlant/blob/main/do_ISM_on_gene.ipynb): A notebook demonstrating how to identify positions and potential regulators of all 32,201 Arabidopsis genes using a comprehensive JASPAR database.
+* [do_ISM_on_gene.ipynb](https://github.com/Addaoud/DeepPlant/blob/main/do_ISM_on_gene.ipynb): A notebook demonstrating how to identify positions and potential regulators of different Arabidopsis genes using a comprehensive JASPAR database supported by available ChIP-seq data.
 
 **In-Silico Mutagenesis (ISM) Analysis**
 
@@ -67,7 +67,7 @@ DeepPlant accurately identifies the regulators (upregulators and suppressors) of
 You can view the results of our analysis on the DREB1 (DREB1A, DREB1B, DREB1C) and RD29A genes across different conditions in the [analysis/ISM](https://github.com/Addaoud/DeepPlant/tree/main/analysis/ISM) directory.
 
 ## Replicating Paper Results
-To exactly replicate the model training and evaluation results presented in the DeepPlant paper:
+To replicate the model training and evaluation results presented in the DeepPlant paper:
 1. Ensure the data is downloaded and placed in the root directory.
 2. Use the main model training scripts located in the [main_scripts](https://github.com/Addaoud/DeepPlant/tree/main/main_scripts) directory.
 3. The exact model architectures, training parameters, and hyperparameters used in the paper are stored in the `.json` files inside the [config](https://github.com/Addaoud/DeepPlant/tree/main/config) directory.
