@@ -277,3 +277,18 @@ def update_paths(config, attributes_to_update):
 
         # Write the new value back to the config object
         setattr(config, attr_name, new_val)
+
+
+def get_DNA_sequence(organism, chrom, start, end):
+    base_path = os.getenv("DEEPPLANTPATH")
+    if organism.upper() == "ARABIDOPSIS":
+        organism_fasta_path = os.path.join(base_path, "data/arabidopsis/fasta")
+    elif organism.upper() == "ORYZA":
+        organism_fasta_path = os.path.join(base_path, "data/oryza/fasta")
+    else:
+        raise ValueError("Organism can be either Arabidopsis or oryza")
+    if not os.path.exists(organism_fasta_path):
+        raise ValueError("Data is missing.")
+    fasta_file_path = os.path.join(organism_fasta_path, f"chrom.{chrom}.fa")
+    for record in read_fasta_file(fasta_file_path):
+        return record[start:end]

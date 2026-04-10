@@ -3,7 +3,7 @@
     "train_indices_path": ["data/arabidopsis/GEP/Train.txt"],
     "valid_indices_path": ["data/arabidopsis/GEP/Val.txt"],
     "test_indices_path": ["data/arabidopsis/GEP/Test.txt"],
-    "experiment_name": ["data/arabidopsis/GEP/exp_label.txt"],
+    "experiment_name": ["data/arabidopsis/GEP/GEP_label.txt"],
     "results_path": "results/GEP_AT",
     "optimizer_type": "adamw",
     "weight_decay": 0.01,
