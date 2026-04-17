@@ -1,7 +1,7 @@
 # DeepPlant
 
 <p align="center">
-  <img src="https://github.com/Addaoud/DeepPlant/blob/main/DeepPlant.PNG" width="640" alt="DeepPlant Architecture">
+  <img src="https://github.com/Addaoud/DeepPlant/blob/main/DeepPlant.jpg" width="640" alt="DeepPlant Architecture">
 </p>
 
 ## Introduction
