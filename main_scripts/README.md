@@ -5,21 +5,20 @@ This directory contains the scripts to train and evaluate the DeepPlant models. 
 > **Note:** The default parameters and hyperparameters in the provided `.json` files are the exact parameters used to generate the results reported and analyzed in our paper.
 
 ## 1. Setup & Requirements
-If you are trying to replicate the results in the paper, you must first download our processed data. You can find it on [Google Drive](https://drive.google.com/file/d/1_BmKIF9h9YqxynJUldfHd7e9Fox8iqn6/view?usp=drive_link) or [Zenodo](https://zenodo.org/). 
-
+If you are trying to replicate the results in the paper, you must first download our processed data. You can find it on [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19616358.svg)](https://doi.org/10.5281/zenodo.19616358)
 Make sure to place the unzipped folder in the root `DeepPlant` directory. You can do this quickly via the command line:
 
 ```bash
 # Navigate to the main DeepPlant directory
-gdown https://drive.google.com/file/d/1_BmKIF9h9YqxynJUldfHd7e9Fox8iqn6/view?usp=drive_link
+gdown https://zenodo.org/records/19616358/files/data.zip?download=1
 unzip data.zip
 ```
 
 ### Download Pre-trained Models (Optional)
-If you wish to use our pre-trained models rather than training from scratch, download them from [Google Drive](https://drive.google.com/file/d/11pZKSEHv0ECaSp-l_BAQwoPKfeHxt9rR/view?usp=sharing) into the root directory:
+If you wish to use our pre-trained models rather than training from scratch, download them from [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19616358.svg)](https://doi.org/10.5281/zenodo.19616358) into the root directory:
 ```bash
 # Navigate to the main DeepPlant directory
-gdown https://drive.google.com/file/d/11pZKSEHv0ECaSp-l_BAQwoPKfeHxt9rR/view?usp=sharing
+gdown https://zenodo.org/records/19616358/files/models.zip?download=1
 unzip models.zip
 ```
 
