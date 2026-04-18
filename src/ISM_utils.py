@@ -20,9 +20,17 @@ import requests
 from src.utils import create_path
 from functools import lru_cache
 from pdf2image import convert_from_path
+import logomaker
+from math import ceil
 
 
-def load_meme_database(meme_path: str):
+def ppm_to_pwm(ppm, background):
+    bg = np.array([background[n] for n in ["A", "C", "G", "T"]])
+    pwm = np.log2(ppm / bg)
+    return pwm
+
+
+def load_meme_database(meme_path: str, format: Optional[str] = "pfm"):
     """
     Load a MEME *text* format file (MEME v4.x) and return a dictionary of
     Biopython Motif objects keyed by motif name, with PFMs stored in
@@ -60,24 +68,28 @@ def load_meme_database(meme_path: str):
 
             probs = np.array(probs).T  # shape (4, w)
 
-            # Convert probabilities -> counts (PFM)
-            counts = probs * nsites
+            if format == "ppm":
+                motifs_dict[motif_name] = probs
 
-            # Build Biopython motif with PFM
-            m = motifs.Motif(alphabet="ACGT")
-            m.counts = FrequencyPositionMatrix(
-                m.alphabet,
-                {
-                    "A": counts[0],
-                    "C": counts[1],
-                    "G": counts[2],
-                    "T": counts[3],
-                },
-            )
-            m.id = motif_id
-            m.name = motif_name
+            elif format == "pfm":
+                # Convert probabilities -> counts (PFM)
+                counts = probs * nsites
 
-            motifs_dict[motif_name] = m
+                # Build Biopython motif with PFM
+                m = motifs.Motif(alphabet="ACGT")
+                m.counts = FrequencyPositionMatrix(
+                    m.alphabet,
+                    {
+                        "A": counts[0],
+                        "C": counts[1],
+                        "G": counts[2],
+                        "T": counts[3],
+                    },
+                )
+                m.id = motif_id
+                m.name = motif_name
+
+                motifs_dict[motif_name] = m
 
         i += 1
 
@@ -395,11 +407,12 @@ def analyze_mutations_with_chip(
         # Check each motif
         for motif_name, effect, motif_rel_pos in affected:
             tf_name = motif_name.split(".")[2]
-
+            motif_strand = "1" if motif_rel_pos > 0 else "-1"
+            gene_region = "promoter" if pos < 1250 else "downstream"
             bed_df = load_bed_for_tf(tf_name, metadata, bed_files, bed_files_path)
 
             if bed_df is None:
-                peak_status = "No bed file found"
+                peak_status = "No bed file available"
             else:
                 # Optimized fast check
                 peak_status = check_peak_overlap(bed_df, chromosome, genomic_pos)
@@ -407,13 +420,16 @@ def analyze_mutations_with_chip(
             results.append(
                 {
                     "gene": gene,
+                    "gene_strand": strand,
                     "chromosome": chromosome,
-                    "relative_position": pos,
+                    "tss_relative_position": pos - 1250,
+                    "gene_region": gene_region,
+                    "sequence_relative_position": pos,
                     "genomic_position": genomic_pos,
-                    "strand": strand,
                     "ref": ref_sequence[pos],
                     "alt": mutation,
                     "motif": motif_name,
+                    "motif_strand": motif_strand,
                     "effect": effect,
                     "chip_peak_overlap": peak_status,
                 }
@@ -422,11 +438,16 @@ def analyze_mutations_with_chip(
     return pd.DataFrame(results)
 
 
-def get_size(mutation_pos, pos):
+def get_size(mutation_pos, pos, region_length):
     for p in mutation_pos:
         if abs(pos - p) < 5:
             return 1.0
-    return 0.5
+    if region_length < 500:
+        return 0.5
+    elif region_length < 1250:
+        return 0.25
+    else:
+        return 0.1
 
 
 def draw_letter(ax, letter, x, height, color, size):
@@ -456,6 +477,98 @@ def draw_letter(ax, letter, x, height, color, size):
     ax.add_patch(patch)
 
 
+def reverse_complement_pwm(ppm):
+    # Reverse rows (positions)
+    ppm_rc = ppm[::-1, :]
+    # Swap columns A,C,G,T -> T,G,C,A
+    ppm_rc = ppm_rc[:, [3, 2, 1, 0]]
+    return ppm_rc
+
+
+def plot_pwm(ax, meme_path, motifs_list):
+    """
+    ax : mosaic axis (panel E)
+    meme_file : path to MEME file
+    memes : dict {TF_name : motif_id}
+    """
+
+    # 1. Clean the main axis (use it only as a container)
+    ax.axis("off")
+
+    # 2. Dynamic Grid Calculation
+    # We want 2 columns for compact fit. Calculate rows needed.
+    n_motifs = len(motifs_list)
+    n_cols = 6
+    n_rows = int(np.ceil(n_motifs / n_cols))
+    w_ratios = [1] * n_cols
+    h_ratios = [1] * n_rows
+
+    # 3. Create Subgrid within the Panel
+    # hspace=0.6 gives enough room for titles without overlap
+    gs = ax.get_subplotspec().subgridspec(
+        n_rows,  # Add 2 for top/bottom margins
+        n_cols,  # Add 2 for left/right margins
+        width_ratios=w_ratios,
+        height_ratios=h_ratios,
+        wspace=0.5,
+        hspace=0.5,
+    )
+
+    motifs = load_meme_database(meme_path, format="ppm")
+
+    # 4. Iterate and Plot
+    for i, (tf, strand) in enumerate(motifs_list):
+        # Calculate grid position
+        row = i // n_cols
+        col = i % n_cols
+
+        # Add subplot to the specific grid slot
+        ax_logo = ax.figure.add_subplot(gs[row, col])
+
+        # Prepare Data
+        ppm = motifs[tf].transpose()
+        # ppm = motif["matrix"]
+        if strand == "-1":
+            ppm = reverse_complement_pwm(ppm)
+
+        # Convert PPM -> Information Content (Bits)
+        # IC = 2 + sum(p * log2(p))
+        ic = 2 + np.sum(ppm * np.log2(ppm + 1e-9), axis=1)
+        info_matrix = ppm * ic[:, None]
+        df = pd.DataFrame(info_matrix, columns=["A", "C", "G", "T"])
+
+        # Create Logo
+        # font_name='Arial Rounded MT Bold' often looks cleaner if available
+        logo = logomaker.Logo(
+            df, ax=ax_logo, shade_below=0, fade_below=0, color_scheme="classic"
+        )
+
+        # Styling
+        ax_logo.set_ylim(0, 2)
+        ax_logo.set_xlim(-0.5, df.shape[0] - 0.5)
+
+        # Remove all borders/spines
+        ax_logo.spines["top"].set_visible(False)
+        ax_logo.spines["right"].set_visible(False)
+        ax_logo.spines["bottom"].set_visible(True)
+        ax_logo.spines["left"].set_visible(True)
+
+        # Clean Ticks
+        ax_logo.set_xticks([])  # No x-axis ticks (base positions)
+        ax_logo.set_yticks([0, 2])  # Minimal y-ticks
+        ax_logo.tick_params(axis="y", labelsize=6, length=2)
+
+        # Title (TF Name)
+        if strand == "-1":
+            tf_name = f"{tf} (Rev. Comp.)"
+        else:
+            tf_name = tf
+        ax_logo.set_title(tf_name, fontsize=8, pad=2, fontweight="bold")
+
+        ax_logo.set_ylabel("Bits", fontsize=12, labelpad=1)
+        ax_logo.spines["left"].set_visible(True)  # Optional:
+
+
 def plot_ref_alt_ism(
     figure_path,
     gene,
@@ -467,6 +580,7 @@ def plot_ref_alt_ism(
     end=0,
     tss=0,
     strand="1",
+    meme_path="",
 ):
     sum_lfc = sum_lfc - sum_lfc.mean(0)
     letters = ["A", "C", "G", "T"]
@@ -477,10 +591,10 @@ def plot_ref_alt_ism(
     # start = max(0, min(mut_positions) - window_padding)
     # end = min(2500, max(mut_positions) + window_padding)
     region = range(start, end)
-
+    region_length = len(region)
     mutation_dict = {}
     for _, row in results_df.iterrows():
-        pos = int(row.relative_position)
+        pos = int(row.sequence_relative_position)
         alt = row.alt
         mutation_dict.setdefault(pos, []).append(alt)
     all_mutations_pos = sorted(set(mutation_dict.keys()))
@@ -488,11 +602,17 @@ def plot_ref_alt_ism(
     # ---------------------------
     # Create figure
     # ---------------------------
-    fig = plt.figure(figsize=(18, 8))
-    gs = fig.add_gridspec(3, 1, height_ratios=[2, 1, 1], hspace=0.0)
+    pwms_to_plot = list(set(map(tuple, results_df[["motif", "motif_strand"]].values)))
+    fig = plt.figure(figsize=(18, 10 + ceil(len(pwms_to_plot) / 6)))
+    gs = fig.add_gridspec(
+        6, 1, height_ratios=[2, 1, 1, 0.5, 0.2, ceil(len(pwms_to_plot) / 6)], hspace=0.0
+    )
     ax_pdf = fig.add_subplot(gs[0])
     ax_ref = fig.add_subplot(gs[1])
     ax_alt = fig.add_subplot(gs[2], sharex=ax_ref)
+    ax_map = fig.add_subplot(gs[3], sharex=ax_ref)
+
+    ax_pwms = fig.add_subplot(gs[5])
 
     fig.patch.set_facecolor("white")
 
@@ -518,6 +638,13 @@ def plot_ref_alt_ism(
         # Draw custom X axis (horizontal zero line)
         ax.axhline(y=0, color="black", linewidth=1.0)
 
+    ax_map.set_facecolor("white")
+    for spine in ax_map.spines.values():
+        spine.set_visible(False)
+        # Remove ticks completely
+    ax_map.set_xticks([])
+    ax_map.set_yticks([])
+
     # ---------------------------
     # Plot reference/alternate
     # ---------------------------
@@ -526,14 +653,14 @@ def plot_ref_alt_ism(
         ref_base = ref_sequence[pos]
         idx = letter_to_index[ref_base]
         value = sum_lfc[idx, pos]
-        size = get_size(all_mutations_pos, pos)
+        size = get_size(all_mutations_pos, pos, region_length)
         draw_letter(ax_ref, ref_base, ks, value, colors[ref_base], size)
         if pos not in mutation_dict:
             draw_letter(ax_alt, ref_base, ks, value, colors[ref_base], size)
         else:
             for mut in list(set(mutation_dict[pos])):
                 print(
-                    f"A mutation at position {pos} relative to the sequence, {ref_sequence[pos]} -> {mut} causes the loss of the binding site of {results_df.loc[(results_df.relative_position==pos)&(results_df.ref==ref_sequence[pos])&(results_df.alt==mut)].motif.values.tolist()}"
+                    f"A mutation at position {pos-1250} relative to the gene TSS, {ref_sequence[pos]} -> {mut} causes the loss of the binding site of {results_df.loc[(results_df.sequence_relative_position==pos)&(results_df.ref==ref_sequence[pos])&(results_df.alt==mut)].motif.values.tolist()}"
                 )
             if len(mutation_dict[pos]) > 1:
                 idx = sum_lfc[:, pos].argmin()
@@ -551,6 +678,70 @@ def plot_ref_alt_ism(
             ax_alt.axvspan(x, x + size, ymin=-0.9, color="pink", alpha=0.3)
         ks += size
 
+    x_coords = {}
+    current_x = 0
+    for pos in region:
+        size = get_size(all_mutations_pos, pos, region_length)
+        x_coords[pos] = current_x + (size / 2)  # center of the base
+        current_x += size
+
+    # 1. Draw the TSS if it's in range
+    if start <= 1250 < end:
+        tss_x = x_coords[1250]
+        # We draw the arrow from the bottom (-0.5) to the top (0.5)
+        ax_map.annotate(
+            "",
+            xy=(tss_x, 0.25),  # Tip of the arrow at the top
+            xytext=(tss_x, -0.05),  # Base of the arrow at the bottom
+            arrowprops=dict(arrowstyle="->", color="black", lw=2),
+        )
+        # Place "TSS" text slightly offset from the top to avoid clipping
+        ax_map.text(
+            tss_x,
+            0.3,
+            "TSS",
+            ha="center",
+            va="top",
+            fontsize=10,
+            fontweight="bold",
+            bbox=dict(
+                facecolor="white", edgecolor="none", pad=1
+            ),  # White box to handle line overlap
+        )
+
+    # 2. Promoter Region (Positions < 1250)
+    promoter_start = max(start, 0)
+    promoter_end = min(end, 1250)
+    if promoter_start < promoter_end:
+        x_start = 0 if promoter_start == start else x_coords[promoter_start]
+        x_end = x_coords[promoter_end - 1]
+        ax_map.hlines(0, x_start, x_end, colors="blue", lw=4)
+        ax_map.text(
+            (x_start + x_end) / 2,
+            -0.05,
+            "Promoter",
+            color="blue",
+            ha="center",
+            va="top",
+            fontsize=9,
+        )
+
+    # 3. Downstream Region (Positions > 1250)
+    down_start = max(start, 1251)
+    down_end = end
+    if down_start < down_end:
+        x_start = x_coords[down_start]
+        x_end = ks
+        ax_map.hlines(0, x_start, x_end, colors="darkgreen", lw=4)
+        ax_map.text(
+            (x_start + x_end) / 2,
+            -0.05,
+            "Downstream",
+            color="darkgreen",
+            ha="center",
+            va="top",
+            fontsize=9,
+        )
     # ---------------------------
     # Scale Y consistently
     # ---------------------------
@@ -560,10 +751,11 @@ def plot_ref_alt_ism(
 
     pad = 0.05 * (ymax - ymin)
 
-    ax_ref.set_ylim(0.5 * ymin, ymax + pad)
-    ax_alt.set_ylim(0.5 * ymin, ymax + pad)
+    ax_ref.set_ylim(0.75 * ymin, ymax + pad)
+    ax_alt.set_ylim(0.75 * ymin, ymax + pad)
     ax_ref.set_xlim(-0.5, ks + 0.5)
     ax_alt.set_xlim(-0.5, ks + 0.5)
+    ax_map.set_ylim(-0.5, 0.5)
 
     # ---------------------------
     # Titles and annotations
@@ -593,6 +785,12 @@ def plot_ref_alt_ism(
         0.99, 0.85, variant_text, transform=ax_ref.transAxes, fontsize=13, ha="right"
     )
     ax_alt.text(0.99, 0.85, "ISM", transform=ax_alt.transAxes, fontsize=13, ha="right")
+    plot_pwm(
+        ax_pwms,
+        meme_path,
+        pwms_to_plot,
+    )
+
     plt.tight_layout()
     plt.show()
 
