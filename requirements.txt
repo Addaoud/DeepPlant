@@ -1,6 +1,6 @@
 python-dotenv==1.2.2
 pandas==3.0.2
-matplotlib==3.10.8
+matplotlib==3.8.4
 biopython==1.87
 seaborn==0.13.2
 h5py==3.16.0
@@ -8,7 +8,8 @@ torchmetrics==1.9.0
 fastprogress==1.0.3
 scipy==1.17.1
 scikit-learn==1.8.0
-gdown==3.4.6
 ipykernel==7.2.0
 pyGenomeTracks==3.9
+logomaker==0.8.7
+pdf2image==1.17.0
 torch

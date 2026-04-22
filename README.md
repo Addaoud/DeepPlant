@@ -23,7 +23,7 @@ cd DeepPlant
 conda create -n DeepPlant python==3.11
 conda activate DeepPlant
 pip install -r requirements.txt
-pip install -e
+pip install -e .
 python3 setup_env.py
 conda install bioconda::bedtools
 ```

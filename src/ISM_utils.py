@@ -172,12 +172,98 @@ def extract_chromosome(header):
     return None
 
 
+def get_tf_info_ensembl(query_term):
+    try:
+        species = "arabidopsis_thaliana"
+        headers = {"Content-Type": "application/json"}
+
+        # Step 1: resolve symbol → Ensembl gene ID
+        url = f"https://rest.ensembl.org/xrefs/symbol/{species}/{query_term}?"
+        res = requests.get(url, headers=headers, timeout=20)
+
+        if res.status_code != 200:
+            return [query_term]
+
+        data = res.json()
+        if not data:
+            return [query_term]
+
+        gene_id = data[0].get("id", None)
+        if gene_id is None:
+            return [query_term]
+
+        # Step 2: fetch gene info
+        url2 = f"https://rest.ensembl.org/lookup/id/{gene_id}?"
+        res2 = requests.get(url2, headers=headers, timeout=20)
+
+        if res2.status_code != 200:
+            return [query_term]
+
+        gene_info = res2.json()
+
+        symbol = gene_info.get("display_name", "Unknown")
+        locus = gene_info.get("id", "Unknown")  # Ensembl gene ID
+
+        aliases = [symbol, locus, query_term]
+
+        # Remove duplicates while preserving order
+        seen = set()
+        aliases = [x for x in aliases if not (x in seen or seen.add(x))]
+
+        return aliases
+
+    except:
+        return [query_term]
+
+
+def get_tf_info_uniprot(query_term):
+    try:
+        query = f"{query_term} AND organism_id:3702"
+        url = f"https://rest.uniprot.org/uniprotkb/search?query={query}&format=json&size=1"
+
+        res = requests.get(url, timeout=20)
+        if res.status_code != 200:
+            return [query_term]
+
+        data = res.json()
+        results = data.get("results", [])
+        if not results:
+            return [query_term]
+        entry = results[0]
+        # Extract gene names
+        gene_names = entry.get("genes", [])
+        aliases = []
+
+        for gene in gene_names:
+            if "geneName" in gene:
+                aliases.append(gene["geneName"]["value"])
+            if "synonyms" in gene:
+                for syn in gene["synonyms"]:
+                    aliases.append(syn["value"])
+
+        # Extract primary accession (as locus-like identifier)
+        locus = entry.get("primaryAccession", "Unknown")
+
+        aliases.append(locus)
+        aliases.append(query_term)
+
+        # Remove duplicates
+        seen = set()
+        aliases = [x for x in aliases if not (x in seen or seen.add(x))]
+
+        return aliases
+
+    except:
+        return [query_term]
+
+
 def get_tf_info(query_term):
     # Arabidopsis taxonomy ID is 3702
     url = f"https://mygene.info/v3/query?q={query_term}&species=3702&fields=symbol,name,alias,locus_tag"
-
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code != 200:
+            return [query_term]
         data = response.json()
         if "hits" in data and len(data["hits"]) > 0:
             hit = data["hits"][0]
@@ -189,8 +275,10 @@ def get_tf_info(query_term):
             aliases.append(symbol)
             aliases.append(locus)
             aliases.append(query_term)
-            return aliases
-    return [query_term]
+            return list(set(aliases))
+        return [query_term]
+    except:
+        return [query_term]
 
 
 @lru_cache(maxsize=None)
