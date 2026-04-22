@@ -10,7 +10,7 @@ Make sure to place the unzipped folder in the root `DeepPlant` directory. You ca
 
 ```bash
 # Navigate to the main DeepPlant directory
-wget https://zenodo.org/records/19616358/files/data.zip?download=1
+wget "https://zenodo.org/records/19616358/files/data.zip?download=1"
 unzip data.zip
 ```
 
@@ -18,7 +18,7 @@ unzip data.zip
 If you wish to use our pre-trained models rather than training from scratch, download them from [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19616358.svg)](https://doi.org/10.5281/zenodo.19616358) into the root directory:
 ```bash
 # Navigate to the main DeepPlant directory
-wget https://zenodo.org/records/19616358/files/models.zip?download=1
+wget "https://zenodo.org/records/19616358/files/models.zip?download=1"
 unzip models.zip
 ```
 

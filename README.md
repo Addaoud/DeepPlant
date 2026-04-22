@@ -37,7 +37,7 @@ Place the unzipped data directly in the root `DeepPlant` directory:
 
 ```bash
 # Navigate to the main DeepPlant directory
-wget https://zenodo.org/records/19616358/files/data.zip?download=1
+wget "https://zenodo.org/records/19616358/files/data.zip?download=1"
 unzip data.zip
 ```
 
@@ -48,7 +48,7 @@ Place the unzipped models directly in the root `DeepPlant` directory:
 
 ```bash
 # Navigate to the main DeepPlant directory
-wget  https://zenodo.org/records/19616358/files/models.zip?download=1
+wget "https://zenodo.org/records/19616358/files/models.zip?download=1"
 unzip models.zip
 ```
 
