@@ -78,9 +78,11 @@ DeepPlant supports three predictive tasks:
 * CSP — Chromatin State Prediction
 * GEP — Gene Expression Prediction
 * EAP — Enhancer Activity Prediction
+
 Supported species:
 * arabidopsis - *Arabidopsis thaliana*
 * rice - *Oryza sativa*
+
 Each prediction requires exactly one of the following inputs:
 * FASTA sequence (--fasta)
 * Genomic locus (e.g., Chr1:10000-12500)
@@ -90,6 +92,7 @@ Each prediction requires exactly one of the following inputs:
 DeepPlant operates on a fixed 2.5 kb input sequence centered on the region of interest:
 * Sequences > 2.5 kb are center-cropped
 * Sequences < 2.5 kb are padded with N's
+
 Predictions are computed over the central region of the sequence:
 * CSP: epigenomic features across the central window (200 bps)
 * EAP: enhancer probability within the central ~200 bp
