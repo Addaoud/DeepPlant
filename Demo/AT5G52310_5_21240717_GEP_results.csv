@@ -1,0 +1,3143 @@
+Target,Prediction,Tissue,Genotype,Treatment
+ERX1946687,14.297114,rosette leaf,--,Cold4C 3h*
+ERX1946688,16.109215,rosette leaf,--,Cold4C 6h*
+ERX1946689,21.875061,rosette leaf,--,Cold4C 9h*
+ERX1946691,22.030422,rosette leaf,--,Cold4C 15h*
+ERX1946693,21.74694,rosette leaf,--,Cold4C 21h*
+ERX1946694,24.073967,rosette leaf,--,Cold4C 24h*
+ERX1946679,12.970308,rosette leaf,--,--
+ERX1946697,16.29403,rosette leaf,--,Cold4C 78h*
+ERX1946698,16.205524,rosette leaf,--,Cold4C 81h*
+ERX1946699,16.322504,rosette leaf,--,Cold4C 84h*
+ERX1946701,13.235449,rosette leaf,--,Cold4C 90h*
+ERX1946702,14.743623,rosette leaf,--,Cold4C 93h*
+ERX1946703,15.925021,rosette leaf,--,Cold4C 96h*
+ERX1946680,12.211758,rosette leaf,--,--
+ERX1946681,13.23061,rosette leaf,--,--
+ERX1946682,11.565067,rosette leaf,--,--
+ERX1946683,12.429462,rosette leaf,--,--
+ERX1946684,19.107664,rosette leaf,--,--
+ERX1946685,14.199973,rosette leaf,--,--
+ERX1946686,12.9419365,rosette leaf,--,Mock
+ERX3311952,12.265123,flower buds,wild type,--
+ERX3311994,16.168707,seedling,wild type,--
+ERX3311977,17.932158,seedling,knl2 mutant,--
+ERX3430782,12.016331,leaf,wild type,--
+ERX3430786,14.228056,leaf,mail1-1,--
+ERX3430784,13.363,leaf,main-2,--
+ERX3466595,19.07589,hypocotyl,--,--
+ERX3556886,0.0,leaf,wild type,A2
+ERX3557010,0.0,leaf,wild type,A2
+ERX3557138,0.2209913,leaf,wild type,A2
+ERX3556878,0.011307087,leaf,wild type,A4
+ERX3557002,0.0,leaf,wild type,A4
+ERX3557130,0.0,leaf,wild type,A4
+ERX3556882,0.05459163,leaf,wild type,KV
+ERX3557006,0.2439181,leaf,wild type,KV
+ERX3557134,0.0,leaf,wild type,KV
+ERX3557254,0.0,leaf,wild type,untreated
+ERX3557258,0.0,leaf,wild type,untreated
+ERX3557262,0.0,leaf,wild type,untreated
+ERX3556874,0.0,leaf,wild type,mock
+ERX3556998,0.0,leaf,wild type,mock
+ERX3557126,0.0,leaf,wild type,mock
+ERX3556902,0.1482658,leaf,eds1-2*,A2
+ERX3557026,0.0,leaf,eds1-2*,A2
+ERX3557170,0.0,leaf,eds1-2*,A2
+ERX3556894,0.16709273,leaf,eds1-2*,A4
+ERX3557018,0.0,leaf,eds1-2*,A4
+ERX3557162,0.0,leaf,eds1-2*,A4
+ERX3556898,0.0,leaf,eds1-2*,KV
+ERX3557022,0.0,leaf,eds1-2*,KV
+ERX3557166,0.0,leaf,eds1-2*,KV
+ERX3556890,0.0,leaf,eds1-2*,mock
+ERX3557014,0.0,leaf,eds1-2*,mock
+ERX3557158,0.0,leaf,eds1-2*,mock
+ERX3556946,0.0,leaf,myc2 myc3 myc4*,A2
+ERX3557074,0.3845027,leaf,myc2 myc3 myc4*,A2
+ERX3557202,0.0,leaf,myc2 myc3 myc4*,A2
+ERX3556938,0.35214218,leaf,myc2 myc3 myc4*,A4
+ERX3557066,0.0,leaf,myc2 myc3 myc4*,A4
+ERX3557194,0.0,leaf,myc2 myc3 myc4*,A4
+ERX3556942,0.5011983,leaf,myc2 myc3 myc4*,KV
+ERX3557070,0.0,leaf,myc2 myc3 myc4*,KV
+ERX3557198,0.0,leaf,myc2 myc3 myc4*,KV
+ERX3556934,0.0,leaf,myc2 myc3 myc4*,mock
+ERX3557062,0.0,leaf,myc2 myc3 myc4*,mock
+ERX3557190,0.0,leaf,myc2 myc3 myc4*,mock
+ERX3556978,0.0,leaf,pad4 ein2 dde2 sid2*,A2
+ERX3557106,0.0,leaf,pad4 ein2 dde2 sid2*,A2
+ERX3557234,0.0,leaf,pad4 ein2 dde2 sid2*,A2
+ERX3556970,0.0,leaf,pad4 ein2 dde2 sid2*,A4
+ERX3557098,0.0,leaf,pad4 ein2 dde2 sid2*,A4
+ERX3557226,0.0,leaf,pad4 ein2 dde2 sid2*,A4
+ERX3556974,0.0,leaf,pad4 ein2 dde2 sid2*,KV
+ERX3557102,0.0,leaf,pad4 ein2 dde2 sid2*,KV
+ERX3557230,0.0,leaf,pad4 ein2 dde2 sid2*,KV
+ERX3556966,0.0,leaf,pad4 ein2 dde2 sid2*,mock
+ERX3557094,0.0,leaf,pad4 ein2 dde2 sid2*,mock
+ERX3557222,0.0,leaf,pad4 ein2 dde2 sid2*,mock
+ERX3556918,0.42309526,leaf,rrs1-3 rrs1b-1*,A2
+ERX3557042,0.0,leaf,rrs1-3 rrs1b-1*,A2
+ERX3557154,0.0,leaf,rrs1-3 rrs1b-1*,A2
+ERX3556910,0.13267384,leaf,rrs1-3 rrs1b-1*,A4
+ERX3557034,0.0,leaf,rrs1-3 rrs1b-1*,A4
+ERX3557146,0.0,leaf,rrs1-3 rrs1b-1*,A4
+ERX3556914,0.35409328,leaf,rrs1-3 rrs1b-1*,KV
+ERX3557038,0.0,leaf,rrs1-3 rrs1b-1*,KV
+ERX3557150,0.0,leaf,rrs1-3 rrs1b-1*,KV
+ERX3556906,0.122352935,leaf,rrs1-3 rrs1b-1*,mock
+ERX3557030,0.0,leaf,rrs1-3 rrs1b-1*,mock
+ERX3557142,0.0,leaf,rrs1-3 rrs1b-1*,mock
+ERX3556930,0.0,leaf,sard1 cbp60g*,A2
+ERX3557058,0.0,leaf,sard1 cbp60g*,A2
+ERX3557186,0.13895597,leaf,sard1 cbp60g*,A2
+ERX3556926,0.0,leaf,sard1 cbp60g*,A4
+ERX3557050,0.0,leaf,sard1 cbp60g*,A4
+ERX3557178,0.20086397,leaf,sard1 cbp60g*,A4
+ERX3557266,0.38416436,leaf,sard1 cbp60g*,KV
+ERX3557054,0.0,leaf,sard1 cbp60g*,KV
+ERX3557182,0.0,leaf,sard1 cbp60g*,KV
+ERX3556922,0.16912134,leaf,sard1 cbp60g*,mock
+ERX3557046,0.0,leaf,sard1 cbp60g*,mock
+ERX3557174,0.0,leaf,sard1 cbp60g*,mock
+ERX3556994,0.0,leaf,sid2*,A2
+ERX3557122,0.0,leaf,sid2*,A2
+ERX3557250,0.0,leaf,sid2*,A2
+ERX3556986,0.08980163,leaf,sid2*,A4
+ERX3557114,0.08508315,leaf,sid2*,A4
+ERX3557242,0.0,leaf,sid2*,A4
+ERX3556990,0.25243163,leaf,sid2*,KV
+ERX3557118,0.0,leaf,sid2*,KV
+ERX3557246,0.5270184,leaf,sid2*,KV
+ERX3556982,0.0,leaf,sid2*,mock
+ERX3557110,0.0,leaf,sid2*,mock
+ERX3557238,0.0,leaf,sid2*,mock
+ERX3556962,0.0,leaf,tpr1 tpl tpr4*,A2
+ERX3557090,0.0,leaf,tpr1 tpl tpr4*,A2
+ERX3557218,0.10525122,leaf,tpr1 tpl tpr4*,A2
+ERX3556954,0.0,leaf,tpr1 tpl tpr4*,A4
+ERX3557082,0.0,leaf,tpr1 tpl tpr4*,A4
+ERX3557210,0.0,leaf,tpr1 tpl tpr4*,A4
+ERX3556958,0.0,leaf,tpr1 tpl tpr4*,KV
+ERX3557086,0.0,leaf,tpr1 tpl tpr4*,KV
+ERX3557214,0.0,leaf,tpr1 tpl tpr4*,KV
+ERX3556950,0.0,leaf,tpr1 tpl tpr4*,mock
+ERX3557078,0.0,leaf,tpr1 tpl tpr4*,mock
+ERX3557206,0.0,leaf,tpr1 tpl tpr4*,mock
+ERX534171,20.778574,root,--,Mock
+ERX534172,13.680322,shoot,--,Mock
+ERX534173,57.03939,root,--,cold
+ERX534174,18.234276,shoot,--,cold
+SRX335638,17.450796,leaves,--,--
+SRX335639,18.389177,leaves,--,--
+SRX335640,10.045732,leaves,wild type,Mock
+SRX335653,11.79603,leaves,wild type,LPS
+SRX384068,12.117346,leaves,wild type,MeJA
+SRX384124,11.692177,leaves,wild type,SA
+SRX384012,11.750857,leaves,wild type,Mock
+SRX384072,14.690229,leaves,wild type,MeJA
+SRX384017,13.101501,leaves,wild type,Mock
+SRX384008,9.309858,leaves,wild type,--
+SRX384080,19.47065,leaves,wild type,MeJA
+SRX384136,12.359197,leaves,wild type,SA
+SRX384168,16.25065,leaves,wild type,SA
+SRX384056,11.942588,leaves,wild type,Mock
+SRX384120,8.976741,leaves,wild type,MeJA
+SRX384064,11.229795,leaves,wild type,Mock
+SRX384076,14.715002,leaves,wild type,MeJA
+SRX384132,10.649021,leaves,wild type,SA
+SRX384084,17.237171,leaves,wild type,MeJA
+SRX384140,11.416075,leaves,wild type,SA
+SRX384088,18.47326,leaves,wild type,MeJA
+SRX384144,13.160571,leaves,wild type,SA
+SRX384148,15.702257,leaves,wild type,SA
+SRX384036,16.693623,leaves,wild type,Mock
+SRX384152,14.268963,leaves,wild type,SA
+SRX384040,15.783563,leaves,wild type,Mock
+SRX384044,13.944404,leaves,wild type,Mock
+SRX384160,16.513947,leaves,wild type,SA
+SRX384048,12.363609,leaves,wild type,Mock
+SRX384052,11.773842,leaves,wild type,Mock
+SRX377505,10.413864,aerial seedling,Seq_mutant,--
+SRX485653,17.85619,root,--,Mock
+SRX485655,20.0187,root,--,Pi starvation
+SRX2483014,18.419039,--,GIO12,--
+SRX2482993,25.014711,--,gio11/12,--
+SRX2482983,15.72214,--,wild type,--
+SRX2483001,18.691183,--,wrkyA mutant,--
+SRX799490,17.21603,seedlings,ga1 max1,Mock
+SRX799517,17.596132,seedlings,ga1 max1,120 min GA
+SRX799523,17.825722,seedlings,ga1 max1,120 min GA + GR24
+SRX799520,17.808937,seedlings,ga1 max1,120 min GR24
+SRX799488,17.622864,seedlings,ga1 max1,Mock
+SRX799496,19.57471,seedlings,ga1 max1,30 min GA
+SRX799502,22.417126,seedlings,ga1 max1,30 min GA + GR24
+SRX799499,21.219091,seedlings,ga1 max1,30 min GR24
+SRX799493,24.2,seedlings,ga1 max1,acetone 0.05 % (v/v) and ethanol 0.1 % (v/v)
+SRX799508,15.349391,seedlings,ga1 max1,60 min GA
+SRX799514,22.557266,seedlings,ga1 max1,60 min GA + GR24
+SRX799511,23.154987,seedlings,ga1 max1,60 min GR24
+SRX799505,21.472446,seedlings,ga1 max1,Mock
+SRX1034780,8.97892,apical shoot meristem,--,--
+SRX1034786,11.33507,apical shoot meristem,--,--
+SRX1068202,10.131406,apical shoot meristem,--,--
+SRX1034787,8.557021,apical shoot meristem,--,--
+SRX1068195,10.665847,apical shoot meristem,--,--
+SRX860911,15.071663,cultured  cell,--,Mock
+SRX867277,23.209858,anther,wild type,--
+SRX867282,10.344801,anther,bhlh010 bhlh089 bhlh091,--
+SRX867280,7.527238,anther,bhlh010 bhlh089,--
+SRX957830,26.452332,cultured  cell,--,Mock
+SRX957882,24.874718,cultured  cell,--,Ln_100uM
+SRX957878,25.990078,cultured  cell,--,Ln_10uM
+SRX957885,29.68754,cultured  cell,--,NO2-Ln_10uM
+SRX957875,25.407146,cultured  cell,--,MeOH
+GSM1694254,29.086035,stem,soc1-ful,--
+SRX1059375,18.28977,seed,wild type,"3 d oH incubation at 4 degrees Celsius, Hollowed by 24 h oH incubation at a 16-h light/8-h dark photoperiod"
+SRX1059381,26.725199,seed,soar1-2,"3 d oH incubation at 4 degrees Celsius, Hollowed by 24 h oH incubation at a 16-h light/8-h dark photoperiod"
+SRX1080999,13.002311,aerial seedling,--,--
+SRX1150141,15.5829115,inflorescence,ant ail6 double mutant,--
+GSM1864018,13.506029,whole plant,wild type,--
+SRX1520908,15.420505,leaves,--,Mock
+SRX1671196,21.012661,leaves,--,He-deHicient
+SRX1671149,13.118174,leaves,--,Mock
+SRX1671199,19.543001,leaves,--,He-deHicient
+SRX1671203,18.547459,leaves,--,He-deHicient
+SRX1671153,11.79333,leaves,--,Mock
+SRX1667997,14.509015,shoot apex,--,--
+SRX1795774,10.492701,anther,--,--
+SRX1795824,12.201574,anther,--,--
+SRX1795967,10.8520975,Inflorescence axis,--,--
+SRX1796153,12.578528,carpels,--,--
+SRX1795769,14.470674,carpels,--,--
+SRX1795814,10.212237,carpels,--,--
+SRX1796162,35.154373,seed,--,--
+SRX1795852,26.88455,flower,--,--
+SRX1795861,26.315514,flower,--,--
+SRX1795871,17.760487,flower,--,--
+SRX1795883,17.209326,flower,--,--
+SRX1795938,16.751823,flower,--,--
+SRX1795955,17.078228,flower,--,--
+SRX1795956,15.557876,flower,--,--
+SRX1795958,11.835373,inflorescence,--,--
+SRX1795952,15.1437235,flower,--,--
+SRX1795953,20.22435,flower,--,--
+SRX1796178,23.564154,seed,--,--
+SRX1796183,19.558132,seed,--,--
+SRX1796187,25.73449,seed,--,--
+SRX1795972,26.746002,internode,--,--
+SRX1795749,13.107577,leaf blade,--,--
+SRX1795734,6.6448617,leaf blade,--,--
+SRX1795740,8.164825,leaf blade,--,--
+SRX1795744,10.338522,leaf blade,--,--
+SRX1795746,20.266594,leaf petiole,--,--
+SRX1795751,34.846462,leaf petiole,--,--
+SRX1795729,8.264743,leaf petiole,--,--
+SRX1795738,8.379749,leaf petiole,--,--
+SRX1795741,10.476948,leaf petiole,--,--
+SRX1795748,26.463644,leaf midrib,--,--
+SRX1795756,46.63875,leaf midrib,--,--
+SRX1795742,8.645635,leaf midrib,--,--
+SRX1795750,17.39375,leaves,--,--
+SRX1795762,22.911232,anther,--,--
+SRX1796089,11.888294,ovule,--,--
+SRX1795961,11.8750515,pedicel,--,--
+SRX1795791,15.156692,petal,--,--
+SRX1796193,25.458609,pod,--,--
+SRX1795974,18.335688,pod,--,--
+SRX1795997,24.471071,pod,--,--
+SRX1796018,18.343437,pod,--,--
+SRX1795720,19.341272,root,--,--
+SRX1795653,13.608442,root apex,--,--
+SRX1795648,12.457729,cotyledon,--,--
+SRX1795639,17.63718,hypocotyl,--,--
+SRX1796199,23.797829,internode,--,--
+SRX1796196,50.900574,siliques,--,--
+SRX1795803,20.226616,sepal,--,--
+SRX1795837,14.506427,sepal,--,--
+SRX1795976,24.717045,siliques,--,--
+SRX1795998,24.860626,siliques,--,--
+SRX1796030,19.118914,siliques,--,--
+SRX1795783,13.102177,stamen filament,--,--
+SRX1796146,13.233484,stigma,--,--
+SRX1796042,10.544357,seed,--,--
+SRX1796053,11.015322,seed,--,--
+SRX1796065,11.674291,seed,--,--
+SRX1796073,9.492073,seed,--,--
+SRX1796085,13.591744,seed,--,--
+GSM2096914,8.255583,seedlings,atalkbh10b -/-,--
+SRX1712745,10.357751,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) DEXp:MLACC-mYFP,--
+SRX1712748,17.21791,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) DEXp:MLACC-mYFP,--
+SRX1712751,13.303055,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) DEXp:MLACC-mYFP,--
+SRX1712754,12.520735,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) DEXp:MLACC-mYFP,--
+SRX1712757,12.900785,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) DEXp:MLACC-mYFP,--
+SRX1716761,36.816437,root,--,Mock
+SRX1759233,27.82502,root,OUT5,--
+SRX1759239,29.314585,root,OUT5,--
+SRX1759230,22.790129,root,wild type,--
+SRX1759236,30.446373,root,wild type,--
+GSM2157790,15.727228,whole plant,wild type,--
+SRX1881751,16.059078,leaves,--,cold
+SRX1881839,30.319386,leaves,--,cold
+SRX1881841,22.308792,leaves,--,cold
+SRX1881753,21.582626,leaves,--,cold
+SRX1881761,25.269894,leaves,--,cold
+SRX1881868,13.88979,leaves,--,heat
+SRX1881889,19.59194,leaves,--,heat
+SRX1881908,31.045885,leaves,--,heat
+SRX1882433,25.739021,leaves,--,wounding
+SRX1882503,16.670424,leaves,--,wounding
+SRX1882526,10.515306,leaves,--,wounding
+SRX1882458,21.606049,leaves,--,wounding
+SRX1882551,11.809727,leaves,--,wounding
+SRX1882481,15.998898,leaves,--,wounding
+GSM2204073,14.4767685,rosette leaves,--,Alternaria brassicicola treated
+GSM2204070,12.792915,rosette leaves,--,mock treated
+GSM2204067,13.631424,rosette leaves,--,untreated
+SRX1977887,19.9897,root,Col1,P-limited
+SRX1977890,26.884777,root,Col1,Mock
+SRX1977893,21.369633,root,Col2,P-limited
+SRX1977896,26.559875,root,Col2,Mock
+SRX1977869,23.26468,root,cbl1,P-limited
+SRX1977872,36.210785,root,cbl1,P-replete
+SRX1977875,20.335144,root,cipk14,P-limited
+SRX1977878,25.992594,root,cipk14,P-replete
+SRX1977881,17.20802,root,cipk2,P-limited
+SRX1977884,28.105553,root,cipk2,P-replete
+SRX1977899,19.818027,root,msf1,P-limited
+SRX1977902,22.668865,root,msf1,P-replete
+SRX1977905,19.700045,root,pfs2,P-limited
+SRX1977908,31.478024,root,pfs2,P-replete
+SRX1977911,26.291956,root,pho2,P-limited
+SRX1977914,21.960093,root,pho2,P-replete
+SRX1977917,20.738976,root,phr1_1,P-limited
+SRX1977920,20.334427,root,phr1_1,P-replete
+SRX1977923,18.265223,root,phr1_2,P-limited
+SRX1977929,16.710407,root,prce1,P-limited
+SRX1977932,23.366974,root,prce1,P-replete
+SRX1977935,18.615963,root,prce2,P-limited
+SRX1977938,32.652195,root,prce2,P-replete
+SRX1977941,19.496078,root,prce3,P-limited
+SRX1977944,22.000679,root,prce3,P-replete
+SRX1977947,21.400215,root,s6k2,P-limited
+SRX1977950,20.489681,root,s6k2,P-replete
+SRX1977953,20.395542,root,stp10,P-limited
+SRX1977956,22.96871,root,stp10,P-replete
+GSM2301215,20.248323,leaves,bou T-DNA insertion line,--
+GSM2301227,17.604576,leaves,bou T-DNA insertion line,--
+GSM2301212,14.643624,leaves,wild type,Mock
+GSM2301224,14.4633465,leaves,wild type,Photoperiod
+GSM2302841,17.238686,10days seedlings,wild type,Mock
+GSM2302845,15.7431965,10days seedlings,wild type,zebularine
+GSM2302843,21.873737,10days seedlings,rtel1-3 mutant,Mock
+GSM2302847,15.657511,10days seedlings,rtel1-3 mutant,zebularine
+SRX2436392,25.038267,seedlings,--,Pi minus
+SRX2436385,14.847491,seedlings,--,Pi plus
+GSM2981930,18.313103,leaves,35S:TET1,--
+GSM2981927,21.865406,leaves,wild type,--
+GSM2474318,17.04033,cultured  cell,--,Dark
+GSM2474314,14.767036,cultured  cell,--,Mock
+SRX2613522,20.060394,seedlings,wild type,MeJA
+SRX2613520,21.638496,seedlings,wild type,Mock
+SRX2613525,11.74628,seedlings,wild type,--
+SRX2613514,28.342701,seedlings,ago1-36,MeJA
+SRX2613511,23.952185,seedlings,ago1-36,MeJA control
+SRX2613517,16.484108,seedlings,ago1-36,none
+SRX2641358,14.832098,seedlings,--,--
+SRX2641361,16.541553,seedlings,--,--
+SRX2700311,9.623114,growth points,BpFLC over expression,--
+SRX2700310,10.748043,growth points,BpFLC over expression,--
+SRX2700313,14.125445,growth points,wild type,--
+SRX2700312,11.128514,growth points,wild type,--
+SRX3268651,7.1305647,rosette leaf,wild type,--
+GSM2561483,12.689249,root,wild type,Mock
+GSM2561487,23.894367,root,wild type,Al3+*
+SRX2702471,19.238953,flower bud,--,Mock
+SRX2702468,22.616219,flower bud,--,Cu-limiting
+SRX2702477,26.034082,flower,--,Mock
+SRX2702474,36.687653,flower,--,Cu-limiting
+SRX2768414,16.226599,stamen,arf8-7,--
+SRX2768416,19.690556,stamen,arf8-7,--
+SRX2768410,17.815857,stamen,wild type,--
+SRX2768412,15.845552,stamen,wild type,--
+SRX2750232,11.766212,seedlings,wild type,--
+SRX2750236,8.545706,seedlings,mac3amac3b,--
+SRX2750234,6.928912,seedlings,mac7-1,--
+SRX2750238,11.63903,seedlings,prl1prl2,--
+SRX2977304,1.2220231,pollen grains,wild type,Mock
+SRX2977314,3.7149165,pollen grains,wild type,heat 40
+SRX2977305,1.62377,pollen grains,cngc16-2 -/-,Mock
+SRX2977306,4.406371,pollen grains,cngc16-2 -/-,heat stress
+SRX3033529,11.622802,leaves,myb48myb59,--
+SRX3066603,29.426704,leaves,--,--
+SRX3178394,15.757314,seedlings,prp4a-1 kinase mutant,--
+SRX3178390,17.986477,seedlings,sac3a-3 mutant,--
+SRX3178396,17.944815,seedlings,wild type,--
+SRX5371760,17.091194,cotyledon,--,27 hours oH cold treatment
+SRX5371759,14.453278,cotyledon,--,3 hours oH cold treatment
+SRX5371792,9.633155,cotyledon,--,Mock
+SRX5371788,27.670681,flower,--,--
+SRX5371768,21.00819,flower,--,--
+SRX5371774,24.980385,hypocotyl,--,--
+SRX5371764,18.259418,hypocotyl,--,--
+SRX5371762,13.379207,hypocotyl,--,--
+SRX5371778,19.954905,leaves,--,--
+SRX5371770,30.737223,seed,--,--
+SRX5371780,21.736692,seed,--,--
+SRX5371782,11.972582,flower,--,--
+SRX3345260,19.56429,root,--,Pseudomonas simiae WCS417
+SRX3345272,16.724905,root,--,Pseudomonas simiae WCS417
+SRX3345234,19.086136,root,--,Pseudomonas simiae WCS417
+SRX3345255,20.185265,root,--,Pseudomonas simiae WCS417
+SRX3345247,19.457556,root,--,chitin
+SRX3345240,17.432579,root,--,chitin
+SRX3345220,18.366796,root,--,chitin
+SRX3345216,17.078268,root,--,chitin
+SRX3345261,17.742382,root,--,--
+SRX3345263,20.894558,root,--,Mock
+SRX3345251,18.341524,root,--,Mock
+SRX3345237,15.46836,root,--,Mock
+SRX3345218,17.817719,root,--,Mock
+SRX3345245,20.292992,root,--,Hlg22(Pseudomonas aeruginosa)
+SRX3345269,20.909744,root,--,Hlg22(Pseudomonas aeruginosa)
+SRX3345222,19.825235,root,--,Hlg22(Pseudomonas aeruginosa)
+SRX3345243,22.04602,root,--,Hlg22(Pseudomonas simiae WCS417)
+SRX3345275,19.149828,root,--,Hlg22(Pseudomonas simiae WCS417)
+SRX3345228,15.024879,root,--,Hlg22(Pseudomonas aeruginosa)
+SRX3259643,13.296856,aerial seedling,wild type,low light intensity
+SRX3241540,17.7597,leaves,--,Mock
+SRX3276474,36.14046,whole seedling,--,auxin modulator
+SRX3276475,41.484722,whole seedling,--,control
+SRX3401238,16.49583,leaves,not collected,plants were grown on soil Hor 49 days
+SRX3401237,13.39735,leaves,not collected,plants were grown on soil Hor 49 days
+SRX3457846,29.610748,cotyledon,Col-0,CLE26
+SRX3457850,32.323673,cotyledon,Col-0,CLE45
+SRX3457848,31.177492,cotyledon,Col-0,Mock
+SRX3547092,16.698334,seedlings,wild type,DMSO
+SRX3547095,21.896496,seedlings,wild type,isoxaben
+SRX3547098,16.610296,seedlings,Isoxaben-resistant mutant ixr1-1,DMSO
+SRX3547101,20.90286,seedlings,Isoxaben-resistant mutant ixr1-1,isoxaben
+GSM4029329,16.664139,2-week seedlings,wild type,cordycepin for 0 hour
+GSM4029335,15.316945,2-week seedlings,wild type,cordycepin for 1 hour
+GSM4029338,14.742595,2-week seedlings,wild type,cordycepin for 2 hours
+GSM4029341,14.952388,2-week seedlings,wild type,cordycepin for 4 hours
+GSM4029344,16.01721,2-week seedlings,wild type,cordycepin for 8 hours
+SRX3742577,12.801056,seedlings,wild type,--
+SRX3807348,6.096635,leaves,PSR2-5,--
+SRX3807352,10.009963,leaves,Col,--
+GSM3294424,7.100431,inflorescences,wild type,--
+GSM3294422,13.687933,inflorescences,wild type,--
+GSM3294428,11.373458,inflorescences,dbr1-2 mutant,--
+GSM3294426,15.177958,inflorescences,dbr1-2 mutant,--
+SRX4488591,39.099792,rosette leaf,--,drought
+SRX4488625,11.119016,rosette leaf,--,drought
+SRX4488606,13.053298,rosette leaf,--,well water
+SRX4488615,16.53649,rosette leaf,--,well water
+SRX4488609,11.303598,rosette leaf,--,well water
+SRX4546504,7.9203606,leaves,--,C234-inHiltrated*
+SRX4546506,10.660912,leaves,--,mock-treated
+SRX4546500,9.824846,leaves,--,Pseudomonas syringae pv. maculicola-inHected (Psm)*
+SRX4546501,10.986681,leaves,--,both P. syringae and C234-inHected*
+SRX4599564,12.505545,shoot,35S:GRF5,4h 21C mock
+SRX4599566,27.107124,shoot,35S:GRF5,4h 4C GA
+SRX4599562,22.097437,shoot,35S:GRF5,4h 4C mock
+SRX4599577,15.37303,shoot,35S:miR396b,4h 21C mock
+SRX4599571,20.447908,shoot,35S:miR396b,4h 4C GA
+SRX4599574,22.8261,shoot,35S:miR396b,4h 4C mock
+SRX4599582,14.162251,shoot,wild type,4h 21C mock
+SRX4599580,27.16809,shoot,wild type,4h 4C GA
+SRX4599581,24.781721,shoot,wild type,4h 4C mock
+SRX4633181,20.817375,leaf,Hrip1-OX transgenic line,transgene
+SRX4633179,15.616674,leaf,wild type,--
+SRX4668103,35.385666,seedling,wild type,Drought*
+SRX4668099,15.832713,seedling,wild type,Normal*
+SRX4668101,37.771004,seedling,jmj17,Drought*
+SRX4668097,15.099241,seedling,jmj17,Normal*
+SRX5016264,13.208733,Leaves,wild type,Pst DC3000 treatment
+SRX5016269,9.2175045,Leaves,wild type,Mock
+SRX5016268,11.109946,Leaves,eds1*,Pst DC3000 treatment
+SRX5016266,15.68852,Leaves,rgl3*,Pst DC3000 treatment
+GSM3466503,9.173206,gynoecia,wild type,--
+GSM3466521,20.264454,stamens,wild type,--
+GSM3466513,10.340794,gynoecia,Pstk_axr3,--
+GSM3466517,6.956439,gynoecia,arf6 Pstk_axr3 15-5,--
+GSM3466518,8.5440445,gynoecia,arf6 Pstk_axr3 15-5,--
+GSM3466507,9.867887,gynoecia,arf6arf8,--
+GSM3466524,18.547417,stamens,arf6arf8,--
+GSM3466509,9.019591,gynoecia,mARF8 3B,--
+GSM3466526,19.707253,stamens,mARF8 4B,--
+GSM3466740,8.727625,Apical portions of plants (cut in hypocotyl),wild type,--
+GSM3466746,8.138363,Apical portions of plants (cut in hypocotyl),SOB3-D,--
+GSM3466749,9.661958,Apical portions of plants (cut in hypocotyl),pif4-101 pif5(pil6-1) pif7-1,--
+GSM3466743,7.0850897,Apical portions of plants (cut in hypocotyl),sob3-6,--
+SRX5112494,34.504967,leaves,--,--
+SRX5431766,20.38551,7-day-old root tips,wild type,0.5 MS / 0.8% agar / 0.3% sucrose
+SRX5431764,18.887684,7-day-old root tips,bri3,0.5 MS / 0.8% agar / 0.3% sucrose
+SRX5431762,25.619122,7-day-old root tips,bri3-RESCUED,0.5 MS / 0.8% agar / 0.3% sucrose
+SRX5507270,44.166122,seed,--,--
+SRX5507267,24.003023,seed,--,--
+SRX5507273,54.425297,seed,--,--
+SRX5507294,67.09426,seed,--,--
+SRX5507298,41.657127,seed,--,--
+SRX5507296,64.51862,seed,--,--
+SRX5507274,39.972355,seed,--,--
+SRX5507277,22.218273,seed,--,--
+SRX5507266,50.536366,seed,--,--
+SRX5507281,40.43974,seed,--,--
+SRX5507284,29.996325,seed,--,--
+SRX5507278,45.987457,seed,--,--
+SRX5733589,21.748165,seedling,atms1,--
+GSM3834758,22.230915,leaves no. 5-6th darkened for 5 days,wild type,--
+GSM3834756,12.808435,uncovered leaves,wild type,--
+SRX6422635,18.006493,Root,wild type,dark
+SRX6422629,24.502548,Root,hy5 mutant,light
+SRX6422633,20.952274,Root,wild type,light
+SRX6422631,18.521345,Root,hy5 mutant,dark
+SRX6666359,20.734737,7-day-old root tips,wild type,0.5 MS / 0.8% agar / 0.3% sucrose
+SRX6666361,21.286,7-day-old root tips,bb,0.5 MS / 0.8% agar / 0.3% sucrose
+SRX6666363,20.798159,7-day-old root tips,jmj14,0.5 MS / 0.8% agar / 0.3% sucrose
+GSM4038494,9.498236,aerial part,wild type,--
+SRX6960116,11.112522,cotyledon,wild type,--
+SRX6960117,20.343273,root,wild type,--
+SRX7070831,22.752876,7-day-old root tips,brx-2 jmj14-1,0.5 MS / 0.8% agar / 0.3% sucrose
+SRX7070829,26.30365,7-day-old root tips,brx-2,0.5 MS / 0.8% agar / 0.3% sucrose
+SRX7418517,18.133844,Leaves,--,--
+SRX7418523,23.60242,Leaves,--,--
+SRX7418520,17.538292,Leaves,--,--
+SRX7759651,26.480051,root tip,wild type,CK
+SRX7759652,25.049673,root tip,wild type,CK
+SRX7759653,27.793911,root tip,wild type,water potential gradient assay*
+SRX7759654,29.380043,root tip,wild type,water potential gradient assay*
+SRX7759655,27.159624,root tip,IREW,CK
+SRX7759657,25.641699,root tip,IREW,water potential gradient assay*
+SRX8094380,13.518842,inflorescence,--,--
+DRX014762,16.678425,seedlings,rfl2,--
+DRX014760,17.426128,seedlings,wild type,--
+DRX029882,13.456536,whole plant,--,--
+DRX028726,20.152182,inflorescence meristems,--,--
+DRX028729,19.485878,inflorescence meristems,--,--
+DRX028720,15.170241,meristems and young leaves,--,--
+DRX028723,12.14537,meristems and young leaves,--,--
+DRX060009,26.19323,root,--,AI
+DRX060012,23.364128,root,--,Mock
+DRX064458,19.175262,root,--,-B
+DRX064454,16.557482,root,--,-Ca
+DRX064462,14.47668,root,--,-Cu
+DRX064459,12.400251,root,--,-He
+DRX064453,23.982098,root,--,-K
+DRX064455,15.581093,root,--,-Mg
+DRX064460,16.131287,root,--,-Mn
+DRX064463,17.056446,root,--,-Mo
+DRX064452,16.788433,root,--,-N
+DRX064456,17.819366,root,--,-P
+DRX064457,17.511072,root,--,-S
+DRX064461,16.434734,root,--,-Zn
+DRX064451,18.613745,root,--,Mock
+DRX065034,23.853241,root,MybOX,--
+DRX065032,13.781023,root,myb30-2,--
+DRX065028,16.78064,root,myb30-2,--
+DRX065024,13.893721,root,wild type,Mock
+DRX066826,21.841534,--,ibm1,--
+DRX066829,15.85429,--,ibm1 ldl2,--
+DRX066835,12.61158,--,ldl2,--
+DRX066838,11.560104,--,suvh456,--
+DRX066832,13.69243,--,wild type,--
+DRX078174,19.046995,whole plant,atlbr-2,--
+DRX078171,21.234634,whole plant,atlbr-2,--
+DRX078168,16.66023,whole plant,wild type,LPS
+DRX078165,22.080086,whole plant,wild type,Mock
+DRX084091,16.873098,seedlings,35S-TIR1,--
+DRX084094,15.301547,seedlings,35S-TIR1,--
+DRX084088,14.728293,seedlings,35S-TIR1,--
+DRX084100,17.576183,seedlings,35S-ccvTIR1,--
+DRX084103,16.467976,seedlings,35S-ccvTIR1,--
+DRX084097,16.661144,seedlings,35S-ccvTIR1,--
+DRX084082,14.283707,seedlings,wild type,IAA
+DRX084079,16.36074,seedlings,wild type,Mock
+DRX084085,16.861534,seedlings,wild type,cvxIAA
+DRX093716,33.72299,--,wild type,PHA
+DRX093713,24.804485,--,wild type,control
+DRX176874,22.13176,--,--,0day mock
+DRX176886,20.355873,--,--,1day KDB
+DRX176877,22.508112,--,--,1day mock
+DRX176889,26.167852,--,--,3day KDB
+DRX176880,20.44779,--,--,3day mock
+DRX176884,20.814936,--,--,5day mock
+DRX099523,35.69547,root,--,azomethine (boron deprivation) +  boric acid 1h
+DRX099520,42.6127,root,--,azomethine (boron deprivation) 1h
+DRX099517,23.090103,root,wild type,Mock
+DRX111920,26.113865,shoot apex,--,Mock
+DRX111926,24.710278,shoot apex,--,Mock
+DRX139781,21.760605,root,NR-null mutant,--
+DRX139780,24.864004,root,wild type,--
+DRX139779,15.653599,shoot,NR-null mutant,--
+DRX139778,10.669705,shoot,wild type,--
+DRX139786,15.077768,seedlings,--,Mock
+DRX139792,10.508333,seedlings,--,Mock
+DRX139798,9.542728,seedlings,--,Mock
+DRX139788,44.427753,seedlings,--,dry
+DRX139794,43.320217,seedlings,--,dry
+DRX139800,35.546036,seedlings,--,dry
+DRX139790,20.762493,seedlings,--,heat
+DRX139796,19.764372,seedlings,--,heat
+DRX139802,16.754393,seedlings,--,heat
+DRX158876,26.0445,root,ldl3,--
+DRX158871,29.820585,root,ldl3,--
+DRX158873,25.835613,root,ldl3,--
+DRX158862,30.627611,root,wild type,CIM 14day
+DRX158858,31.487564,root,wild type,Mock
+DRX158864,22.37136,root,wild type,SIM1dayCIM14day
+DRX159407,13.040625,--,--,dark2daylight2day
+DRX159855,26.657131,1cm long root tips,rpt5a mutant,0.03mM_boric_acid
+DRX159859,23.478033,1cm long root tips,rpt5a mutant,3mM_boric_acid
+DRX159847,24.253899,1cm long root tips,wild type,0.03mM_boric_acid
+DRX159851,20.480797,1cm long root tips,wild type,3mM_boric_acid
+DRX168574,21.679316,Shoot,lcs3,low Ca
+DRX168570,9.853125,Shoot,lcs3,normal Ca
+DRX168572,15.697631,Shoot,wild type,low Ca
+DRX168568,9.480278,Shoot,wild type,normal Ca
+DRX174606,33.232452,12day seedlings,raf18/20/24,dehydration 5h*
+DRX174607,32.342278,12day seedlings,srk2abgh,dehydration 5h*
+DRX174605,35.58143,12day seedlings,wild type,dehydration 5h*
+DRX174604,13.942134,12day seedlings,wild type,untreated
+DRX178607,12.951023,leaf,hise1-3*,--
+ERX1104310,13.018197,seedlings,wild type,--
+ERX1268131,6.844396,leaves,sid2,--
+ERX1268134,9.925747,leaves,sid2,--
+ERX1268137,15.003888,leaves,sid2,--
+ERX1268161,6.311838,leaves,sid2,--
+ERX1268164,6.3081326,leaves,sid2,--
+ERX1268167,7.7437277,leaves,sid2,--
+ERX1268147,8.674374,leaves,wild type,--
+ERX1268155,5.6720753,leaves,wild type,--
+ERX1268158,6.687573,leaves,wild type,--
+ERX1268170,9.355801,leaves,wild type,--
+ERX1268173,12.779741,leaves,wild type,--
+ERX1268176,16.971283,leaves,wild type,--
+ERX1366475,5.31693,leaves,--,--
+ERX1409523,14.010236,seedlings,Col-0 WT pX6-3xHA-AGO1,--
+ERX1409543,47.80282,seedlings,ago1-3 FLAG-AGO1D762A,--
+ERX1409534,16.093925,seedlings,ago1-3 FLAG-AGO1D762A pX6-3xHA-AGO1,--
+ERX1409532,17.369396,seedlings,ago1-3 FLAG-AGO1E803A pX6-3xHA-AGO1,--
+ERX1409530,17.450163,seedlings,ago1-3 FLAG-AGO1H988F pX6-3xHA-AGO1,--
+ERX1409527,13.553551,seedlings,ago1-3 FLAG-AGO1WT pX6-3xHA-AGO1,--
+ERX1409525,17.045927,seedlings,ago1-3 pX6-3xHA-AGO1,--
+ERX1517446,16.831213,rosette leaf,atphb3 ANAC017,--
+ERX1517449,16.882156,rosette leaf,atphb3 anac017,--
+ERX1517454,13.736939,rosette leaf,rpotmp ANAC017,--
+ERX1517457,19.891098,rosette leaf,rpotmp anac017,--
+ERX1517452,15.571731,rosette leaf,wild type,--
+ERX1648936,16.52309,seedlings,--,--
+ERX1735532,15.314541,seedling,wild type,--
+ERX1735534,19.46902,seedling,xrn3-8 mutant,--
+ERX1874916,17.312471,whole plant,wild type,--
+ERX1936700,19.142498,inflorescence,ETT,--
+ERX1936703,15.361947,inflorescence,ETT + IAA,--
+ERX1936694,14.830563,inflorescence,wild type,Mock
+ERX1936697,15.343931,inflorescence,wild type +IAA,IAA
+ERX2055381,16.101517,inflorescence,35S:HWS overexpressor,--
+ERX2055375,19.945328,inflorescence,hws-1 mutant,--
+ERX2055377,18.62916,inflorescence,hws-3 mutant,--
+ERX2055373,23.697899,inflorescence,wild type,--
+ERX2244584,17.245823,siliques,AtBUD13 heterozygous knockout,--
+ERX2244582,14.867457,siliques,wild type,--
+ERX2297585,10.357393,seedlings,--,Mock
+ERX2297600,10.6531315,seedlings,--,Mock
+ERX2297591,11.59225,seedlings,--,cold16 3day
+ERX2297594,9.397007,seedlings,--,cold16 3day
+ERX2297582,7.8064795,seedlings,--,cold16 9day
+ERX2297588,7.961752,seedlings,--,recovery 3day aHter cold16 9day
+ERX2297597,9.2416725,seedlings,--,recovery 3day aHter cold16 9day
+ERX2297608,10.410199,seedlings,pcp,--
+ERX2297611,11.509254,seedlings,pcp,--
+ERX2297614,8.380163,seedlings,pcp,--
+ERX2338277,17.48696,apices,fd-2,--
+ERX2338283,16.19668,apices,fd-2,--
+ERX2338289,13.984434,apices,fd-2,--
+ERX2338280,12.176733,apices,pFD::GFP:FD,--
+ERX2338286,11.843503,apices,pFD::GFP:FD,--
+ERX2338292,12.486698,apices,pFD::GFP:FD,--
+ERX2338298,11.686855,apices,pFD::GFP:FD,--
+ERX2338304,9.950044,apices,pFD::GFP:FD,--
+ERX2612804,12.742394,leaves,--,Mock
+ERX2612807,15.393521,leaves,--,Mock
+ERX2612816,9.54878,leaves,--,Mock
+ERX2612819,9.930093,leaves,--,Mock
+ERX2612828,10.561694,leaves,--,Mock
+ERX2612831,9.876231,leaves,--,Mock
+ERX2612840,10.730338,leaves,--,Mock
+ERX2612843,8.911633,leaves,--,Mock
+ERX2612852,8.039724,leaves,--,Mock
+ERX2612855,11.736428,leaves,--,Mock
+ERX2612798,9.445506,leaves,--,inoculated with Hpa*
+ERX2612801,13.813695,leaves,--,inoculated with Hpa*
+ERX2612810,10.080501,leaves,--,inoculated with Hpa*
+ERX2612813,12.147696,leaves,--,inoculated with Hpa*
+ERX2612822,9.816734,leaves,--,inoculated with Hpa*
+ERX2612825,8.354505,leaves,--,inoculated with Hpa*
+ERX2612834,9.016378,leaves,--,inoculated with Hpa*
+ERX2612837,12.2014675,leaves,--,inoculated with Hpa*
+ERX2612846,8.362844,leaves,--,inoculated with Hpa*
+ERX2612849,13.533103,leaves,--,inoculated with Hpa*
+ERX2702590,7.9408674,leaves,--,Mock
+ERX2702587,6.6305256,leaves,--,dry
+ERX2729242,12.314899,rosette,pae9-2,4h post inHestation
+ERX2729244,16.54302,rosette,pae9-2,4h post inHestation
+ERX2729246,15.090607,rosette,pae9-2,4h post inHestation
+ERX2729248,11.403366,rosette,pae9-2,8h post inHestation
+ERX2729250,15.556597,rosette,pae9-2,8h post inHestation
+ERX2729252,14.486424,rosette,pae9-2,8h post inHestation
+ERX2729254,11.068203,rosette,pae9-2,control
+ERX2729256,10.436844,rosette,pae9-2,control
+ERX2729258,12.368057,rosette,pae9-2,control
+ERX2729224,13.225491,rosette,wild type,4h post inHestation
+ERX2729226,13.041984,rosette,wild type,4h post inHestation
+ERX2729228,13.057456,rosette,wild type,4h post inHestation
+ERX2729230,13.777655,rosette,wild type,8h post inHestation
+ERX2729232,13.63865,rosette,wild type,8h post inHestation
+ERX2729234,23.305096,rosette,wild type,8h post inHestation
+ERX2729236,10.709051,rosette,wild type,control
+ERX2729238,12.427538,rosette,wild type,control
+ERX2729240,13.94306,rosette,wild type,control
+ERX3198055,15.019498,seedlings,hyl1-2,--
+ERX3139138,35.708164,root,wild type,MB3_wounding 1h
+ERX3139141,32.464516,root,wild type,MB3_wounding 3h
+ERX3139144,29.414236,root,wild type,MB3_wounding 6h
+ERX3139132,23.551718,root,wild type,control
+ERX3139135,23.476767,root,wild type,wounding 12h
+ERX3140330,26.718231,root,wild type,DMSO
+ERX3140333,35.085815,root,wild type,DMSO_wounding 1h
+ERX3140336,33.78279,root,wild type,DMSO_wounding 3h
+ERX3140339,28.124886,root,wild type,DMSO_wounding 6h
+ERX3140342,41.06483,root,wild type,MB3
+ERX3140345,47.306984,root,wild type,MB3_wounding 1h
+ERX3140348,37.48143,root,wild type,MB3_wounding 3h
+ERX3140351,53.549683,root,wild type,MB3_wounding 6h
+ERX3196395,5.1629705,leaf,--,untreated
+ERX3196399,5.3585324,leaf,--,untreated
+ERX3196405,5.164546,leaf,--,untreated
+ERX3196411,6.107276,leaf,--,untreated
+ERX3196396,6.464006,leaf,--,untreated
+ERX3196400,5.9094977,leaf,--,untreated
+ERX3196406,4.9825964,leaf,--,untreated
+ERX3196412,4.9674935,leaf,--,untreated
+ERX3196334,21.017738,leaf,--,Hlg22
+ERX3196340,20.649487,leaf,--,h2o
+ERX3507592,14.032885,--,VIRc*,--
+ERX3511341,17.644001,--,hen2-2*,--
+ERX3511336,17.749353,--,wild type,--
+ERX3374725,16.4623,whole organism,myc234,25min touch
+ERX3374732,15.326346,whole organism,myc234,untreated
+ERX3374722,20.914623,whole organism,wild type,25min touch
+ERX3374729,16.032743,whole organism,wild type,untreated
+ERX3390233,22.020727,whole organism,myc2 pMYC2:MYC2-FLAG,10min touch*
+ERX3390237,18.279535,whole organism,myc2 pMYC2:MYC2-FLAG,180min touch*
+ERX3390241,22.161167,whole organism,myc2 pMYC2:MYC2-FLAG,25min touch*
+ERX3390245,17.744259,whole organism,myc2 pMYC2:MYC2-FLAG,40min touch*
+ERX3390249,21.63788,whole organism,myc2 pMYC2:MYC2-FLAG,60min touch*
+ERX3390253,18.958744,whole organism,myc2 pMYC2:MYC2-FLAG,untouched
+ERX3674697,8.600181,leaf,mail1-1,--
+ERX3674727,18.82733,leaf,mail1-1-pp7l-2,--
+ERX3674731,10.036841,leaf,main-2,--
+ERX3674723,10.776836,leaf,pp7l-2,--
+ERX3674685,10.144415,leaf,wild type,--
+ERX3467492,19.85005,root,nrf1-2 mutant,iron deHiciency
+ERX3467490,21.952337,root,nrf1-2 mutant,iron suHHiciency
+ERX3467496,24.332806,root,wild type,iron deHiciency
+ERX3467494,22.226608,root,wild type,iron suHHiciency
+ERX350053,16.867058,leaves,CaMV35S:FLAG::RPL18,--
+ERX350056,14.383275,leaves,FtGDC::FLAG::RPL18,--
+ERX570530,10.928073,root tip,rtel1-1,--
+ERX570532,11.198247,root tip,wild type,--
+ERX940520,35.05655,seedlings,--,APO
+ERX940532,22.940102,seedlings,--,Mock
+ERX940528,27.108332,seedlings,--,SAHA
+ERX940524,29.555609,seedlings,--,TSA
+ERX2405550,14.499404,seedlings,lhp1-3,--
+ERX2405540,15.35424,seedlings,trb1-1,--
+ERX2405552,16.390339,seedlings,trb1-1 lhp1-3,--
+ERX2405547,14.8541355,seedlings,trb1-1 trb3-1,--
+ERX2405558,19.255346,seedlings,trb1-1 trb3-1 lhp1-3,--
+ERX2405543,17.70676,seedlings,trb3-1,--
+ERX2405556,14.651369,seedlings,trb3-1 lhp1-3,--
+ERX2405537,15.091915,seedlings,wild type,--
+ERX981475,15.77295,whole plant,wild type,--
+ERX1043128,12.245343,leaves,met1-3 mutant,--
+ERX1043133,8.243094,leaves,met1-3 mutant x wild type,--
+ERX1043124,9.759168,leaves,wild type,--
+ERX1043130,8.8222275,leaves,wild type x met1-3 mutant,--
+GSM800621,13.78479,seedlings,--,--
+GSM797873,21.575972,seedlings,wei8-/- tar2+/-,--
+GSM797871,19.43615,seedlings,wild type,Kynurenine
+GSM847337,16.617708,flower,wild type,--
+GSM847334,17.365896,seedlings,wild type,--
+GSM865212,26.877304,flower receptacles,Wild Type,--
+GSM865215,24.1121,flower receptacles,hae-3 hsl2-3 mutant,--
+GSM762078,8.667065,seedlings,--,--
+GSM762070,12.08527,seedlings,--,--
+GSM912636,17.114454,seedlings,bzr1-1D mutant,--
+GSM912638,14.119608,seedlings,"pifq (a quadruple mutant lacking PIF1, 3, 4, and 5)",--
+GSM912640,11.619215,seedlings,pifq;bzr1-1D mutant,--
+GSM912634,19.458912,seedlings,wild type,--
+GSM951355,16.300575,seedlings,rve8-1,dexamethasone
+GSM951358,15.192432,seedlings,rve8-1,mock
+GSM951349,17.097427,seedlings,rve8-1 RVE8,dexamethasone
+GSM951352,18.531387,seedlings,rve8-1 RVE8,mock
+GSM958266,21.346237,seedlings,pif1pif3pif4pif5 (pifq),--
+GSM958263,20.39695,seedlings,pif1pif4pif5 (pif145),--
+GSM958260,21.615551,seedlings,pif3,--
+GSM958257,24.624016,seedlings,wild type,--
+GSM969708,10.165617,leaves,pen2-1 pad4-1 sag101-2 mutant,--
+GSM969702,9.314252,leaves,pen2-1 pad4-1 sag101-2 mutant,--
+GSM969705,11.340909,leaves,pen2-1 pad4-1 sag101-2 mutant,--
+GSM969678,10.443808,leaves,pen2-1 pad4-1 sag101-2 mutant expressing MLA1-HA,--
+GSM969663,11.5031,leaves,pen2-1 pad4-1 sag101-2 mutant expressing MLA1-HA,--
+GSM969684,11.182407,leaves,pen2-1 pad4-1 sag101-2 mutant expressing MLA1-HA,--
+GSM969666,12.172627,leaves,pen2-1 pad4-1 sag101-2 mutant expressing MLA1-HA,--
+GSM988490,22.226702,leaves,35S:RPS4-HS,--
+GSM988493,16.778816,leaves,35S:RPS4-HS,--
+GSM988487,15.659679,leaves,35S:RPS4-HS,--
+GSM988496,18.415665,leaves,wild type,Mock
+GSM988499,15.048535,leaves,wild type,shiHt Hrom 28Â°C to 19Â°C Hor 4h*
+GSM988502,10.492222,leaves,wild type,shiHt Hrom 28Â°C to 19Â°C Hor 8h*
+GSM1023755,19.105713,seedlings,35S,--
+GSM1023757,18.22374,seedlings,35S,--
+GSM1023753,16.894047,seedlings,Wild type,--
+GSM1025549,15.07965,seedlings,mos2-2,--
+GSM1054090,23.19878,seedlings,BP12-2,10 ç¢g/ml rapamycin
+GSM1054087,18.162605,seedlings,wild type,10 ç¢g/ml rapamycin
+GSM1723718,8.92169,leaves,--,--
+GSM1723719,11.08473,leaves,--,--
+GSM1723720,10.966684,leaves,--,--
+GSM1723721,7.4793844,leaves,--,--
+GSM1723722,10.280337,leaves,--,--
+GSM1723723,12.520958,leaves,--,--
+GSM1723724,15.479106,leaves,--,--
+GSM1723725,19.369993,leaves,--,--
+GSM1723726,17.59321,leaves,--,--
+GSM1723727,22.476868,leaves,--,--
+GSM1723728,27.81048,leaves,--,--
+GSM1723716,7.960949,leaves,--,--
+GSM1723717,8.016712,leaves,--,--
+GSM1072464,12.476634,seedlings,Wild type,--
+GSM1072485,9.736292,seedlings,Wild type,Mock
+GSM1072476,14.394719,seedlings,Wild type,photoperiod ZT10 VS ZT22
+GSM1072479,12.759754,seedlings,Wild type,photoperiod ZT14 VS ZT22
+GSM1072482,11.391892,seedlings,Wild type,photoperiod ZT18 VS ZT22
+GSM1072470,12.198827,seedlings,Wild type,photoperiod ZT2 VS ZT22
+GSM1072473,11.668656,seedlings,Wild type,photoperiod ZT6 VS ZT22
+GSM1072467,11.289699,seedlings,link1link2 double mutants,--
+GSM1072494,10.932647,seedlings,link1link2 double mutants,--
+GSM1072497,10.810789,seedlings,link1link2 double mutants,--
+GSM1072500,11.252309,seedlings,link1link2 double mutants,--
+GSM1072488,14.805784,seedlings,link1link2 double mutants,--
+GSM1072503,10.655202,seedlings,link1link2 double mutants,--
+GSM1072491,15.297373,seedlings,link1link2 double mutants,--
+SRX264547,15.760346,leaves,--,--
+SRX255194,33.59539,seedlings,--,Mock
+SRX255197,39.219093,seedlings,--,benzyladenine
+SRX275911,15.671774,seedlings,--,--
+GSM1173204,34.6345,rosette leaf,WS,Hirst dehydration
+GSM1173202,7.8795667,rosette leaf,WS,Mock
+GSM1173206,28.794493,rosette leaf,WS,third dehydration
+GSM1239087,11.793581,seedlings,+/+,--
+GSM1239079,11.246532,seedlings,IBH1OE/IBH1OE,--
+GSM1239083,12.727629,seedlings,IBL1OE/IBL1OE,--
+GSM1239081,10.145767,seedlings,ibh1-/ibh1-,--
+GSM1239085,10.512192,seedlings,ibl1-/ibl1-,--
+GSM1242378,16.688375,leaves,cmt2,--
+GSM1242382,10.7045555,leaves,cmt23,--
+GSM1242380,9.514841,leaves,cmt3,--
+GSM1242376,12.1978855,leaves,drm12,--
+GSM1242384,11.638786,leaves,drm12cmt2,--
+GSM1242388,10.052657,leaves,drm12cmt23,--
+GSM1242386,17.021845,leaves,drm12cmt3,--
+GSM1242390,10.098782,leaves,suvh456,--
+GSM1242374,9.613814,leaves,wild type,--
+SRX365738,16.798988,whole plant,rd26ko,--
+GSM1252268,25.741865,seedlings,--,--
+GSM1252266,20.209827,seedlings,--,--
+GSM1252264,23.186724,seedlings,--,BR
+GSM1252262,23.04514,seedlings,wild type,Mock
+GSM1279542,22.85394,root,bri1-116 mutant,untreated
+GSM1279544,22.408989,root,bri1-116;bzr1-1D mutant,untreated
+GSM1279550,28.538437,root,dwf4 mutant,"100 nM BL, 4 hr"
+GSM1279548,30.178848,root,dwf4 mutant,untreated
+GSM1279536,18.581034,root,wild type,BL 4h
+GSM1279538,22.294914,root,wild type,IAA 4h
+GSM1279540,22.707958,root,wild type,IAA+BL 4h
+GSM1279534,22.457561,root,wild type,Mock
+GSM1279546,22.532303,root,wild type,untreated
+GSM1297710,6.1093082,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297712,9.443868,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297714,7.9587803,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297716,5.7807817,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297718,6.6717153,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297720,6.12089,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297722,5.9388895,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297726,8.786279,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297728,8.030692,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297730,8.334297,aerial shoots,Wild type,Emoy2_1ddpi
+GSM1297734,5.5430827,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297736,5.8205023,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297738,7.26545,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297740,6.0232472,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297742,5.752129,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297744,8.942858,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297746,9.856298,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297750,8.200708,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297752,7.599941,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297754,8.149074,aerial shoots,Wild type,Emoy2_3ddpi
+GSM1297758,6.021712,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297760,9.074431,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297762,6.504649,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297764,5.207446,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297766,5.8391075,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297768,8.601151,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297770,6.4830713,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297774,9.220635,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297776,10.71257,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297778,8.584028,aerial shoots,Wild type,Emoy2_5ddpi
+GSM1297840,4.5868225,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297842,6.982013,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297844,6.546469,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297846,6.419471,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297848,7.016198,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297850,5.0879145,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297852,8.203003,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297854,8.998646,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297858,5.216233,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297860,6.831375,aerial shoots,Wild type,Waco9_1ddpi
+GSM1297862,9.389194,aerial shoots,Wild type,Waco9_1ddpi
+GSM1298726,14.613535,flower bud,wild type,--
+GSM1298730,16.903921,leaves,wild type,--
+SRX424585,9.667681,rosette leaf,med5a/5b,--
+SRX424588,13.545246,rosette leaf,med5a/5b ref8-1,--
+SRX424582,17.202667,rosette leaf,ref8-1,--
+SRX424462,9.807475,rosette leaf,wild type,--
+GSM1308344,6.743173,seedlings,HUA2 T-DNA insertion,--
+GSM1347943,7.3030324,leaves,pad4-1,--
+GSM1347946,8.437179,leaves,smg7-1 pad4-1,--
+SRX525652,19.370071,root,hps7,P+
+SRX501696,18.388794,root,wild type,Pi starvation
+GSM1359151,17.116398,carpels,--,--
+GSM1359146,11.823804,carpels,--,--
+GSM1359148,13.6912775,carpels,--,--
+GSM1369673,10.963369,leaves,35S,--
+GSM1369675,9.506935,leaves,35S,--
+GSM1369671,10.849947,leaves,co-SAIL,--
+GSM1369669,10.230529,leaves,wild type,--
+GSM1371357,18.632689,leaves,NIK,--
+GSM1371361,20.400093,leaves,T474D,--
+GSM1371369,18.852821,leaves,T474D,--
+GSM1371363,20.334354,leaves,wild type,Mock
+GSM1371353,18.047083,leaves,wild type,inHected CaLCuV 10dpi
+GSM1371365,26.532194,leaves,wild type,inHected CaLCuV 20dpi
+SRX528590,15.620712,whole plant,--,COR
+SRX528553,14.707289,whole plant,--,Mock
+SRX528557,12.324121,whole plant,--,Mock
+SRX528565,12.714037,whole plant,--,Mock
+SRX528600,13.650213,whole plant,--,Mock
+SRX528604,10.683502,whole plant,--,Mock
+SRX528608,15.472314,whole plant,--,Mock
+SRX528612,11.41521,whole plant,--,Mock
+SRX528616,14.656852,whole plant,--,Mock
+SRX528561,12.190065,whole plant,--,Mock
+SRX528573,12.1655,whole plant,--,Mock
+SRX528620,11.865152,whole plant,--,Mock
+SRX528624,11.541321,whole plant,--,Mock
+SRX528628,12.219244,whole plant,--,Mock
+SRX528569,11.948572,whole plant,--,Mock
+SRX528577,10.026521,whole plant,--,Mock
+SRX528581,10.540976,whole plant,--,Mock
+SRX528585,12.808705,whole plant,--,Mock
+SRX528592,11.770859,whole plant,--,Mock
+SRX528596,12.642702,whole plant,--,Mock
+SRX528551,10.387398,whole plant,--,control
+SRX528555,15.102703,whole plant,--,coronatine 0.25h
+SRX528559,14.2758665,whole plant,--,coronatine 0.5h
+SRX528567,21.979046,whole plant,--,coronatine 1.5h
+SRX528602,19.283052,whole plant,--,coronatine 10h
+SRX528606,14.498942,whole plant,--,coronatine 12h
+SRX528610,22.038473,whole plant,--,coronatine 14h
+SRX528614,14.499877,whole plant,--,coronatine 16h
+SRX528618,15.610575,whole plant,--,coronatine 18h
+SRX528563,17.287134,whole plant,--,coronatine 1h
+SRX528575,12.127887,whole plant,--,coronatine 2.5h
+SRX528622,19.08945,whole plant,--,coronatine 20h
+SRX528626,18.091232,whole plant,--,coronatine 22h
+SRX528630,15.839211,whole plant,--,coronatine 24h
+SRX528571,11.967365,whole plant,--,coronatine 2h
+SRX528579,11.662293,whole plant,--,coronatine 3h
+SRX528583,16.356035,whole plant,--,coronatine 4h
+SRX528587,15.486446,whole plant,--,coronatine 5h
+SRX528594,17.550861,whole plant,--,coronatine 7h
+SRX528598,16.504622,whole plant,--,coronatine 8h
+GSM1377364,17.476261,flower bud,dcl 234 nrpd1,--
+SRX540096,19.911404,seedlings,SR45-GFP,--
+SRX540098,22.768353,seedlings,sr45-1,--
+GSM1390693,12.893238,seedlings,cR-grown WT,--
+GSM1390696,16.348108,seedlings,hid1(hidden treasure 1),--
+GSM1398479,14.264701,seedlings,ESTpro,Incubated in 10 uM beta-estradiol Hor 6h
+GSM1398481,14.310662,seedlings,ESTpro,Incubated in 10 uM beta-estradiol Hor 8h
+GSM1398477,13.294528,seedlings,ESTpro,Not treated
+GSM1398473,13.2874,seedlings,wild type,Incubated in 10 uM beta-estradiol Hor 6h
+GSM1398475,11.368277,seedlings,wild type,Incubated in 10 uM beta-estradiol Hor 8h
+GSM1413823,26.265348,seedlings,cry1 cry2 double mutant,--
+GSM1413825,30.589275,seedlings,tir1 afb1 afb2 afb3 quadruple mutant,--
+GSM1413821,15.054452,seedlings,wild type,Mock
+GSM1413819,23.662617,seedlings,wild type,dark
+SRX639778,10.188919,anther,bhlh91,--
+SRX687831,21.404049,anther,wild type,--
+GSM1429684,10.038557,root tip,clavata2-gabi,--
+GSM1429688,14.835054,root tip,cle40-2,--
+GSM1429682,11.290455,root tip,coryne-3,--
+GSM1429679,11.925871,root tip,wild type,--
+GSM1441335,14.37302,inflorescences and siliques,stk-/-,--
+GSM1978176,15.128823,seedlings,35Spro,low blue
+GSM1978180,13.631821,seedlings,35Spro,low blue
+GSM1978178,17.868378,seedlings,35Spro,white light
+GSM1978182,17.563171,seedlings,35Spro,white light
+GSM1443117,13.892818,seedlings,pif4-101pif5-1,low blue
+GSM1443133,12.816336,seedlings,pif4-101pif5-1,low blue
+GSM1443125,15.34754,seedlings,pif4-101pif5-1,low blue
+GSM1443119,13.56671,seedlings,pif4-101pif5-1,white light
+GSM1443135,12.834617,seedlings,pif4-101pif5-1,white light
+GSM1443127,15.289061,seedlings,pif4-101pif5-1,white light
+GSM1978186,13.263008,seedlings,wild type,Mock
+GSM1443115,13.262168,seedlings,wild type,Mock
+GSM1443131,14.242681,seedlings,wild type,Mock
+GSM1443123,16.002018,seedlings,wild type,Mock
+GSM1978184,11.546701,seedlings,wild type,low blue-light 16h
+GSM1443113,12.176183,seedlings,wild type,low blue-light 1h
+GSM1443129,13.369919,seedlings,wild type,low blue-light 24h
+GSM1443121,12.946338,seedlings,wild type,low blue-light 6h
+GSM1444366,12.038641,cotyledon,pif7-1,--
+GSM1444370,10.33337,cotyledon,pif7-1,--
+GSM1444374,10.383522,cotyledon,sav3-2,--
+GSM1444380,8.314425,cotyledon,sav3-2,--
+GSM1444328,7.105081,cotyledon,wild type,Mock
+GSM1444334,8.701437,cotyledon,wild type,high R:HR_0.5h
+GSM1444330,9.19301,cotyledon,wild type,high R:HR_1h
+GSM1444332,10.276464,cotyledon,wild type,high R:HR_2h
+GSM1444336,9.052643,cotyledon,wild type,high R:HR_3h
+GSM1444338,7.101578,cotyledon,wild type,high R:HR_4h
+GSM1444340,9.472165,cotyledon,wild type,high R:HR_7h
+GSM1444358,10.799368,cotyledon,wild type,low R:HR_0.5h
+GSM1444354,9.797014,cotyledon,wild type,low R:HR_1h
+GSM1444356,8.7543335,cotyledon,wild type,low R:HR_2h
+GSM1444360,7.570527,cotyledon,wild type,low R:HR_3h
+GSM1444362,9.051907,cotyledon,wild type,low R:HR_4h
+GSM1444364,11.236557,cotyledon,wild type,low R:HR_7h
+GSM1444368,12.854662,hypocotyl,pif7-1,--
+GSM1444372,15.958935,hypocotyl,pif7-1,--
+GSM1444377,13.93313,hypocotyl,sav3-2,--
+GSM1444383,14.737217,hypocotyl,sav3-2,--
+GSM1444314,12.864857,hypocotyl,wild type,Mock
+GSM1444320,14.830272,hypocotyl,wild type,high R:HR_0.5h
+GSM1444316,17.994518,hypocotyl,wild type,high R:HR_1h
+GSM1444318,17.042593,hypocotyl,wild type,high R:HR_2h
+GSM1444322,12.589812,hypocotyl,wild type,high R:HR_3h
+GSM1444324,14.816766,hypocotyl,wild type,high R:HR_4h
+GSM1444326,12.733453,hypocotyl,wild type,high R:HR_7h
+GSM1444346,16.259935,hypocotyl,wild type,low R:HR_0.5h
+GSM1444342,15.4904175,hypocotyl,wild type,low R:HR_1h
+GSM1444344,11.753956,hypocotyl,wild type,low R:HR_2h
+GSM1444348,14.890024,hypocotyl,wild type,low R:HR_3h
+GSM1444350,12.351683,hypocotyl,wild type,low R:HR_4h
+GSM1444352,12.780658,hypocotyl,wild type,low R:HR_7h
+SRX661206,23.09679,root,es,Mock
+SRX661209,24.554031,root,fe,He starvation
+GSM1446188,26.068718,seedlings,35S,--
+GSM1446190,26.542442,seedlings,35S,--
+GSM1477533,29.038729,whole plant,lsm4 mutant,--
+GSM1477535,24.182554,whole plant,lsm4 mutant,--
+GSM1477537,20.997505,whole plant,lsm4 mutant,--
+GSM1477529,16.336039,whole plant,wild type,--
+GSM1477531,13.883121,whole plant,wild type,--
+GSM1489633,24.097443,seedlings,wild type,Mock
+GSM1489635,28.811163,seedlings,wild type,switch dark to light 6h
+GSM1491393,12.654986,shoot,--,Mock
+GSM1491396,13.982402,shoot,--,light stress 20s
+GSM1491399,11.287144,shoot,--,light stress 60s
+GSM1496101,50.27301,seed,--,Mock
+GSM1496098,52.538296,seed,--,cold 15 cotyledon
+GSM1501693,18.384832,stem,mol1-1 mutant,--
+GSM1501691,20.045326,stem,wild type,--
+GSM1504314,14.54618,leaf,--,Vibrio vulnificus 0h
+GSM1504316,24.227432,leaf,--,Vibrio vulnificus 12h
+GSM1504318,20.013845,leaf,--,Vibrio vulnificus 24h
+GSM1504320,17.395622,leaf,--,Vibrio vulnificus 48h
+GSM1504322,17.501343,leaf,--,Vibrio vulnificus 72h
+GSM1507915,17.367762,rosette leaf,Col-0,350 ppb ozone exposure Hor 2hr
+GSM1507912,9.274449,rosette leaf,Col-0,control
+GSM1507951,19.371033,inflorescence,Wild Type,--
+GSM1507962,19.587748,inflorescence,clf-28 mutant,--
+GSM1507956,27.452562,root,clf-28 mutant,--
+GSM1507959,22.361067,shoot,clf-28 mutant,--
+GSM1507947,14.988442,shoot,wild type,--
+GSM1507965,30.347967,siliques,clf-28 mutant,--
+GSM1507954,17.85447,siliques,wild type,--
+GSM1518600,13.720319,whole plant,Wild type,--
+GSM1518606,15.895815,whole plant,prmt4a;4b double mutant,--
+GSM1518603,13.958602,whole plant,prmt5 mutant,--
+GSM1527628,11.63658,seedling shoot,--,--
+GSM1530033,10.007758,seedling shoot,clf,--
+GSM1546548,11.230084,apical shoot meristem,--,--
+GSM1546544,10.256912,apical shoot meristem,--,--
+GSM1546546,11.2685795,apical shoot meristem,--,--
+GSM1546542,11.232983,apical shoot meristem,--,MMC
+GSM1546550,12.130225,apical shoot meristem,--,Mock
+GSM1546538,8.727004,apical shoot meristem,--,Mock
+GSM1546540,10.474817,apical shoot meristem,--,zebularine
+GSM1546552,8.9458475,apical shoot meristem,--,zebularine 5day
+GSM1548128,15.868658,whole plant,Wild type,Mock
+GSM1548134,18.277573,whole plant,Wild type,cold10 1h
+GSM1548140,20.708652,whole plant,Wild type,cold10 24h
+GSM1548137,18.749865,whole plant,gemin2 mutant,--
+GSM1548143,31.343899,whole plant,gemin2 mutant,--
+GSM1548131,17.0396,whole plant,gemin2 mutant,--
+GSM1548122,14.015762,whole plant,Wild type,--
+GSM1548125,15.946437,whole plant,gemin2 mutant,--
+GSM1550354,11.586123,inflorescence,wild type,--
+GSM1570246,12.826208,rosette leaf,--,Coronatine
+GSM1570244,10.32672,rosette leaf,--,Mock
+GSM1572738,9.474495,shoot,--,Mock
+GSM1572750,12.919693,shoot,--,high CO2
+GSM1572746,13.378257,shoot,--,low MgCl2
+GSM1572758,15.06026,shoot,--,low MgCl2 + high CO2
+GSM1573847,12.709728,leaves,Wild type,Low CO2
+GSM1576088,32.517845,root,--,--
+GSM1576090,25.699703,root,--,--
+GSM1576092,25.320744,root,--,--
+GSM1576094,31.6943,root,--,--
+GSM1576096,27.446735,root,--,--
+GSM1576098,26.527199,root,--,--
+GSM1576100,20.006477,root,--,--
+GSM1576102,18.565392,root,--,--
+GSM1576104,20.992329,root,--,--
+GSM1576106,20.481735,root,--,--
+GSM1576108,23.330744,root,--,--
+GSM1576110,19.15066,root,--,--
+GSM1576112,24.288387,root,--,--
+GSM1576114,23.56457,root,--,--
+GSM1576116,20.500145,root,--,--
+GSM1585896,36.926422,whole plant,ros1-3,ABA
+GSM1585893,13.487745,whole plant,ros1-3,mock
+GSM1585902,31.994047,whole plant,ros1-4,ABA
+GSM1585899,17.260855,whole plant,ros1-4,mock
+GSM1585890,31.997517,whole plant,wild type,ABA
+GSM1585887,19.132618,whole plant,wild type,mock
+SRX849455,18.297945,aerial seedling,mtkas-2 mutant,--
+SRX849462,12.164634,aerial seedling,mtkas-2 mutant,--
+SRX849459,15.57233,aerial seedling,wild type,CO2
+SRX849205,12.580542,aerial seedling,wild type,Mock
+GSM1591713,15.328842,rosette leaf,cao mutant,--
+GSM1603465,19.626123,seedlings,NSRa/NSRb,--
+GSM1603462,16.000767,seedlings,wild type,--
+GSM1603946,9.693966,rosette leaf,coi1-16 ein2 sid2,Mock
+GSM1603958,10.316908,rosette leaf,tga2 tga5 tga6,Mock
+GSM1603961,15.126931,rosette leaf,tga2 tga5 tga6,ozone
+GSM1603933,23.158531,seedlings,--,ABA
+GSM1603935,13.419078,seedlings,--,DPA
+GSM1603932,12.232551,seedlings,--,Mock
+GSM1603934,16.45655,seedlings,--,PA
+GSM1617429,12.913917,inflorescence,--,--
+GSM1618754,16.12541,leaves,wild type,Botrytis cinerea 14hpi
+GSM1618751,12.20293,leaves,wild type,Mock
+GSM1618760,21.004292,leaves,wrky33 mutant,Botrytis cinerea 14hpi
+GSM1618757,14.303768,leaves,wrky33 mutant,Mock
+GSM1627453,15.4758415,seedlings,athb1-1,--
+GSM1627450,17.450611,seedlings,wild type,--
+GSM1631204,38.40411,seedlings,rbm25-1,ABA
+GSM1631201,20.511814,seedlings,rbm25-1,Mock
+GSM1631198,41.01062,seedlings,wild type,ABA
+GSM1631195,14.49957,seedlings,wild type,Mock
+SRX974287,5.5625744,rosette leaf,CS60000,8h light/16h dark Hor 72h
+SRX974046,10.258405,rosette leaf,CS60000,prolonged darkness Hor 24h
+SRX974270,12.786017,rosette leaf,CS60000,prolonged darkness Hor 48h
+SRX973945,8.6111965,rosette leaf,CS60000,prolonged darkness Hor 6h
+SRX974283,12.871863,rosette leaf,CS60000,prolonged darkness Hor 72h
+SRX974289,6.5994143,rosette leaf,hml1-2; SALK_145226C,8h light/16h dark Hor 72h
+SRX974048,8.638954,rosette leaf,hml1-2; SALK_145226C,prolonged darkness Hor 24h
+SRX974282,14.282326,rosette leaf,hml1-2; SALK_145226C,prolonged darkness Hor 48h
+SRX973947,10.555199,rosette leaf,hml1-2; SALK_145226C,prolonged darkness Hor 6h
+SRX974285,13.608122,rosette leaf,hml1-2; SALK_145226C,prolonged darkness Hor 72h
+SRX974288,6.92163,rosette leaf,ivd1-2; CS860823,8h light/16h dark Hor 72h
+SRX970025,5.589232,rosette leaf,ivd1-2; CS860823,Mock
+SRX974047,10.966185,rosette leaf,ivd1-2; CS860823,prolonged darkness Hor 24h
+SRX974271,13.303153,rosette leaf,ivd1-2; CS860823,prolonged darkness Hor 48h
+SRX973946,12.254101,rosette leaf,ivd1-2; CS860823,prolonged darkness Hor 6h
+GSM1655653,14.839023,leaf mesophyll,--,--
+GSM1655657,18.867878,leaf mesophyll,--,--
+GSM1655659,20.340094,leaf mesophyll,--,--
+GSM1655663,17.72647,leaf mesophyll,--,--
+GSM1656445,12.863412,12day seedlings,wild type,--
+GSM1659613,6.510282,rosette leaf,CS60000,dark 0day
+GSM1659619,11.344717,rosette leaf,CS60000,dark 1day
+GSM1659625,11.60418,rosette leaf,CS60000,dark 2day
+GSM1659631,11.706735,rosette leaf,CS60000,dark 3day
+GSM1659637,8.54912,rosette leaf,CS60000,dark 6h
+GSM1659643,6.4979854,rosette leaf,CS60000,kept in 8h light/16h dark Hor 72h
+GSM1659615,9.848507,rosette leaf,hml1-2,dark 1day
+GSM1659621,16.151966,rosette leaf,hml1-2,dark 2day
+GSM1659627,14.233126,rosette leaf,hml1-2,dark 3day
+GSM1659633,8.591743,rosette leaf,hml1-2,dark 6h
+GSM1659639,6.492649,rosette leaf,hml1-2,kept in 8h light/16h dark Hor 72h
+GSM1659611,6.7176943,rosette leaf,ivd1-2,dark 0day
+GSM1659617,8.865007,rosette leaf,ivd1-2,dark 1day
+GSM1659623,14.645317,rosette leaf,ivd1-2,dark 2day
+GSM1659635,11.008114,rosette leaf,ivd1-2,dark 6h
+GSM1659641,6.7534037,rosette leaf,ivd1-2,kept in 8h light/16h dark Hor 72h
+GSM1662397,52.600075,embryo,Col-0,--
+GSM1662399,44.108936,embryo,clf-28,--
+GSM1675602,12.728342,whole plant,--,Mock
+GSM1675605,15.573967,whole plant,--,light pulse
+GSM1679009,13.986742,seedlings,35S,--
+GSM1679005,16.864855,seedlings,35S,--
+GSM1679008,11.542051,seedlings,35S,--
+GSM1679004,11.182392,seedlings,35S,--
+GSM1679003,12.327966,seedlings,wild type,DEX
+GSM1679007,11.245972,seedlings,wild type,DEX shade
+GSM1679002,11.844572,seedlings,wild type,Mock
+GSM1679006,15.56808,seedlings,wild type,Shade
+GSM1692579,10.849541,rosette leaf,--,heat6hrecovery48h
+GSM1695576,13.979955,rosette leaf,--,--
+SRX1057354,20.58235,root,wild type,BA
+SRX1057345,19.221354,root,wild type,Mock
+SRX1057349,13.573975,shoot,wild type,BA
+SRX1058195,20.362534,root tip,--,Mock
+SRX1058189,20.375988,root tip,--,glucose
+SRX1058196,16.608974,root tip,agb1-2,--
+SRX1058190,22.761745,root tip,agb1-2,--
+SRX1060138,13.298346,whole plant,--,--
+GSM1717055,24.543482,root,--,Colletotrichum incanum 10dpi (under low phosphate)
+GSM1717058,19.613445,root,--,Colletotrichum incanum 24dpi (under low phosphate)
+GSM1717016,16.971558,root,--,Colletotrichum toHieldiae 10dpi
+GSM1717040,18.819592,root,--,Colletotrichum toHieldiae 10dpi (under low phosphate)
+GSM1717019,21.704674,root,--,Colletotrichum toHieldiae 16dpi
+GSM1717043,20.671082,root,--,Colletotrichum toHieldiae 16dpi (under low phosphate)
+GSM1717046,29.289133,root,--,Colletotrichum toHieldiae 24dpi (under low phosphate)
+GSM1717013,18.068611,root,--,Colletotrichum toHieldiae 6dpi
+GSM1717038,16.959787,root,--,Colletotrichum toHieldiae 6dpi (under low phosphate)
+GSM1717028,25.735031,root,--,Mock
+GSM1717031,22.926767,root,--,Mock
+GSM1717034,31.248627,root,--,Mock
+GSM1717001,21.423105,root,--,Mock
+GSM1717004,25.067915,root,--,Mock
+GSM1717007,23.748032,root,--,Mock
+GSM1717010,24.261324,root,--,Mock
+GSM1810465,21.726986,seedlings,--,Mock
+GSM1810473,25.61848,seedlings,--,Mock
+GSM1810481,20.143166,seedlings,--,Mock
+GSM1810469,27.503948,seedlings,--,blue 1h
+GSM1810471,24.971443,seedlings,--,blue 6h
+GSM1810467,22.072147,seedlings,--,dark 6h
+GSM1810475,22.355488,seedlings,--,dark 6h
+GSM1810484,19.350222,seedlings,--,dark 6h
+GSM1810477,26.12302,seedlings,--,red 1h
+GSM1810479,19.222317,seedlings,--,red 6h
+GSM1810488,32.7949,seedlings,--,white 6h
+GSM1811230,27.467632,endodermis,wild type,--
+GSM1811254,21.645832,root,mutant (myb36-1),--
+GSM1811247,21.162466,root,wild type,--
+GSM1834896,13.228137,internode,mol1,--
+GSM1834893,11.825697,internode,wild type,--
+GSM1836063,13.688455,seedlings,smax1-2,--
+GSM1836060,13.683724,seedlings,smxl4-1 smxl5-1,--
+GSM1836057,18.1876,seedlings,smxl5-1,--
+GSM1836054,15.248341,seedlings,wild type,--
+SRX1133330,16.818295,inflorescence,dbr1-2 mutant,--
+SRX1133307,14.180859,inflorescence,wild type,--
+GSM1858955,18.302639,seedlings,brm-1,--
+GSM1858961,21.149239,seedlings,brm-1 ref6-1,--
+GSM1858958,16.13327,seedlings,ref6-1,--
+GSM1858952,23.213703,seedlings,wild type,--
+GSM1864965,25.228514,root,Type-A mutant,--
+GSM1864953,24.840084,root,Type-A mutant,--
+GSM1864966,28.414278,root,Type-A mutant,--
+GSM1864964,23.728638,root,wild type,Heterodera schachti nematodes 10dpi
+GSM1864952,26.0901,root,wild type,Heterodera schachti nematodes 4dpi
+GSM1864963,21.36285,root,wild type,Mock
+GSM1864951,21.866196,root,wild type,Mock
+SRX1305340,14.423937,shoot,--,BHTC
+SRX1305342,11.824577,shoot,--,Mock
+SRX1337653,16.972128,shoot apex,--,--
+SRX1403723,20.534548,seedlings,--,--
+SRX1403719,16.566492,seedlings,--,--
+SRX1403725,14.789332,seedlings,--,Mock
+SRX1403721,17.637278,seedlings,--,X-ray
+GSM1912474,14.048746,leaves,--,--
+GSM1921018,11.951666,gynoecium,ap1; cal; pAP1::AP1:GR,--
+GSM1921020,20.046953,gynoecium,ap1; cal; pAP1::AP1:GR,--
+GSM1921022,20.207302,gynoecium,ap1; cal; pAP1::AP1:GR,--
+GSM1921034,25.919405,inflorescence,ap1; cal; pAP1::AP1:GR,--
+GSM1921038,23.584438,inflorescence,ap1; cal; pAP1::AP1:GR,--
+GSM1921024,12.110696,inflorescence,ap1; cal; pAP1::AP1:GR,--
+GSM1921026,12.905125,inflorescence,ap1; cal; pAP1::AP1:GR,--
+GSM1921028,13.212564,inflorescence,ap1; cal; pAP1::AP1:GR,--
+GSM1921030,10.857267,inflorescence,ap1; cal; pAP1::AP1:GR,--
+GSM1921010,29.035765,inflorescence,ap1; cal; pAP1::AP1:GR,--
+GSM1921014,26.59498,inflorescence,ap1; cal; pAP1::AP1:GR,--
+GSM1921016,21.902363,inflorescence,ap1; cal; pAP1::AP1:GR,--
+SRX1411690,10.337462,leaves,--,--
+GSM1930302,15.434126,embryo,val1 mutant,--
+GSM1930305,25.88929,embryo,val1 mutant,--
+GSM1930308,21.748676,embryo,val1 mutant,--
+GSM1930311,30.384356,embryo,val1 mutant,--
+GSM1930314,25.515629,embryo,val1 mutant,--
+GSM1930299,10.819483,embryo,val1 mutant,--
+GSM1930282,14.223987,embryo,wild type,--
+GSM1930285,23.975254,embryo,wild type,--
+GSM1930288,21.330544,embryo,wild type,--
+GSM1930291,29.89431,embryo,wild type,--
+GSM1930294,23.51066,embryo,wild type,--
+GSM1930276,8.713745,embryo,wild type,--
+GSM1930279,10.332901,embryo,wild type,--
+GSM1930763,13.684743,inflorescence,wild type,--
+GSM1936695,26.23254,root,--,Mock
+GSM1936704,20.511368,root,--,Mock
+GSM1936698,23.226189,root,--,Pi starvation 1day
+GSM1936707,18.483997,root,--,Pi starvation 1day
+GSM1936701,24.643604,root,--,Pi starvation 3day
+GSM1936710,24.168533,root,--,Pi starvation 3day
+GSM1936677,14.573038,shoot,--,Mock
+GSM1936686,14.52282,shoot,--,Mock
+GSM1936680,13.5867,shoot,--,Pi starvation 1day
+GSM1936689,12.143944,shoot,--,Pi starvation 1day
+GSM1936683,12.803367,shoot,--,Pi starvation 3day
+GSM1936692,12.88501,shoot,--,Pi starvation 3day
+GSM1936762,23.02794,seedlings,--,ABA 1h
+GSM1936765,30.503407,seedlings,--,ABA 3h
+SRX1427112,14.377445,seedlings,--,Mock
+GSM1938991,16.502392,seedlings,mapkkk5,Mock
+GSM1938992,19.530334,seedlings,mapkkk5,chitin
+GSM1938989,14.855458,seedlings,wild type,Mock
+GSM1938990,19.003834,seedlings,wild type,chitin
+GSM1939312,21.269497,root,wild type,Mock
+GSM1939314,24.847773,root,wild type,Pi starvation
+GSM1942140,11.246354,aerial seedling,wild type,--
+GSM1942137,21.052448,leaves,met1 epiRIL 01,--
+GSM1942134,22.952497,leaves,wild type,--
+GSM1945020,11.233867,seedlings,cob-6,--
+GSM1945024,9.849125,seedlings,cob-6sfr6-3,--
+GSM1945022,10.824466,seedlings,sfr6-3,--
+GSM1945018,10.860804,seedlings,wild type,--
+SRX1446086,14.515472,shoot,--,--
+SRX1446235,17.58936,shoot,--,--
+SRX1446033,19.333374,shoot,--,--
+SRX1446207,18.923904,shoot,--,--
+SRX1446121,12.2290745,shoot,--,--
+SRX1446238,15.309454,shoot,--,--
+GSM1958070,17.565672,whole plant,fip37-4 LEC1,--
+GSM1958067,16.791449,whole plant,wild type,--
+SRX1469596,22.361908,seedlings,--,Mock
+SRX1469689,18.793993,seedlings,--,ethylene 4h
+SRX1518946,17.302753,rosette leaf,--,--
+SRX1518949,14.163636,rosette leaf,--,--
+SRX1518947,17.908295,rosette leaf,--,--
+GSM2028156,32.93052,root,wild type,P-deHicient
+GSM2028158,13.94883,shoot,wild type,Mock
+GSM2028159,6.7201476,shoot,wild type,Mock
+GSM2028160,16.205168,shoot,wild type,P-deHicient
+GSM2028161,8.655151,shoot,wild type,P-deHicient
+GSM2042527,15.505439,shoot,cat2,--
+GSM2042539,22.983162,shoot,cat2,--
+GSM2042533,19.513445,shoot,cat2xshr,--
+GSM2042545,24.47542,shoot,cat2xshr,--
+GSM2042530,20.416988,shoot,shr,--
+GSM2042542,21.182251,shoot,shr,--
+GSM2042524,10.248687,shoot,wild type,Mock
+GSM2042536,12.999474,shoot,wild type,photorespiratory stress 24h
+GSM2045514,29.188877,leaves,"cat2-2, gox1",High light and CO2
+GSM2045511,14.414074,leaves,"cat2-2, gox1",Mock
+GSM2045520,25.331163,leaves,"cat2-2, gox2",High light and CO2
+GSM2045517,13.286133,leaves,"cat2-2, gox2",Mock
+GSM2045526,24.581646,leaves,cat2-2,High light and CO2
+GSM2045523,10.908569,leaves,cat2-2,Mock
+GSM2051717,11.314463,rosette leaf,pdx3-3 (SALK_054167C),--
+GSM2051720,13.611459,rosette leaf,pdx3-4 (GK-260E03),--
+GSM2051714,10.643656,rosette leaf,wild type,--
+GSM2253891,24.23344,inflorescence,ago7 mutant,--
+GSM2253890,21.851454,inflorescence,rdr6 mutant,--
+GSM2253889,26.61687,inflorescence,wild type,--
+SRX1597409,17.368656,shoot,nuc1-2,--
+SRX1597284,15.874201,shoot,wild type,--
+SRX1594279,22.92557,sepal,lgo-2,--
+GSM2078418,7.4283667,leaves,atmorc1/2/4/5/6/7,--
+GSM2078398,11.169483,leaves,atmorc4,--
+GSM2078415,7.178647,leaves,atmorc4/6/7,--
+GSM2078403,15.615372,leaves,atmorc4/7,--
+GSM2078409,8.061521,leaves,atmorc4/7,--
+GSM2078412,8.483377,leaves,atmorc6,--
+GSM2078400,10.590016,leaves,atmorc7,--
+GSM2078395,10.823515,leaves,wild type,--
+GSM2078406,7.2242327,leaves,wild type,--
+GSM2081559,25.327177,seedlings,hda5 -/-,--
+GSM2081556,20.94843,seedlings,hda6 -/-,--
+GSM2081563,19.72184,seedlings,hda9 -/-,--
+GSM2081553,18.999567,seedlings,wild type,--
+GSM2082846,21.903145,seedlings,pif1pif3pif4pif5,--
+GSM2082843,18.820877,seedlings,pif1pif3pif4pif5,--
+GSM2082837,32.57143,seedlings,wild type,Mock
+GSM2082840,32.011272,seedlings,wild type,darkness and Lincomycin
+GSM2083585,18.422596,whole plant,jazQ,--
+GSM2083591,16.408388,whole plant,jazQ phyB-9,--
+GSM2083588,16.616995,whole plant,phyB-9,--
+GSM2083582,20.528423,whole plant,wild type,--
+SRX1623468,13.811816,seedlings,--,--
+SRX1623470,16.13381,seedlings,--,--
+SRX1623464,13.986678,seedlings,--,--
+SRX1623466,17.501621,seedlings,--,--
+SRX1623458,12.104793,seedlings,--,Mock
+SRX1623460,18.220093,seedlings,--,Pi starvation
+SRX1639388,16.660175,seedlings,--,--
+SRX1639391,22.157694,seedlings,--,--
+SRX1639393,20.33966,seedlings,--,--
+SRX1639396,17.108025,seedlings,--,--
+GSM2090468,11.663915,root,Col-0,--
+GSM2090471,10.257282,root,Col-0,--
+GSM2090474,13.28427,root,Col-0,--
+GSM2090459,16.10979,root,Col-0,--
+GSM2090462,16.549953,root,Col-0,--
+GSM2090465,16.9025,root,Col-0,--
+SRX1700806,17.690266,leaves,--,"5d drought, B.cinerea pre-treatment"
+SRX1700826,26.986414,leaves,--,"6d drought,  P.rapae pre-treatment"
+SRX1700844,25.332174,leaves,--,"7d drought,  P.rapae pre-treatment"
+SRX1700830,25.045935,leaves,--,"7d drought, B.cinerea pre-treatment"
+SRX1705072,12.306677,leaves,--,B.cinerea main 18h
+SRX1705097,15.96276,leaves,--,B.cinerea main 24h
+SRX1705069,10.682388,leaves,--,"B.cinerea main treatment, P.rapae pre-treatment; 12 h aHter innoculation."
+SRX1705094,10.717698,leaves,--,"B.cinerea main treatment, P.rapae pre-treatment; 18 h aHter innoculation."
+SRX1705135,11.926647,leaves,--,"B.cinerea main treatment, P.rapae pre-treatment; 24 h aHter innoculation."
+SRX1705045,10.89638,leaves,--,"B.cinerea main treatment, drought pre-treatment; 12 h aHter innoculation."
+SRX1705079,10.989262,leaves,--,"B.cinerea main treatment, drought pre-treatment; 18 h aHter innoculation."
+SRX1705122,11.984749,leaves,--,"B.cinerea main treatment, drought pre-treatment; 24 h aHter innoculation."
+SRX1704982,9.036091,leaves,--,"B.cinerea main treatment, drought pre-treatment; 6 h aHter innoculation."
+SRX1700853,12.078471,leaves,--,"Control Hor Pieris main-treatment, 3h and Hor 7 days aHter water withhold + 1 d water recovery."
+SRX1700846,15.552322,leaves,--,"Drought main treatment, B.cinerea pre-treatment; 7 days aHter water withold + 1 d water recovery."
+SRX1700872,14.602443,leaves,--,"Drought main treatment, P.rapae pre-treatment; 7 days aHter water withold + 1 d water recovery."
+SRX1700865,14.64556,leaves,--,"Mock Hor B.cinerea pre-treatment, Pieris main treatment, 3 h aHter inHestation."
+SRX1700864,14.383477,leaves,--,Mock Hor B.cinerea pre-treatment; 7 days aHter water withold + 1 d water recovery.
+SRX1705024,19.37912,leaves,--,"P.rapae main treatment, B.cinerea pre-treatment; 12 h aHter inHestation."
+SRX1705046,20.700748,leaves,--,"P.rapae main treatment, B.cinerea pre-treatment; 6 h aHter inHestation."
+SRX1705034,18.289242,leaves,--,"P.rapae main treatment, drought pre-treatment; 12 h aHter inHestation."
+SRX1705116,20.776524,leaves,--,"P.rapae main treatment, drought pre-treatment; 24 h aHter inHestation."
+SRX1705065,19.73701,leaves,--,P.rapae main treatment; 12 h aHter inHestation.
+SRX1705132,19.308863,leaves,--,P.rapae main treatment; 24 h aHter inHestation.
+SRX1700863,18.072908,leaves,--,drought 5day
+SRX1700820,21.626608,leaves,--,drought 6day
+SRX1700836,22.313995,leaves,--,drought 7day
+SRX1700856,12.799013,leaves,--,water recovery 1day (aHter 7day drought)
+SRX1639998,19.171011,seedlings,wild type,Mock
+SRX1640000,23.064138,seedlings,wild type,Mock
+SRX1640002,18.304968,seedlings,wild type,Mock
+SRX1640004,21.944162,seedlings,wild type,shiHt Hrom 17â to 27â 15min
+SRX1640008,14.280405,seedlings,wild type,shiHt Hrom 17â to 27â 4h
+SRX1651350,21.625206,seedlings,myb11/myb12/myb111,--
+SRX1651002,22.689087,seedlings,wild type,--
+SRX1657497,21.144646,seedlings,--,--
+SRX1657500,22.789845,seedlings,--,--
+GSM2098527,13.576831,cotyledon,pifq,--
+GSM2098509,15.213903,cotyledon,wild type,Mock
+GSM2098515,20.664982,cotyledon,wild type,dark to light 1h
+GSM2098521,14.307064,cotyledon,wild type,dark to light 6h
+GSM2098530,20.783077,hypocotyl,pifq,--
+GSM2098512,28.054325,hypocotyl,wild type,Mock
+GSM2098518,35.578995,hypocotyl,wild type,dark to light 1h
+GSM2098524,34.356953,hypocotyl,wild type,dark to light 6h
+SRX1665979,9.904953,leaves,--,--
+SRX1665984,12.7204895,leaves,--,--
+GSM2107331,12.612865,rosette leaf,WRKY75 overexpression,50 Î¼M estradiol
+GSM2107335,13.048919,rosette leaf,WRKY75 overexpression,50 Î¼M estradiol
+GSM2107328,15.383733,rosette leaf,wild type,50 Î¼M estradiol
+GSM2107325,12.132,rosette leaf,wild type,Mock
+GSM2107305,10.85036,rosette leaf,wild type,Mock
+GSM2107309,16.196274,rosette leaf,wild type,ozone
+GSM2107313,9.350866,rosette leaf,wrky25 wrky33,Mock
+GSM2107316,19.830742,rosette leaf,wrky25 wrky33,ozone
+GSM2107319,9.364841,rosette leaf,wrky75,Mock
+GSM2107322,16.974882,rosette leaf,wrky75,ozone
+GSM2111790,23.614403,leaves,hda9-mutant,--
+GSM2111792,20.813017,leaves,pwr-mutant,--
+SRX1688674,25.953102,aerial seedling,--,heat
+SRX1688672,17.519287,aerial seedling,wild type,Mock
+GSM2124007,22.910328,seedlings,--,AZA
+GSM2124968,39.967625,seedlings,BIC1ox,"blue light, 2hr"
+GSM2124971,23.968039,seedlings,BIC1ox,dark
+GSM2124974,28.91659,seedlings,cry1cry2,"blue light, 2hr"
+GSM2124977,23.438507,seedlings,cry1cry2,dark
+GSM2124980,39.97715,seedlings,wild type,blue
+SRX1712783,9.157647,leaves,Col-0,--
+SRX1712786,12.435726,leaves,Col-0 35S:RPS4-HS,--
+SRX1712764,19.20373,lower leaf epidermis,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) 35S:MLA1-HA,--
+SRX1712765,17.779703,lower leaf epidermis,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) 35S:MLA1-HA,--
+SRX1712766,19.756601,lower leaf epidermis,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) 35S:MLA1-HA,--
+SRX1712761,21.813805,lower leaf epidermis,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) 35S:MLA1-HA,--
+SRX1712762,21.143293,lower leaf epidermis,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) 35S:MLA1-HA,--
+SRX1712763,22.940987,lower leaf epidermis,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) 35S:MLA1-HA,--
+SRX1712760,15.264151,lower leaf epidermis,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes) 35S:MLA1-HA,--
+SRX1712715,9.693481,leaves,Col-0 DEXp:MLACC-mYFP,--
+SRX1712718,18.362955,leaves,Col-0 DEXp:MLACC-mYFP,--
+SRX1712721,20.168325,leaves,Col-0 DEXp:MLACC-mYFP,--
+SRX1712724,17.413025,leaves,Col-0 DEXp:MLACC-mYFP,--
+SRX1712727,22.914745,leaves,Col-0 DEXp:MLACC-mYFP,--
+SRX1712700,9.49789,leaves,Col-0 DEXp:mYFP,Mock
+SRX1712703,15.176137,leaves,Col-0 DEXp:mYFP,dexamethasone_2h
+SRX1712706,12.359235,leaves,Col-0 DEXp:mYFP,dexamethasone_4h
+SRX1712709,10.007024,leaves,Col-0 DEXp:mYFP,dexamethasone_6h
+SRX1712712,9.548795,leaves,Col-0 DEXp:mYFP,dexamethasone_8h
+SRX1712730,10.079008,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes),--
+SRX1712733,13.943384,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes),--
+SRX1712736,12.571153,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes),--
+SRX1712739,8.386239,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes),--
+SRX1712742,8.808159,leaves,Col-0 pen2-1 pad4-1 sag101-2 dde2-2 ein2-1 sid2-2 (ppsdes),--
+SRX1714278,17.586353,leaves,Col-0 35S:RPS4-HS,--
+SRX1714281,16.874935,leaves,Col-0 35S:RPS4-HS,--
+SRX1714275,11.7489395,leaves,Col-0 35S:RPS4-HS,--
+SRX1714287,13.163026,leaves,wild type,28Â°C to 19Â°C 4h
+SRX1714290,12.2188,leaves,wild type,28Â°C to 19Â°C 8h
+SRX1714284,15.794646,leaves,wild type,Mock
+GSM2131016,15.660395,seedlings,--,"10 uM dexamethasone, 4 hours"
+GSM2131018,16.80009,seedlings,--,"10 uM dexamethasone, 4 hours"
+GSM2131014,16.073246,seedlings,--,"10 uM dexamethasone, 4 hours"
+GSM2131022,11.348393,seedlings,--,"500 nM dexamethasone,  10 days"
+GSM2131020,15.3701725,seedlings,--,"500 nM dexamethasone,  10 days"
+GSM2130989,34.45674,seedlings,--,ABA 12h
+GSM2130983,27.600006,seedlings,--,ABA 1h
+GSM2130991,34.580105,seedlings,--,ABA 24h
+GSM2130993,32.787415,seedlings,--,ABA 36h
+GSM2130985,33.983025,seedlings,--,ABA 4h
+GSM2130995,32.611042,seedlings,--,ABA 60h
+GSM2130987,32.333725,seedlings,--,ABA 8h
+GSM2130984,20.88231,seedlings,--,Mock
+GSM2130986,20.619734,seedlings,--,Mock
+GSM2130988,22.490553,seedlings,--,Mock
+GSM2130990,20.300755,seedlings,--,Mock
+GSM2130992,23.370356,seedlings,--,Mock
+GSM2130994,21.872242,seedlings,--,Mock
+GSM2130996,25.314432,seedlings,--,Mock
+GSM2131137,9.197938,leaves,estradiol-inducible-promoter,Mock
+GSM2131143,11.449742,leaves,estradiol-inducible-promoter,Mock
+GSM2131131,10.918703,leaves,estradiol-inducible-promoter,Mock
+GSM2131140,10.204429,leaves,estradiol-inducible-promoter,estradiol_12h
+GSM2131146,10.549189,leaves,estradiol-inducible-promoter,estradiol_24h
+GSM2131134,12.9566765,leaves,estradiol-inducible-promoter,estradiol_6h
+GSM2144083,30.248297,stem,clf/swn,Injury + Auxin time 55h
+GSM2144077,22.775665,stem,clf/swn,auxin time 55h
+GSM2144068,21.575863,stem,clf/swn,control time 0
+GSM2144074,26.105122,stem,clf/swn,mock control time 55h
+GSM2144065,30.469887,stem,wild type,Injury + Auxin time 55h
+GSM2144051,14.479971,stem,wild type,Mock
+GSM2144059,33.68571,stem,wild type,auxin time 55h
+GSM2144056,15.710654,stem,wild type,mock control time 55h
+GSM2144569,7.985327,cotyledon,--,Mock
+GSM2144597,6.6635013,cotyledon,--,Mock
+GSM2144581,7.2445126,cotyledon,--,Mock
+GSM2144589,10.202284,cotyledon,--,Mock
+GSM2144573,6.0946016,cotyledon,--,TP15min_high R/HR
+GSM2144577,7.128743,cotyledon,--,supplemental Har-red light 15min
+GSM2144601,9.093018,cotyledon,--,supplemental Har-red light 180min
+GSM2144585,7.4175224,cotyledon,--,supplemental Har-red light 45min
+GSM2144593,9.154501,cotyledon,--,supplemental Har-red light 90min
+GSM2144570,16.064323,hypocotyl,--,Mock
+GSM2144598,12.74341,hypocotyl,--,Mock
+GSM2144582,11.883784,hypocotyl,--,Mock
+GSM2144590,13.907621,hypocotyl,--,Mock
+GSM2144574,15.6560135,hypocotyl,--,TP15min_high R/HR
+GSM2144578,13.194204,hypocotyl,--,supplemental Har-red light 15min
+GSM2144602,12.759512,hypocotyl,--,supplemental Har-red light 180min
+GSM2144586,12.182093,hypocotyl,--,supplemental Har-red light 45min
+GSM2144594,13.491746,hypocotyl,--,supplemental Har-red light 90min
+GSM2151150,23.582996,leaves,wild type,CysNO
+GSM2151147,10.366273,leaves,wild type,Mock
+SRX1761524,9.362086,leaves,--,10h aHter inHiltration with Empty vector*
+SRX1761530,7.715921,leaves,--,10h aHter inHiltration with HopAM1*
+SRX1761537,9.022267,leaves,--,12h aHter inHiltration with Empty vector*
+SRX1761544,10.274618,leaves,--,12h aHter inHiltration with HopAM1*
+SRX1761521,20.920183,leaves,--,2h aHter inHiltration with Empty vector*
+SRX1761477,25.783525,leaves,--,2h aHter inHiltration with HopAM1*
+SRX1761483,17.221882,leaves,--,4h aHter inHiltration with Empty vector*
+SRX1761490,15.982657,leaves,--,4h aHter inHiltration with HopAM1*
+SRX1761496,14.328044,leaves,--,6h aHter inHiltration with Empty vector*
+SRX1761503,14.5817175,leaves,--,6h aHter inHiltration with HopAM1*
+SRX1761510,11.606305,leaves,--,8h aHter inHiltration with Empty vector*
+SRX1761516,8.983206,leaves,--,8h aHter inHiltration with HopAM1*
+SRX1761475,5.6041102,leaves,--,Mock
+GSM2159759,12.325697,leaves,amp1-32 knock-out mutant,--
+GSM2159757,10.903034,leaves,wild type,--
+GSM2166046,13.431576,5DAG seedlings,Col-0,MG132 24h
+GSM2166042,17.109133,5DAG seedlings,Col-0,Mock
+GSM2166048,15.186886,5DAG seedlings,rpn12a-1,Mock
+GSM2176478,12.586864,seedlings,hy5,--
+GSM2176476,12.11567,seedlings,nf-yc3 c4 c9,--
+GSM2176480,16.117842,seedlings,nf-yc3 c4 c9 hy5,--
+GSM2176474,12.907651,seedlings,wild type,--
+GSM2181695,12.505995,seedlings,wild type,--
+GSM2181701,11.6786,seedlings,wild type,--
+SRX1810837,7.7099257,leaves,Mutant2 PID overexpression line P21,--
+SRX1837342,15.936719,inflorescence,--,--
+SRX2009814,18.671902,inflorescence,3xHA-VvCEB1-OX,--
+SRX2009834,14.848806,inflorescence,wild type,--
+SRX2009816,10.374981,leaves,--,--
+SRX2009818,11.930889,leaves,--,--
+SRX2009821,13.064537,leaves,wild type,--
+SRX1837341,26.562466,root,--,--
+SRX2009820,26.567072,root,--,--
+SRX2009822,27.176804,root,wild type,--
+GSM2209709,12.866625,seedlings,Wild Type,--
+GSM2209711,17.798264,seedlings,atbmi1a single mutant,--
+GSM2209715,63.898212,seedlings,atbmi1ab strong double mutant,--
+GSM2209717,33.879463,seedlings,atbmi1abc triple mutant,--
+GSM2209713,21.806833,seedlings,atbmi1b single mutant,--
+GSM2209789,30.468866,root,cbp20 mutant,--
+GSM2209791,28.835943,root,cbp20 mutant,--
+GSM2209785,31.75671,root,wild type,Mock
+GSM2209787,26.806286,root,wild type,ethylene 4h
+GSM2209781,22.954044,shoot,cbp20 mutant,--
+GSM2209783,16.270819,shoot,cbp20 mutant,--
+GSM2209777,26.879072,shoot,wild type,--
+GSM2209779,14.698458,shoot,wild type,--
+SRX1960452,15.81318,pistils,--,Pollinated and incubated Hor 8 hours
+GSM2242711,15.435458,seedlings,hos1-3,--
+GSM2242708,11.87825,seedlings,wild type,--
+GSM2242720,20.862823,seedlings,DIF-OX2,--
+GSM2242718,12.767158,seedlings,DIF-OX2,--
+GSM2242716,11.229513,seedlings,wild type,Dex1
+GSM2242714,10.381638,seedlings,wild type,Mock
+GSM2257312,15.5354805,leaves,DCL1 homozygous mutant,--
+GSM2257309,16.086514,leaves,DCL1 homozygous mutant,--
+GSM2257303,15.849633,leaves,wild type,Mock
+GSM2257306,21.144756,leaves,wild type,TCV inHected
+SRX1994731,20.56622,Rosette leaves,arp6 mutant,Control conditions
+SRX1994709,44.15114,Rosette leaves,arp6 mutant,Drought stress conditions (withholding water Hor 10 days)
+SRX1994707,15.694789,Rosette leaves,wild type,Control conditions
+SRX1994728,32.82351,Rosette leaves,wild type,Drought stress conditions (withholding water Hor 10 days)
+SRX1994713,37.85533,Rosette leaves,"wild-type, H2A.Z-tagged line 5D",Drought stress conditions (withholding water Hor 8 days)
+SRX2006007,15.607858,stem,--,--
+SRX2006015,15.590179,stem,--,--
+SRX2006017,15.53675,stem,--,--
+SRX2006019,12.490383,stem,--,--
+SRX2006011,16.639421,stem,--,--
+SRX2006013,14.234992,stem,--,--
+SRX2006021,15.863414,stem,--,--
+SRX2006009,14.425264,stem,--,--
+GSM2274605,28.38807,root hair,wild type WER,--
+GSM2280289,13.04416,leaves,wild type,Mock
+GSM2280292,17.074556,leaves,wild type,Mock
+GSM2280286,19.080452,leaves,wild type,heat
+GSM2280295,14.293505,leaves,wild type,heat
+SRX2026153,9.821517,rosette leaf,At1g22770,--
+SRX2026156,8.85694,rosette leaf,At1g22770,--
+SRX2026166,14.502368,rosette leaf,At5g02810_At2g46790,--
+SRX2026159,11.617798,rosette leaf,At5g61380,--
+SRX2026163,8.243866,rosette leaf,At5g61380,--
+SRX2026149,10.332617,rosette leaf,wild type,--
+SRX2026172,9.860437,rosette leaf,wild type,--
+GSM2283657,16.666416,leaves,Col-0,--
+GSM2286739,34.52539,seedlings,sfps-2 (SFPS -/-),Mock
+GSM2286742,29.513355,seedlings,sfps-2 (SFPS -/-),Red light
+GSM2286733,21.38958,seedlings,wild type,Mock
+GSM2286736,28.334496,seedlings,wild type,Red light
+SRX2628401,33.639046,seedlings,hot3-1 mutant,--
+SRX2040823,17.52245,seedlings,hot3-1 mutant,--
+SRX2628404,24.796225,seedlings,hot3-1 mutant,--
+SRX2040820,19.47825,seedlings,hot3-1 mutant,--
+SRX2040826,29.049574,seedlings,hot3-1 mutant,--
+SRX2040838,21.396828,seedlings,wild type,Mock
+SRX2040816,15.859563,seedlings,wild type,Mock
+SRX2628407,27.295334,seedlings,wild type,heat
+SRX2040818,25.272337,seedlings,wild type,heat
+SRX2628410,18.748669,seedlings,wild type,heat
+SRX2040841,27.05863,seedlings,wild type,heat stress
+GSM2297734,27.903175,seed,i4g1,--
+SRX2095257,19.972748,seedlings,VCS SOV (Col-0 [SOV-L.er]),--
+SRX2095258,20.198284,seedlings,VCS SOV (Col-0 [SOV-L.er]),--
+SRX2095262,17.376352,seedlings,VCS SOV (Col-0 [SOV-L.er]),--
+SRX2095259,22.235924,seedlings,VCS SOV (Col-0 [SOV-L.er]),--
+SRX2095263,14.309509,seedlings,VCS SOV (Col-0 [SOV-L.er]),--
+SRX2095292,22.785887,seedlings,VCS SOV (Col-0 [SOV-L.er]),--
+SRX2095261,21.298473,seedlings,VCS SOV (Col-0 [SOV-L.er]),--
+SRX2095218,17.869507,seedlings,sov (aka Col-0),--
+SRX2095222,17.481922,seedlings,sov (aka Col-0),--
+SRX2095219,21.985409,seedlings,sov (aka Col-0),--
+SRX2095255,22.231941,seedlings,sov (aka Col-0),--
+SRX2095220,20.864183,seedlings,sov (aka Col-0),--
+SRX2095256,18.865326,seedlings,sov (aka Col-0),--
+SRX2095253,19.16139,seedlings,sov (aka Col-0),--
+GSM2303801,12.201502,leaves,guanylate cyclase-expressing line,Mock
+GSM2303804,19.882551,leaves,guanylate cyclase-expressing line,PstAvrB
+GSM2303795,8.990942,leaves,wild type,Mock
+GSM2303798,20.21725,leaves,wild type,PstAvrB
+SRX2839574,12.398121,leaves,MSH1 +/+,--
+SRX2170066,23.706463,root,--,Asn
+GSM2327838,10.615619,leaves,"glyk1-1, T-DNA insertion line",--
+GSM2327849,30.91646,leaves,"glyk1-1, T-DNA insertion line",--
+GSM2327840,10.486551,leaves,"pglp1-1, T-DNA insertion line",--
+GSM2327836,8.186433,leaves,"shm1-2, T-DNA insertion line",--
+GSM2327847,33.835236,leaves,"shm1-2, T-DNA insertion line",--
+GSM2332899,11.593526,aerial seedling,camta1/2/3/sid2 mutant,--
+GSM2332896,13.971443,aerial seedling,wild type,--
+SRX2234154,28.60831,seedlings,--,--
+SRX2234156,21.111929,seedlings,--,--
+SRX2234130,17.211662,seedlings,--,--
+SRX2234139,20.834604,seedlings,--,--
+SRX2234112,20.329031,seedlings,--,--
+SRX2234152,15.747863,seedlings,--,--
+SRX2234161,15.768556,seedlings,--,--
+SRX2234120,16.601171,seedlings,--,Mock
+SRX2234106,14.861137,seedlings,--,Mock
+SRX2234163,24.025532,seedlings,--,heat recovery 2h
+SRX2234132,20.433369,seedlings,--,heat shock 37
+SRX2234159,13.9475355,seedlings,--,heat shock 37
+GSM2339784,13.206419,rosette leaf,35spro,He deHicient
+GSM2339780,9.804706,rosette leaf,35spro,Mock
+GSM2339952,24.561039,root,wild type,He deHicient
+GSM2339949,26.771357,root,wild type,Mock
+GSM2339946,12.445702,rosette leaf,wild type,He deHicient
+GSM2339943,10.558164,rosette leaf,wild type,Mock
+SRX2248188,18.3673,root,--,Mock
+SRX2248185,22.599636,root,--,Pi starvation
+SRX2248562,23.241037,leaves,Col-0,AvrRpm1_01h
+SRX2248565,20.178099,leaves,Col-0,AvrRpm1_03h
+SRX2248568,18.825258,leaves,Col-0,AvrRpm1_04h
+SRX2248571,17.403229,leaves,Col-0,AvrRpm1_06h
+SRX2248574,16.813843,leaves,Col-0,AvrRpm1_09h
+SRX2248577,14.289257,leaves,Col-0,AvrRpm1_12h
+SRX2248580,21.24708,leaves,Col-0,AvrRpm1_16h
+SRX2248583,13.849173,leaves,Col-0,AvrRpm1_24h
+SRX2267755,27.059967,leaves,Col-0,AvrRpt2_02h
+SRX2248285,19.138786,leaves,Col-0,AvrRpt2_03h
+SRX2248305,19.672949,leaves,Col-0,AvrRpt2_06h
+SRX2248350,19.32965,leaves,Col-0,AvrRpt2_12h
+SRX2248368,19.08388,leaves,Col-0,AvrRpt2_16h
+SRX2267763,18.60291,leaves,Col-0,AvrRpt2_20h
+SRX2248275,31.08652,leaves,Col-0,EV_01h
+SRX2267753,25.727428,leaves,Col-0,EV_02h
+SRX2248284,23.440205,leaves,Col-0,EV_03h
+SRX2248293,15.310652,leaves,Col-0,EV_04h
+SRX2248303,15.975722,leaves,Col-0,EV_06h
+SRX2248322,17.314548,leaves,Col-0,EV_09h
+SRX2248348,15.303603,leaves,Col-0,EV_12h
+SRX2248366,17.605684,leaves,Col-0,EV_16h
+SRX2267765,15.22236,leaves,Col-0,EV_20h
+SRX2248385,13.26022,leaves,Col-0,EV_24h
+SRX2248274,28.812819,leaves,Col-0,Mock
+SRX2248283,21.497154,leaves,Col-0,Mock
+SRX2248292,17.279171,leaves,Col-0,Mock
+SRX2248301,14.318224,leaves,Col-0,Mock
+SRX2248319,14.882631,leaves,Col-0,Mock
+SRX2248346,11.483382,leaves,Col-0,Mock
+SRX2248364,16.46143,leaves,Col-0,Mock
+SRX2267764,15.780898,leaves,Col-0,Mock
+SRX2248382,19.198215,leaves,Col-0,Mock
+SRX2267754,25.862057,leaves,Col-0,Mock
+SRX2248586,25.114552,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpm1_04h
+SRX2248589,22.505241,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpm1_06h
+SRX2248592,27.906717,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpm1_09h
+SRX2248601,18.142244,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpm1_24h
+SRX2248450,19.145658,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpt2_04h
+SRX2248468,20.357536,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpt2_06h
+SRX2248327,22.813742,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpt2_09h
+SRX2248474,23.509403,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpt2_12h
+SRX2248390,27.77768,leaves,dde2-2 ein2-1 pad4-1 sid2-2,AvrRpt2_24h
+SRX2248448,20.61713,leaves,dde2-2 ein2-1 pad4-1 sid2-2,EV_04h
+SRX2248324,23.391857,leaves,dde2-2 ein2-1 pad4-1 sid2-2,EV_09h
+SRX2248473,17.979517,leaves,dde2-2 ein2-1 pad4-1 sid2-2,EV_12h
+SRX2248482,16.524765,leaves,dde2-2 ein2-1 pad4-1 sid2-2,EV_16h
+SRX2248387,21.709053,leaves,dde2-2 ein2-1 pad4-1 sid2-2,EV_24h
+SRX2248446,15.659151,leaves,dde2-2 ein2-1 pad4-1 sid2-2,Mock
+SRX2248463,12.621281,leaves,dde2-2 ein2-1 pad4-1 sid2-2,Mock
+SRX2248321,14.812792,leaves,dde2-2 ein2-1 pad4-1 sid2-2,Mock
+SRX2248472,15.27254,leaves,dde2-2 ein2-1 pad4-1 sid2-2,Mock
+SRX2248481,17.25428,leaves,dde2-2 ein2-1 pad4-1 sid2-2,Mock
+SRX2248384,16.369322,leaves,dde2-2 ein2-1 pad4-1 sid2-2,Mock
+SRX2248546,20.91952,leaves,pad4-1,AvrRpt2_04h
+SRX2248492,21.400743,leaves,pad4-1,AvrRpt2_06h
+SRX2248429,21.314379,leaves,pad4-1,AvrRpt2_24h
+SRX2248545,22.54226,leaves,pad4-1,EV_04h
+SRX2248491,15.266151,leaves,pad4-1,EV_06h
+SRX2248509,14.373149,leaves,pad4-1,EV_12h
+SRX2248410,16.11747,leaves,pad4-1,Ev_09h
+SRX2248544,18.13643,leaves,pad4-1,Mock
+SRX2248490,13.318869,leaves,pad4-1,Mock
+SRX2248409,15.432739,leaves,pad4-1,Mock
+SRX2248508,11.274229,leaves,pad4-1,Mock
+SRX2248526,18.182663,leaves,pad4-1,Mock
+SRX2248549,22.863815,leaves,pad4-1 sid2-2,AvrRpt2_04h
+SRX2248495,21.89275,leaves,pad4-1 sid2-2,AvrRpt2_06h
+SRX2248414,28.126768,leaves,pad4-1 sid2-2,AvrRpt2_09h
+SRX2248548,24.128607,leaves,pad4-1 sid2-2,EV_04h
+SRX2248494,16.536652,leaves,pad4-1 sid2-2,EV_06h
+SRX2248512,14.195705,leaves,pad4-1 sid2-2,EV_12h
+SRX2248530,21.551962,leaves,pad4-1 sid2-2,EV_16h
+SRX2248413,18.01786,leaves,pad4-1 sid2-2,Ev_09h
+SRX2248431,19.941969,leaves,pad4-1 sid2-2,Ev_24h
+SRX2248547,19.882004,leaves,pad4-1 sid2-2,Mock
+SRX2248493,15.433668,leaves,pad4-1 sid2-2,Mock
+SRX2248412,13.54043,leaves,pad4-1 sid2-2,Mock
+SRX2248511,14.966523,leaves,pad4-1 sid2-2,Mock
+SRX2248613,17.889002,leaves,rpm1-3 rpad4-1 sid2-22 101C,Mock
+SRX2248606,33.13657,leaves,rpm1-3 rpad4-1 sid2-22 101C,Pto AvrRpm1
+SRX2248615,21.783676,leaves,rpm1-3 rpad4-1 sid2-22 101C,Pto AvrRpm1
+SRX2248614,18.735806,leaves,rpm1-3 rpad4-1 sid2-22 101C,Pto AvrRpt2
+SRX2248449,25.058905,leaves,sid2-2,AvrRpt2_04h
+SRX2248306,27.562159,leaves,sid2-2,AvrRpt2_06h
+SRX2248326,26.384537,leaves,sid2-2,AvrRpt2_09h
+SRX2248389,28.04341,leaves,sid2-2,AvrRpt2_24h
+SRX2248447,22.630383,leaves,sid2-2,EV_04h
+SRX2248304,21.328024,leaves,sid2-2,EV_06h
+SRX2248323,16.935196,leaves,sid2-2,EV_09h
+SRX2248349,15.4812155,leaves,sid2-2,EV_12h
+SRX2248386,20.569012,leaves,sid2-2,EV_24h
+SRX2248445,16.579187,leaves,sid2-2,Mock
+SRX2248302,19.21036,leaves,sid2-2,Mock
+SRX2248320,16.555481,leaves,sid2-2,Mock
+SRX2248347,15.432916,leaves,sid2-2,Mock
+SRX2248365,19.69475,leaves,sid2-2,Mock
+SRX2248383,15.705129,leaves,sid2-2,Mock
+SRX2327074,14.609366,seedlings,hda15 mutant,--
+SRX2327075,20.662384,seedlings,wild type,--
+SRX2310801,28.46103,root,--,Mg deHicient
+SRX2310797,26.394417,root,--,Mock
+GSM2367133,15.892125,seedlings,Wild Type,--
+GSM2367135,36.993294,seedlings,atbmi1abc triple mutant,--
+GSM2371471,15.782418,seedlings,sac3b-7 (SALK 111245),--
+GSM2371469,17.6867,seedlings,wild type,--
+SRX2325948,11.538846,seedlings,tga2/5/6,--
+SRX2325943,11.014406,seedlings,wild type,Mock
+SRX2325944,27.773783,seedlings,wild type,UV
+GSM1930834,18.634935,siliques,wild type,--
+GSM2388460,12.941886,seedlings,hda9-1,--
+GSM2388463,12.620274,seedlings,pwr-2,--
+GSM2388457,12.804238,seedlings,wild type,--
+GSM2391505,17.96601,seedlings,T-DNA knockout mutant of nf-ycQ,--
+GSM2391502,15.221285,seedlings,wild type,--
+GSM2392677,7.3917875,leaf,--,Chlorella
+GSM2392679,7.6414585,leaf,--,"Chlorella, DC3000"
+GSM2392681,7.722856,leaf,--,Water
+GSM2392683,9.244219,leaf,--,"Water, DC3000"
+SRX2363381,15.877319,seedlings,--,--
+SRX2363386,19.162058,seedlings,--,--
+GSM2395426,21.415045,seed,ABI5-/-,--
+GSM2395423,22.304081,seed,wild type,--
+GSM2397343,12.31674,seedlings,35S::HopBB1-myc,--
+GSM2397346,8.578228,seedlings,Wild type,--
+GSM2397325,11.146238,seedlings,--,MeJA 1h
+GSM2397305,17.92598,seedlings,Col-0,DC3000 cor-
+GSM2397301,10.964074,seedlings,Col-0,MgCl2
+GSM2397303,7.1397448,seedlings,UBQ10,MgCl2
+GSM2397308,21.930021,seedlings,coi1-16,DC3000 cor-
+GSM2397304,9.089205,seedlings,coi1-16,MgCl2
+GSM2397302,9.680556,seedlings,tcp14-6,MgCl2
+GSM2397038,17.604359,seedlings,Col-0,DC3000 (EV)
+GSM2397037,7.5812125,seedlings,Col-0,Mock
+GSM2397039,9.179631,seedlings,Col-0,Pto DC3000 cor- (EV)
+GSM2397040,15.566378,seedlings,Col-0,Pto DC3000 cor- (HopBB1)
+GSM2397041,11.744138,seedlings,Col-0,Pto DC3000 cor- (HopBB1G126D)
+GSM2397400,4.3900156,seedlings,Wild type,--
+GSM2397401,6.3033514,seedlings,tcp14-6,--
+GSM2397402,5.3581696,seedlings,tcp14-7,--
+SRX2367913,20.182915,root,cbl1 mutant,with 20 Î¼M AlCl3 Hor 24 h
+SRX2367814,20.360628,root,cbl1 mutant,without 20 Î¼M AlCl3 Hor 24 h
+SRX2367987,19.875479,root,wild type,AlCl3
+SRX2367981,23.65471,root,wild type,Mock
+SRX2367916,20.029629,shoot,cbl1 mutant,with 20 Î¼M AlCl3 Hor 24 h
+SRX2367910,16.8431,shoot,cbl1 mutant,without 20 Î¼M AlCl3 Hor 24 h
+SRX2367991,19.980959,shoot,wild type,AlCl3
+SRX2367984,17.581463,shoot,wild type,Mock
+SRX2369540,21.708582,leaves,OE,--
+SRX2369539,13.045152,leaves,wild type,--
+SRX2413427,14.256926,stem,--,--
+SRX2413430,25.807762,stem,--,--
+GSM2429865,18.331345,leaves,K36M,--
+GSM2433475,15.39736,leaves,--,2h induced
+GSM2433481,16.396755,leaves,--,4h induced
+GSM2433478,12.245646,leaves,--,Mock
+SRX2438615,16.072018,leaves,Col-0,Mock
+SRX2438623,20.89708,leaves,camta3-D (sr1-4d),100 nM oH Hlg22
+GSM2435563,15.577864,leaves,camta3-D (sr1-4d),AvrRps4
+GSM2981933,20.943594,leaves,ibm1,--
+SRX2499466,12.515347,seedlings,phyA mutant,--
+SRX2499459,12.746851,seedlings,phyA mutant,--
+SRX2499461,12.078331,seedlings,wild type,low R/HR (0.2)
+SRX2499457,13.469981,seedlings,wild type,low R/HR (0.8)
+GSM2453041,32.648544,leaves,wild type,Hixed carbon starvation 5 day
+GSM2453035,20.036499,leaves,wild type,Mock
+GSM2453038,21.373672,leaves,wild type,dehydration 4h
+GSM2454706,18.478703,seedlings,ELENA1 over-expressing plants,Without elH18 treatment
+GSM2454715,21.003038,seedlings,ELENA1 over-expressing plants,elH18-treated 12h
+GSM2454709,26.004456,seedlings,ELENA1 over-expressing plants,elH18-treated 1h
+GSM2454712,17.466362,seedlings,ELENA1 over-expressing plants,elH18-treated 6h
+GSM2454694,17.521,seedlings,Wild type,Mock
+GSM2454703,21.389969,seedlings,Wild type,elH18-treated 12h
+GSM2454697,21.370018,seedlings,Wild type,elH18-treated 1h
+GSM2454700,19.346365,seedlings,Wild type,elH18-treated 6h
+GSM2455322,18.885422,inflorescence,wild type,--
+GSM2466000,13.348758,leaves,ZAT18 overexpression lines,Mock
+GSM2466004,18.609476,leaves,ZAT18 overexpression lines,drought
+GSM2465998,9.595954,leaves,wild type,Mock
+GSM2466002,13.563495,leaves,wild type,drought
+GSM2467134,11.678555,flower bud,bzip28 bzip60,control
+GSM2467140,14.884153,flower bud,bzip28 bzip60,control
+GSM2467143,21.199257,flower bud,bzip28 bzip60,treated at 37C Hor 3h
+GSM2467116,12.9900875,flower bud,wild type,Mock
+GSM2467122,14.339842,flower bud,wild type,Mock
+GSM2467125,22.175512,flower bud,wild type,heat 3h
+GSM2467110,15.447266,rosette leaf,wild type,Mock
+GSM2467113,15.343786,rosette leaf,wild type,heat 3h
+SRX2513462,19.22792,whole plant,tm4b-4,--
+SRX2513460,15.178853,whole plant,wild type,--
+SRX2520759,19.606428,root,py mutant,30 nM thiamin
+SRX2520761,18.657734,root,tz mutant,30 nM thiamin
+SRX2520763,18.114014,root,wild type,30 nM thiamin
+SRX2520765,21.054888,root,wild type,Mock
+SRX2520745,9.412878,rosette leaf,py mutant,10 microM thiamin
+SRX2520751,8.603956,rosette leaf,py mutant,30 nM thiamin
+SRX2520747,14.352681,rosette leaf,tz mutant,10 microM thiamin
+SRX2520753,10.599282,rosette leaf,tz mutant,30 nM thiamin
+SRX2520749,9.846987,rosette leaf,wild type,10 microM thiamin
+SRX2520755,10.455299,rosette leaf,wild type,30 nM thiamin
+SRX2520757,9.135014,rosette leaf,wild type,Mock
+SRX2529390,11.305191,inflorescence,--,Mock
+GSM2472796,13.403667,inflorescence,dex,dex
+SRX2529374,13.2373085,inflorescence,--,Mock
+SRX2529377,11.412724,inflorescence,--,dex
+SRX2529380,14.170623,inflorescence,--,Mock
+SRX2529383,11.297768,inflorescence,--,dex
+SRX2530449,14.037466,cultured  cell,--,Dark
+SRX2530453,19.549208,cultured  cell,--,Mock
+SRX2542551,19.65084,anther,wild type,--
+SRX2549220,23.004086,seedlings,ABA,ABA 48h
+SRX2549226,27.324377,seedlings,ABA,ABA 6h
+SRX2549223,14.138246,seedlings,Con,Mock
+SRX2549229,18.201038,seedlings,Con,Mock
+SRX2578618,14.256805,seedlings,--,--
+SRX2578615,18.146334,seedlings,mac3,--
+SRX2578612,18.680637,seedlings,skip-1,--
+SRX2598378,16.504555,seedlings,wild type,--
+SRX2598381,16.005749,seedlings,xrn3-8,--
+GSM2516601,9.422329,rosette leaf,med16-2/med16-3 ref4-3/ref4-3,--
+GSM2516593,9.378268,rosette leaf,med2-1/med2-3 ref4-3/ref4-3,--
+GSM2516605,9.649971,rosette leaf,med23-1/med23-2 ref4-3/ref4-3,--
+GSM2516589,10.107613,rosette leaf,med23-4,--
+GSM2516581,10.23884,rosette leaf,med5a-1 med5b-1,--
+GSM2516597,10.913371,rosette leaf,med5b-3 ref4-3,--
+GSM2516573,13.646376,rosette leaf,ref4-3,--
+GSM2516585,8.987217,rosette leaf,sfr6-2,--
+GSM2516569,8.762423,rosette leaf,wild type,--
+GSM2520860,9.129214,inflorescence,wild type,Mock
+GSM2520864,10.932743,inflorescence,wild type,switch18to28 12h
+GSM2520862,8.520803,inflorescence,wild type,switch18to28 3h
+GSM2520866,9.60774,inflorescence,wild type,switch18to28 48h
+GSM2520868,10.841415,inflorescence,zed1-D,switch18to28 0h
+GSM2520872,14.453587,inflorescence,zed1-D,switch18to28 12h
+GSM2520870,11.131765,inflorescence,zed1-D,switch18to28 3h
+GSM2537712,12.667855,rosette leaf,ceh1,--
+GSM2537718,13.71099,rosette leaf,ceh1/eds16,--
+GSM2537715,9.332994,rosette leaf,eds16,--
+GSM2537709,6.5012183,rosette leaf,wild type,--
+GSM2544986,22.667145,seed,hda15-1,HR(Dark) conditions
+GSM2544983,19.77865,seed,wild type,HR(Dark) conditions
+GSM2546368,19.189299,root tip,SCL28-OX #10,--
+GSM2546366,23.075415,root tip,Wild type,--
+GSM2553046,10.474557,root tip,wild type,--
+GSM2564769,21.097921,internode,35S::Myc-GR-bdl,DEX
+GSM2564766,20.364841,internode,35S::Myc-GR-bdl,Mock
+GSM2564789,19.568676,internode,PXY:GR-MPÎIII/IV,DEX
+GSM2564786,22.663296,internode,PXY:GR-MPÎIII/IV,Mock
+GSM2574869,10.652701,leaves,Col-0,--
+GSM2574872,7.559986,leaves,Col-0,--
+GSM2585963,10.6551,seedlings,CPL4 knockdown,--
+GSM2585960,8.360903,seedlings,wild type,--
+GSM2588917,6.1276503,mesophyll,wild type,--
+SRX2771267,12.55288,leaves,Wild type,--
+SRX2771264,18.693855,leaves,smc4,--
+SRX2771284,12.469079,cauline leaf,Wild type,Husarium 3dpi
+SRX2771296,26.878029,pistils,Wild type,Mock
+SRX2771290,23.549206,pistils,Wild type,pollinated with A. halleri pollen
+SRX2771292,22.640858,pistils,Wild type,pollinated with A. lyrata pollen
+SRX2771294,23.37271,pistils,Wild type,selH pollinated
+GSM2593279,18.676434,whole plant,jazQ,--
+GSM2593285,17.096643,whole plant,jazQ mycT,--
+GSM2593282,14.719581,whole plant,mycT,--
+GSM2593276,18.179787,whole plant,wild type,--
+GSM2607987,15.994164,seedlings,aip1-2,--
+GSM2607985,14.771992,seedlings,aipp1-1,--
+GSM2607991,19.903767,seedlings,edm2-4,--
+GSM2607989,14.457117,seedlings,wild type,--
+GSM2611735,16.916464,seedlings,"triple mutant (luc7 a-2, b-1, rl-1)",--
+GSM2611732,13.248372,seedlings,wild type,--
+SRX2804489,15.201553,flower bud,morc6-3,--
+SRX2804486,17.168118,flower bud,wild type,--
+GSM2636296,17.433643,leaves,--,--
+GSM2640548,26.375227,seedlings,lux -/-,--
+SRX2863363,15.908158,seedlings,cbp20 (CAP-BINDING PROTEIN 20) mutant,--
+SRX2863366,14.398291,seedlings,cbp80 (CAP-BINDING PROTEIN 80) mutant,--
+SRX2863360,16.606234,seedlings,se-1 (SERRATE) mutant,--
+SRX2863357,15.725517,seedlings,wild type,--
+GSM2643669,17.998676,seed,athb15,--
+GSM2643671,20.751648,seed,athb25,--
+GSM2643673,19.013494,seed,hat2,--
+GSM2643675,21.118742,seed,lmi1,--
+GSM2643677,21.157288,seed,obp1,--
+GSM2643679,17.960796,seed,smb,--
+GSM2643681,25.02233,seed,vnd2,--
+GSM2643667,19.833717,seed,wild type,--
+GSM2643683,21.338402,seed,wrky14,--
+GSM2648035,8.573632,whole rosette,med5a-1 med5b-1,--
+GSM2648032,12.142998,whole rosette,ref2-1,--
+GSM2648041,10.174947,whole rosette,ref2-1 med5a-1 med5b-1,--
+GSM2648029,14.825129,whole rosette,ref5-1,--
+GSM2648038,11.360874,whole rosette,ref5-1 med5a-1 med5b-1,--
+GSM2648026,12.107492,whole rosette,wild type,--
+SRX2899192,6.970897,leaves,Col-0,--
+SRX2899191,6.74333,leaves,Col-0,--
+SRX2899204,8.225043,leaves,tcp2-tcp3-tcp4-tcp10 mutant,--
+SRX2899203,7.154095,leaves,tcp2-tcp3-tcp4-tcp10 mutant,--
+SRX2899198,6.4444065,leaves,tcp2-tcp4 mutant,--
+SRX2899197,8.003329,leaves,tcp2-tcp4 mutant,--
+GSM2683258,15.378984,embryo,se-1; serrate-1,--
+GSM2683260,11.350284,embryo,wild type,--
+SRX2983276,26.5807,root,--,VOC
+SRX2983288,10.159504,shoot,--,Mock
+SRX2983280,10.526821,shoot,--,VOC
+SRX2982243,15.804207,seedlings,--,Mock
+SRX2982239,16.671856,seedlings,cerk1-2 mutant,--
+SRX2982240,16.865383,seedlings,wild type,"1,3-b-glucan hexasaccharide"
+GSM2700473,17.419914,seedlings,h3.1kd-1,--
+GSM2700475,18.288046,seedlings,h3.1kd-2,--
+GSM2700471,16.767817,seedlings,wild type,--
+SRX3004692,19.945179,hypocotyl,--,--
+SRX3004704,31.266455,hypocotyl,--,--
+SRX3004695,51.21837,hypocotyl,--,--
+SRX3004707,25.097422,hypocotyl,--,--
+SRX3004698,44.495987,hypocotyl,--,--
+SRX3004701,44.763695,hypocotyl,--,--
+GSM2704840,12.210724,leaves,--,ABA
+GSM2704828,16.02173,leaves,--,ABA
+GSM2704831,16.616219,leaves,--,AMH1
+GSM2704852,11.9023905,leaves,--,AMH4
+GSM2704837,16.361526,leaves,--,DMSO
+GSM2704825,11.46464,leaves,--,DMSO
+GSM2717014,9.6981125,leaves,--,Mock
+GSM2717004,7.59778,leaves,--,Mock
+GSM2717010,7.8141885,leaves,--,Mock
+GSM2716999,7.061532,leaves,--,Rpm1
+GSM2717001,8.506135,leaves,--,Rpm1
+GSM2717007,8.321445,leaves,--,Rpm1
+SRX3041204,42.197704,seedlings,--,--
+SRX3041159,47.14252,seedlings,--,--
+SRX3041205,37.86407,seedlings,--,--
+SRX3042689,11.272543,Leaf,METo1+,--
+SRX3042692,14.048498,Leaf,wild type,--
+GSM2735475,9.178391,rosette leaf,Col-0,Mock
+GSM2735478,16.1928,rosette leaf,Col-0,ozone 2h
+GSM2751087,21.398933,seedlings,wild type,Mock
+GSM2751090,14.440119,seedlings,wild type,containing bacterial strain SA187
+GSM2751089,17.956245,seedlings,wild type,containing bacterial strain SA187ï¼without100 mM NaCl and cultivated Hor additional 14 days
+GSM2751088,19.628975,seedlings,wild type,without100 mM NaCl and cultivated Hor additional 12 days.
+GSM2752187,36.92785,whole seedling,ENAP1ox/ein3eil1 in COL background,air
+GSM2752183,32.766037,whole seedling,ein3eil1 in COL background,air
+GSM2781396,14.912537,inflorescence,35S,--
+GSM2781399,18.894646,inflorescence,35S,--
+GSM2781402,23.136244,inflorescence,35S,--
+GSM2781387,13.336929,inflorescence,control for induction,--
+GSM2781390,22.332167,inflorescence,control for induction,--
+GSM2781393,21.0159,inflorescence,control for induction,--
+GSM2781379,23.36224,petal,Tcp5Tcp13Tcp17 KO,--
+GSM2781373,18.056871,petal,control for KO,--
+GSM2781381,20.800611,petal,control for overexpression,--
+GSM2781384,18.080744,petal,pATML1,--
+SRX3182102,17.331076,seedlings,agb1-2 mutant,--
+SRX3182106,21.563583,seedlings,cry1 cry2 double mutant,--
+SRX3182108,25.383188,seedlings,hy5 mutant,--
+SRX3182104,22.687975,seedlings,wild type,--
+GSM2786261,9.569353,aerial seedling,Wild type,--
+GSM2786264,13.617682,aerial seedling,caa39 mutant,--
+SRX3217057,17.092113,cultured  cell,--,Mock
+SRX3217204,14.99421,cultured  cell,--,dark Hor 2 weeks*
+GSM2796127,19.019197,seedlings,ebs shl,--
+GSM2796130,13.134785,seedlings,ebs shl lhp1,--
+GSM2796133,10.122824,seedlings,emf1,--
+GSM2796124,14.906278,seedlings,lhp1,--
+GSM2796121,15.170462,seedlings,wild type,--
+GSM2796797,25.244684,Whole seedlings,UBQ10:YFP-ARF19,IAA 2h
+GSM2796805,25.30775,Whole seedlings,UBQ10:YFP-ARF19k,IAA 2h
+GSM2796801,18.452158,Whole seedlings,UBQ10:YFP-ARF19k,mock
+GSM2796789,28.838554,Whole seedlings,wild type,IAA 2h
+GSM2796786,16.92697,Whole seedlings,wild type,mock
+GSM2801321,9.982456,"leaf, stem, root",wild type,--
+GSM2802772,14.12087,seedlings,sigma factor 2-2 mutant,--
+GSM2802778,13.502035,seedlings,sigma factor 2-2 mutant,--
+GSM2802769,14.8135605,seedlings,wild type,--
+GSM2802775,8.734484,seedlings,wild type,--
+GSM2803874,21.424929,root,--,Mock
+GSM2809115,15.51815,whole seedling,gun1-1,5Î¼M Norflurazon
+GSM2809118,14.551574,whole seedling,gun4-1,5Î¼M Norflurazon
+GSM2809121,14.113932,whole seedling,gun5-1,5Î¼M Norflurazon
+GSM2809112,19.51801,whole seedling,wild type,5Î¼M Norflurazon
+GSM2809930,16.785124,root,wild type,"+He, +Cu"
+GSM2809939,21.091816,root,wild type,"+He, -Cu"
+GSM2809945,20.910511,root,wild type,"-He, +Cu"
+GSM2809951,17.414263,root,wild type,"-He, -Cu"
+GSM2809957,13.796823,rosette leaf,wild type,"+He, +Cu"
+GSM2809966,10.808346,rosette leaf,wild type,"+He, -Cu"
+GSM2809972,11.734564,rosette leaf,wild type,"-He, +Cu"
+GSM2809978,11.152237,rosette leaf,wild type,"-He, -Cu"
+SRX3300485,35.874344,root,wild type,BA
+SRX3300484,45.494045,root,wild type,Mock
+SRX3300500,26.190279,shoot,wild type,BA
+SRX3300501,27.741688,shoot,wild type,Mock
+SRX3323679,28.42588,leaves,--,high light oH 50000 lux Hor 48h
+SRX3389702,9.459975,leaves,--,SA
+SRX3389709,9.237167,leaves,--,SA
+GSM2840118,8.530201,whole plant,msh1?memory,--
+GSM2840115,11.860355,whole plant,wild type,--
+GSM2842857,22.196114,seedlings,agb1-2 mutant,--
+GSM2842861,20.94173,seedlings,cry1 cry2 double mutant,--
+GSM2842859,20.7872,seedlings,hy5 mutant,--
+GSM2842855,18.842466,seedlings,wild type,--
+GSM2857924,13.121294,flower,elf6-3ref6C,--
+GSM2857921,17.40691,flower,elf6-3ref6Cjmj13G,--
+GSM2857927,15.837253,flower,ref6-3,--
+GSM2857930,13.638776,flower,ref6C,--
+GSM2857918,15.826345,flower,wild type,--
+GSM2858388,11.42127,whole plant,wild type,--
+GSM2859813,15.592102,seedling,MUTE cDNA in pER8 / Col-0,DMSO 8hrs(Mock)
+GSM2859816,18.148876,seedling,MUTE cDNA in pER8 / Col-0,estradiol 10 uM 8hrs
+GSM2862616,20.95998,hypocotyl,--,--
+GSM2862656,26.27007,hypocotyl,--,--
+GSM2862666,25.18394,hypocotyl,--,--
+GSM2862626,24.956493,hypocotyl,--,--
+GSM2862676,22.749994,hypocotyl,--,--
+GSM2862636,22.947357,hypocotyl,--,--
+GSM2862606,23.302122,hypocotyl,--,--
+GSM2862646,28.372602,hypocotyl,--,--
+GSM2862618,19.406616,hypocotyl,--,--
+GSM2862658,27.84922,hypocotyl,--,--
+GSM2862668,21.742119,hypocotyl,--,--
+GSM2862628,25.41964,hypocotyl,--,--
+GSM2862678,25.505388,hypocotyl,--,--
+GSM2862638,25.058308,hypocotyl,--,--
+GSM2862608,26.40413,hypocotyl,--,--
+GSM2862648,35.22412,hypocotyl,--,--
+GSM2862620,11.242352,hypocotyl,--,--
+GSM2862660,15.534408,hypocotyl,--,--
+GSM2862670,13.970222,hypocotyl,--,--
+GSM2862630,14.066251,hypocotyl,--,--
+GSM2862680,13.613358,hypocotyl,--,--
+GSM2862640,12.683043,hypocotyl,--,--
+GSM2862610,15.456247,hypocotyl,--,--
+GSM2862650,13.127191,hypocotyl,--,--
+GSM2862604,11.108682,hypocotyl,--,--
+GSM2862622,16.987001,hypocotyl,--,--
+GSM2862662,10.349819,hypocotyl,--,--
+GSM2862672,14.437082,hypocotyl,--,--
+GSM2862632,16.44909,hypocotyl,--,--
+GSM2862682,11.874576,hypocotyl,--,--
+GSM2862642,12.989404,hypocotyl,--,--
+GSM2862612,19.368507,hypocotyl,--,--
+GSM2862652,12.094717,hypocotyl,--,--
+GSM2862624,20.362309,hypocotyl,--,--
+GSM2862664,30.459047,hypocotyl,--,--
+GSM2862674,31.87112,hypocotyl,--,--
+GSM2862634,28.157888,hypocotyl,--,--
+GSM2862684,22.696205,hypocotyl,--,--
+GSM2862644,29.32584,hypocotyl,--,--
+GSM2862614,30.257305,hypocotyl,--,--
+GSM2862654,27.038086,hypocotyl,--,--
+SRX3445260,29.444387,root,Col-0,ET at 10 ppm Hor 4 h
+SRX3445268,20.74512,root,Col-0,none
+SRX3445262,16.237314,root,ein3eil1,ET at 10 ppm Hor 4 h
+SRX3445270,18.73595,root,ein3eil1,none
+SRX3445272,15.938439,root,ein3eil1rhd6rsl1,ET at 10 ppm Hor 4 h
+SRX3445264,17.956783,root,ein3eil1rhd6rsl1,none
+SRX3445266,19.314388,root,rhd6rsl1,ET at 10 ppm Hor 4 h
+SRX3445258,19.483149,root,rhd6rsl1,none
+SRX3452641,11.502194,cotyledon,--,--
+SRX3452638,11.305328,cotyledon,--,--
+SRX3452644,9.297991,leaves,--,--
+SRX3452647,13.110373,leaves,--,--
+SRX3452650,9.593273,leaves,--,--
+SRX3452653,9.006123,leaves,--,--
+GSM2882808,18.036219,seedlings,wild type,--
+SRX3460580,13.619951,seedlings,--,--
+SRX3460581,16.824934,seedlings,--,--
+SRX3466467,12.891761,embryo,--,--
+SRX3466469,17.832972,plant callus,--,--
+GSM2890275,19.629305,seedlings,ECT2 T-DNA insertion mutant,--
+GSM2891443,13.922731,seedlings,BBX18-/-BBX23-/-,--
+GSM2891446,14.927589,seedlings,BBX18-/-BBX23-/-,--
+GSM2891449,14.936239,seedlings,PIF4-/-,--
+GSM2891452,18.73622,seedlings,PIF4-/-,--
+GSM2891437,13.373898,seedlings,wild type,Mock
+GSM2891440,13.74639,seedlings,wild type,heat 29
+GSM2897859,19.002638,flower bud,dnaj1,--
+GSM2897856,16.557968,flower bud,"dnaj1, dnaj2",--
+GSM2897862,21.042881,flower bud,dnaj2,--
+GSM2897868,18.616875,flower bud,suvh1,--
+GSM2897865,19.17811,flower bud,"suvh1, suvh3",--
+GSM2897871,22.570385,flower bud,suvh3,--
+GSM2897874,21.606932,flower bud,wild type,--
+GSM2897877,18.598442,leaves,wild type,--
+GSM2904733,21.353666,seed,wild type,--
+GSM2904739,21.430393,seed,wild type,--
+GSM2906496,11.933963,whole plant,VaWRKY14-overexpressing,--
+GSM2906492,15.183475,whole plant,Wild type,Mock
+GSM2906494,22.369759,whole plant,Wild type,drought
+GSM2913051,23.596027,leaves,ABI3,--
+GSM2913047,21.857285,leaves,Wild type,--
+GSM2913063,44.15904,leaves,ABI3,--
+GSM2915671,15.647862,seedlings,cml39 -/-,--
+GSM2915669,13.000962,seedlings,wild type,--
+GSM2915886,18.812828,seedlings,--,BA
+GSM2915883,25.82294,seedlings,--,Mock
+GSM3154469,22.208092,seedlings,clf-29 swn-4,--
+GSM2916556,22.975483,seedlings,swn-4 -/-,--
+GSM2916550,15.440624,seedlings,wild type,--
+GSM2932248,9.945127,leaves,Col-0,--
+GSM2933113,15.4323635,seedlings,Col-0 wrky18 wrky40 wrky33 triple mutant,Hlg22-treated
+GSM2933110,18.104383,seedlings,Col-0 wrky18 wrky40 wrky33 triple mutant,untreated
+GSM2933107,16.680567,seedlings,wild type,Hlg22 2h
+GSM2933104,16.976627,seedlings,wild type,Mock
+GSM2934452,16.305971,whole plant,msh1 memory line,--
+GSM2934437,13.314742,whole plant,wild type,5-azacytidine
+GSM2934431,17.738405,whole plant,wild type,Mock
+SRX3563387,19.490725,flower receptacles,mutant,--
+SRX3563374,26.18435,flower receptacles,mutant,--
+SRX3563384,19.559101,flower receptacles,mutant,--
+SRX3563376,24.575329,flower receptacles,mutant,--
+SRX4727335,21.817858,flower receptacles,serk1-1,--
+SRX4727338,25.774363,flower receptacles,serk1-1,--
+SRX3563394,25.84479,flower receptacles,suppressor,--
+SRX3563378,17.749823,flower receptacles,suppressor,--
+SRX3563386,22.230518,flower receptacles,wild type,--
+SRX3563381,19.768082,flower receptacles,wild type,--
+SRX4727332,24.454535,flower receptacles,wild type,--
+GSM2941988,8.272207,seedlings,bZIP1/bZIP53 ko + inducible group bZIP2/-11/-44 knockdown,--
+GSM2941982,18.223942,seedlings,snrk1-alpha-1 ko + inducible snrk1-alpha-2 knockdown,--
+GSM2947242,18.643791,seedlings,nia1/2,DMSO
+GSM2947244,19.59959,seedlings,nia1/2,isoxaben
+GSM2947236,20.641672,seedlings,wild type,Mock
+GSM2947239,20.795258,seedlings,wild type,isoxaben
+GSM2948188,14.78053,seedlings,--,--
+SRX3627486,27.11951,seed,spy-3,2 umol ABA
+SRX3627483,29.91517,seed,wild type,2 umol ABA
+SRX3646508,12.389707,leaves,--,--
+SRX3646510,11.170466,leaves,wild type,--
+GSM2974957,10.873086,seedlings,--,--
+GSM2987689,23.217583,2-week seedlings,atpabs mutant,--
+GSM2987687,26.357187,2-week seedlings,wild type,--
+GSM2992341,25.367361,hypocotyl,bzr1-1D,Mock
+GSM2992339,27.09114,hypocotyl,bzr1-1D,PPZ plus DPI and H2O2 condition
+GSM2992336,20.95182,hypocotyl,bzr1-1D,PPZ plus DPI condition
+GSM2992347,16.097008,hypocotyl,wild type,Mock
+GSM2992344,17.561476,hypocotyl,wild type,PPZ plus DPI VS PPZ
+SRX5137609,39.717896,seedlings,--,ABA 6h
+SRX5137605,16.19053,seedlings,--,Mock
+SRX5137608,17.50636,seedlings,--,Mock
+GSM3014777,13.702452,seedlings,npr1-1,Mock
+GSM3014775,16.810976,seedlings,npr1-1,SA treated
+GSM3014785,13.263532,seedlings,npr1-1_npr4-4D,Mock
+GSM3014783,15.791756,seedlings,npr1-1_npr4-4D,SA treated
+GSM3014781,17.550035,seedlings,npr4-4D,Mock
+GSM3014779,19.812008,seedlings,npr4-4D,SA treated
+GSM3014773,15.329465,seedlings,wild type,Mock
+GSM3014771,16.421988,seedlings,wild type,SA
+SRX4045486,11.314665,aerial part,--,--
+GSM3021215,12.134139,7 days old whole seedling,wild type,"Growth light (60 Î¼mol.m-2.s-1, 22 oC)"
+GSM3021219,12.880941,7 days old whole seedling,wild type,"Growth light (60 Î¼mol.m-2.s-1, 22 oC)"
+GSM3021221,15.186473,7 days old whole seedling,wild type,"Growth light (60 Î¼mol.m-2.s-1, 22 oC)"
+GSM3021223,14.501836,7 days old whole seedling,wild type,"Growth light (60 Î¼mol.m-2.s-1, 22 oC)"
+GSM3021217,13.4941225,7 days old whole seedling,wild type,"Growth light (60 Î¼mol.m-2.s-1, 22 oC)"
+GSM3021225,13.244341,7 days old whole seedling,wild type,"Growth light (60 Î¼mol.m-2.s-1, 22 oC)"
+GSM3021227,20.71415,7 days old whole seedling,wild type,"High light (1200 Î¼mol.m-2.s-1, leaf temperature: 22 oC)"
+GSM3021231,19.40571,7 days old whole seedling,wild type,"High light (1200 Î¼mol.m-2.s-1, leaf temperature: 22 oC)"
+GSM3021233,27.931532,7 days old whole seedling,wild type,"High light (1200 Î¼mol.m-2.s-1, leaf temperature: 22 oC)"
+GSM3021235,28.244663,7 days old whole seedling,wild type,"High light (1200 Î¼mol.m-2.s-1, leaf temperature: 22 oC)"
+GSM3021229,25.220467,7 days old whole seedling,wild type,"High light (1200 Î¼mol.m-2.s-1, leaf temperature: 22 oC)"
+GSM3021237,20.781649,7 days old whole seedling,wild type,"High light (1200 Î¼mol.m-2.s-1, leaf temperature: 22 oC)"
+GSM3021239,14.011757,7 days old whole seedling,wild type,"High light (1200 Î¼mol.m-2.s-1, leaf temperature: 22 oC) treatment, followed by recovery in Growth light (60 Î¼mol.m-2.s-1, 22 oC)"
+SRX3744331,14.189569,flower,--,--
+SRX3744339,9.450872,leaves,--,--
+SRX3744333,10.748528,leaves,--,--
+GSM3026967,15.646645,seedlings,cpr1 aba1,--
+GSM3026973,19.508139,seedlings,pTPR1-TPR1-HA,--
+GSM3026964,16.730593,seedlings,wild type,--
+GSM3026970,15.452395,seedlings,wild type,--
+GSM3027906,11.626959,rosette leaf,cdk8-1,--
+GSM3027912,16.147097,rosette leaf,ref4-1,--
+GSM3027903,14.934943,rosette leaf,ref4-3,--
+GSM3027909,14.427994,rosette leaf,ref4-3 cdk8-1,--
+GSM3027900,14.084829,rosette leaf,wild type,--
+GSM3035092,13.9735565,seedlings,--,--
+SRX3778406,19.035093,seedlings,siz1-2,Mock
+SRX3778408,27.954926,seedlings,siz1-2,heat
+SRX3778407,13.25194,seedlings,wild type,Mock
+SRX3778409,30.372103,seedlings,wild type,heat
+GSM3037960,22.672916,apical hook,wild type,--
+GSM3040086,13.232988,seedlings,Col-0,--
+GSM3056174,17.081242,Germinating seeds,ago4-2,Salinity
+GSM3056172,18.523067,Germinating seeds,ago4-2,control
+GSM3056176,15.027256,Germinating seeds,ago4-3,control
+GSM3056168,20.209604,Germinating seeds,wild type,control
+SRX3823232,8.528631,leaves,--,--
+GSM3070202,18.112225,seedlings,bdrs triple mutant,COLD
+GSM3070187,19.381802,seedlings,bdrs triple mutant,DARK
+GSM3070205,18.1317,seedlings,bdrs triple mutant,HEAT
+GSM3070190,31.306837,seedlings,bdrs triple mutant,LIGHT2h
+GSM3070193,24.480606,seedlings,bdrs triple mutant,LIGHT4h
+GSM3070196,15.260219,seedlings,wild type,COLD
+GSM3070178,23.134,seedlings,wild type,DARK
+GSM3070199,15.161007,seedlings,wild type,HEAT
+GSM3070181,31.354149,seedlings,wild type,LIGHT2h
+GSM3070184,20.53119,seedlings,wild type,LIGHT4h
+GSM3070163,19.56142,seedlings,bdr1 mutant (SALK_142108C),--
+GSM3070166,17.776459,seedlings,bdr2 mutant (CS852350),--
+GSM3070169,16.263252,seedlings,bdr3 mutant (SALK_059905),--
+GSM3070172,15.33466,seedlings,bdrs triple mutant,--
+GSM3070175,16.407513,seedlings,fpa mutant (fpa-7),--
+GSM3070160,19.65039,seedlings,wild type,--
+GSM3070154,15.371668,seedlings,bdr triple mutant,--
+GSM3070157,18.24818,seedlings,fpa single mutant (fpa-7),--
+SRX3873888,24.272873,sepal,--,--
+SRX3873884,23.714523,sepal,--,--
+SRX3873883,27.661549,sepal,--,--
+GSM3075911,14.824604,seedlings,cop1-4,--
+GSM3075914,18.291073,seedlings,spaQ,--
+GSM3075908,19.760471,seedlings,wild type,--
+SRX3898692,20.506262,whole seedling,--,psNTP9 constitutive expression
+SRX3898688,15.333226,whole seedling,--,psNTP9-DM constitutive expression
+SRX3898689,19.033478,whole seedling,wild type,none
+GSM3092002,19.857365,seedlings,det1-1,Dark
+GSM3092000,17.98434,seedlings,det1-1,Light
+GSM3092006,18.96913,seedlings,det1-1ubp22,Light
+GSM3092004,17.123703,seedlings,ubp22,Light
+GSM3091998,26.364988,seedlings,wild type,Dark
+GSM3091996,15.851377,seedlings,wild type,Light
+SRX3960079,22.165928,whole plant,--,--
+SRX3960081,18.17057,whole plant,wild type,--
+SRX3964267,14.915933,seedlings,35S:EMB2261 expressed in emb2261-2,--
+SRX3964269,17.401316,seedlings,ABI3:EMB2261 expressed in emb2261-2,--
+SRX3964265,16.834253,seedlings,Col-0,--
+SRX4047579,19.564901,Seedling,--,--
+SRX4047585,21.467142,Seedling,--,--
+SRX4047581,17.496805,Seedling,--,--
+SRX3993281,18.295143,Seedling,--,--
+SRX3993279,15.4795065,Seedling,--,--
+SRX4459352,46.51339,leaves,Col-0,ABA
+SRX4459356,22.903305,leaves,Col-0,Mock
+SRX4459343,24.460281,leaves,abi5,no treatment
+SRX4459342,41.013714,leaves,abi5,treated with 100 Î¼M ABA Hor 4 h
+SRX4459354,18.089045,leaves,xiw1,Mock
+SRX4459346,46.657913,leaves,xiw1,treated with 100 Î¼M ABA Hor 4 h
+SRX4020047,19.758842,leaf,--,Mite-inHested
+SRX4020067,17.378056,leaf,--,Mite-inHested
+SRX4020057,14.363303,leaf,--,Mite-inHested
+SRX4020051,16.387018,leaf,--,Non-inHested control
+SRX4020049,17.379646,leaf,--,Non-inHested control
+SRX4020061,12.752766,leaf,--,Non-inHested control
+GSM3137763,24.0848,stem,wild type,--
+GSM3137768,18.847776,stem,wild type TRAP,--
+GSM3138026,19.28563,5day whole seedlings,MIR394A overexpression,--
+GSM3138028,17.579216,5day whole seedlings,bin2-1,--
+GSM3138023,17.550402,5day whole seedlings,wild type,--
+GSM3138460,26.07687,root,bzr1-D,--
+GSM3138457,20.299187,root,wild type,Mock
+GSM3138458,23.007801,root,wild type,Pi deHicient
+SRX4062703,28.702269,root,pho2,P_limited
+SRX4062687,25.251781,root,pho2,P_replete
+SRX4062666,21.822144,root,pho2,P_resupplied
+SRX4062668,25.215492,root,phr1-1,P_limited
+SRX4062656,26.908993,root,phr1-1,P_replete
+SRX4062652,23.8774,root,phr1-1,P_resupplied
+SRX4062682,26.022102,root,phr1-2,P_limited
+SRX4062683,21.469574,root,phr1-2,P_replete
+SRX4062738,20.082685,root,phr1-2,P_resupplied
+SRX4062719,27.221472,root,spx4-1,P_limited
+SRX4062713,29.56374,root,spx4-1,P_replete
+SRX4062744,24.484314,root,spx4-1,P_resupplied
+SRX4062674,32.581455,root,wild type,P_limited
+SRX4062662,26.058884,root,wild type,P_replete
+SRX4062755,23.66708,root,wild type,P_resupplied
+SRX4062691,26.654593,shoot,pho2,P_limited
+SRX4062688,17.632595,shoot,pho2,P_replete
+SRX4062663,13.603554,shoot,pho2,P_resupplied
+SRX4062667,15.213822,shoot,phr1-1,P_limited
+SRX4062654,11.59515,shoot,phr1-1,P_replete
+SRX4062661,11.530367,shoot,phr1-1,P_resupplied
+SRX4062762,18.45976,shoot,phr1-2,P_limited
+SRX4062735,14.96995,shoot,phr1-2,P_replete
+SRX4062732,12.99971,shoot,phr1-2,P_resupplied
+SRX4062716,21.08597,shoot,spx4-1,P_limited
+SRX4062747,15.110441,shoot,spx4-1,P_resupplied
+SRX4062681,13.246426,shoot,wild type,P_replete
+SRX4062752,11.6181345,shoot,wild type,P_resupplied
+SRX4079875,22.13424,shoot,--,--
+GSM3140722,17.032516,seedlings,pyl duodecuple,1/2 MS Hor 24 hours
+GSM3140716,15.638704,seedlings,pyl duodecuple,100 microM ABA Hor 24 hours
+GSM3140719,23.387184,seedlings,pyl duodecuple,300 mM mannitol Hor 24 hours
+GSM3140731,16.72663,seedlings,wild type,1/2 MS Hor 24 hours
+GSM3140725,26.347399,seedlings,wild type,100 microM ABA Hor 24 hours
+GSM3140728,31.327362,seedlings,wild type,300 mM mannitol Hor 24 hours
+SRX4093034,20.445004,seed,--,HR_R light VS HR
+SRX4093033,20.893911,seed,--,Mock
+GSM3146384,18.574612,leaves,--,ABA 48h
+SRX4120863,9.036526,aerial seedling,--,Mock
+SRX4120852,30.21318,aerial seedling,--,dehydration 3h
+GSM3154218,27.20005,leaf,trm5 -/-,--
+SRX4130416,10.760848,shoot,wild type,Mock
+SRX4130393,20.88992,shoot,wild type,touch
+SRX4130398,25.476934,shoot,wild type,touch 12h30
+SRX4130395,18.906464,shoot,wild type,touch 24h30
+SRX4130381,14.169422,shoot,wild type,touch 30min
+GSM3162109,24.129217,4day seedlings,rrc1-3,3h red light
+GSM3162115,23.817701,4day seedlings,wild type,3h red light
+GSM3162112,27.926062,4day seedlings,wild type,control
+SRX4183546,17.192823,Inflorescence stem,cry1,--
+SRX4183548,17.91687,Inflorescence stem,wild type,--
+GSM3184457,14.06975,seedlings,wild type,photoperiod*
+GSM3184401,14.012627,seedlings,wild type,photoperiod*
+GSM3184415,14.913822,seedlings,wild type,photoperiod*
+GSM3204832,14.252957,12-day-old whole seedling tissue,cca1lhy,22Â°C_1h
+GSM3204840,19.441032,12-day-old whole seedling tissue,cca1lhy,37Â°C_1h
+GSM3204845,23.379642,12-day-old whole seedling tissue,prr7prr9,10Â°C_6h
+GSM3204849,10.287488,12-day-old whole seedling tissue,prr7prr9,22Â°C_6h
+GSM3204851,18.534647,12-day-old whole seedling tissue,prr7prr9,37Â°C_6h
+GSM3204822,20.415253,12-day-old whole seedling tissue,wild type,10Â°C_1h
+GSM3204844,19.924894,12-day-old whole seedling tissue,wild type,10Â°C_6h
+GSM3204848,12.889406,12-day-old whole seedling tissue,wild type,22Â°C_6h
+GSM3204837,20.80634,12-day-old whole seedling tissue,wild type,37Â°C_1h
+GSM3204850,20.897675,12-day-old whole seedling tissue,wild type,37Â°C_6h
+GSM3209218,10.473919,rosette,wild type,SD
+GSM3209221,13.645409,rosette,wild type,SD_2dLD*
+GSM3209224,13.4198,rosette,wild type,SD_3dLD*
+GSM3209227,12.237679,rosette,wild type,SD_5dLD*
+GSM3228382,12.253212,rosette leaf,UBQ10,--
+GSM3228385,19.404697,rosette leaf,UBQ10,--
+GSM3228269,14.779074,rosette leaf,UBQ10,--
+GSM3242204,14.640849,root tip,hsl2,--
+GSM3242200,13.887862,root tip,wild type,--
+SRX4337156,17.033325,seedling,agl16-1,--
+SRX4337160,12.122711,seedling,wild type,--
+GSM3258331,12.690071,rosette leaf,jazQ,--
+GSM3258328,12.145598,rosette leaf,wild type,--
+GSM3262073,15.706395,aerial seedling,ein3 eil1,--
+GSM3262069,17.8415,aerial seedling,hls1,--
+GSM3262075,12.212769,aerial seedling,pifq,--
+GSM3262071,14.319254,aerial seedling,pifq ein3 eil1,--
+GSM3262067,18.41789,aerial seedling,wild type,--
+SRX4383148,16.140085,seedings,Wild type,--
+SRX4383145,15.104239,seedings,dre2 mutant,--
+GSM3271475,18.957308,seedlings,cop1-4,1h red light
+GSM3271490,19.46501,seedlings,phyB C-terminal deletion,1h red light
+GSM3271484,25.424328,seedlings,phyB C-terminal deletion,dark control
+GSM3271487,18.440723,seedlings,phyB full length,1h red light
+GSM3271481,20.500889,seedlings,phyB full length,dark control
+GSM3271478,23.560465,seedlings,spaQ,1h red light
+GSM3271472,19.130238,seedlings,wild type,1h red light
+SRX4393096,17.011253,seedlings,--,Melatonin
+SRX4393094,17.230677,seedlings,--,Melatonin
+SRX4393098,14.402389,seedlings,--,Mock
+SRX4393103,15.070034,seedlings,--,Serotonin
+SRX4393104,18.782274,seedlings,--,Serotonin
+SRX4403054,15.495651,seedlings,--,--
+SRX4403057,16.38985,seedlings,--,--
+SRX4403055,17.088068,seedlings,--,--
+GSM3290661,13.959857,leaves,wild type,Highlight
+GSM3290662,11.476191,leaves,wild type,Highlight
+GSM3290657,10.375555,leaves,wild type,Highlight
+GSM3290658,11.578693,leaves,wild type,Highlight
+GSM3290659,9.172462,leaves,wild type,Mock
+GSM3290660,8.564844,leaves,wild type,Mock
+GSM3290655,8.582399,leaves,wild type,Mock
+GSM3290656,8.032231,leaves,wild type,Mock
+GSM3290644,16.017733,seedlings,wild type,H2O2 2min
+GSM3290645,15.14288,seedlings,wild type,H2O2 4min
+GSM3290646,18.897606,seedlings,wild type,H2O2 8min
+GSM3290643,16.859379,seedlings,wild type,Mock
+GSM3290619,6.2802105,leaves,rbohd mutant,--
+GSM3290620,6.9666777,leaves,rbohd mutant,--
+GSM3290621,9.488459,leaves,rbohd mutant,--
+GSM3290622,10.332596,leaves,rbohd mutant,--
+GSM3290623,7.4945016,leaves,rbohd mutant,--
+GSM3290624,7.5627947,leaves,rbohd mutant,--
+GSM3290625,8.235636,leaves,rbohd mutant,--
+GSM3290626,9.198685,leaves,rbohd mutant,--
+GSM3290597,8.837846,leaves,wild type,Highlight
+GSM3290598,7.0285234,leaves,wild type,Highlight
+GSM3290599,8.411496,leaves,wild type,Highlight
+GSM3290600,8.514753,leaves,wild type,Highlight
+GSM3290601,9.425562,leaves,wild type,Highlight
+GSM3290602,9.40778,leaves,wild type,Highlight
+GSM3290595,8.017155,leaves,wild type,Mock
+GSM3290596,8.266921,leaves,wild type,Mock
+SRX4590754,21.767136,anther,--,--
+SRX4590756,17.886726,anther,bam3,--
+SRX4466232,20.102043,root,frd3-7,1 microM Zn
+SRX4466230,16.344862,root,frd3-7,20 microM Zn
+SRX4466238,16.532518,root,wild type,1 microM Zn
+SRX4466236,14.564126,root,wild type,20 microM Zn
+GSM3662017,39.06096,root,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3662026,57.144127,root,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311613,74.85217,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311614,94.66035,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311589,59.595108,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311599,59.66629,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311571,82.30581,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311583,67.0865,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311598,65.29308,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311628,70.351654,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311590,63.469856,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311616,81.974655,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311591,53.148613,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311629,77.74406,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311615,90.23335,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3311617,99.38986,root protoplasts,--,"Nitrogen, Cycloheximide, Dexamethasone"
+GSM3316336,17.349358,Seedlings,Wild Type,--
+GSM3316340,15.440008,Seedlings,hta9hta11 doble mutant,--
+GSM3316343,17.800648,Seedlings,hta9hta11_FLAG-HTA9_N,--
+GSM3316346,23.623775,Seedlings,hta9hta11_FLAG-HTA9_RR,--
+SRX4508502,33.796654,leaves,RNAi of AtVOC,long-term drought
+SRX4508526,24.389305,leaves,RNAi of AtVOC,short-term drought
+SRX4508504,37.14367,leaves,Wild type,long-term drought
+SRX4508528,24.006832,leaves,Wild type,short-term drought
+SRX4508520,32.942646,leaves,mutant of AtLEA,long-term drought
+SRX4508524,34.47311,leaves,mutant of AtLEA,short-term drought
+SRX4508514,19.11899,leaves,over expression of AtLEA,long-term drought
+SRX4508506,10.827762,leaves,over expression of AtLEA,short-term drought
+SRX4508510,20.253096,leaves,over expression of AtVOC,short-term drought
+SRX4508512,23.421192,leaves,over expression of BnLEA,long-term drought
+SRX4508508,18.300177,leaves,over expression of BnLEA,short-term drought
+SRX4508516,27.413414,leaves,over expression of BnVOC,long-term drought
+SRX4508522,12.044424,leaves,over expression of BnVOC,short-term drought
+SRX4500617,32.766697,silique,RNAi of AtVOC,short-term drought
+SRX4500605,25.015419,silique,Wild type,long-term drought
+SRX4500615,36.553917,silique,Wild type,short-term drought
+SRX4500611,39.389458,silique,mutant of AtLEA,short-term drought
+SRX4500603,27.65079,silique,over expression of AtLEA,short-term drought
+SRX4500619,21.052143,silique,over expression of AtVOC,long-term drought
+SRX4500609,34.458683,silique,over expression of AtVOC,short-term drought
+SRX4500601,29.131351,silique,over expression of BnLEA,short-term drought
+SRX4500613,30.651993,silique,over expression of BnVOC,short-term drought
+GSM3317934,11.504988,leaves,adcp1-1 mutant,--
+GSM3317932,12.637075,leaves,wild type,--
+SRX4504629,14.930131,seedings,--,--
+SRX4504626,13.216388,seedings,--,--
+SRX4504625,13.436552,seedings,--,--
+SRX4504627,14.118635,seedings,--,--
+SRX4514501,15.966886,seedlings,NAC32_OX*,He deHiciency
+SRX4514500,16.785587,seedlings,nac32*,He deHiciency
+SRX4514499,14.654582,seedlings,wild type,He deHiciency
+SRX4514505,17.377913,seedlings,wild type,control
+GSM3325568,19.642387,seedlings,Wild type,LHS (long heat stress)*
+GSM3325570,22.545021,seedlings,Wild type,LHSR12 (long heat stress recovery 12 hours)*
+GSM3325572,14.128067,seedlings,Wild type,LHSR84 (long heat stress recovery 84 hours)*
+GSM3325566,14.620845,seedlings,Wild type,control
+GSM3325830,25.014866,endosperm,Col-0,--
+GSM3325836,25.656256,endosperm,hdg3-1 Col-0 mutant,--
+GSM3330039,15.999854,leaf,SAP11 overexpressed,exposed to M. quadrilineatus
+GSM3330043,16.289965,leaf,SAP11 overexpressed,exposed to M. quadrilineatus
+GSM3330047,19.061506,leaf,wild type,exposed to M. quadrilineatus
+SRX4547827,18.116302,seedlings,abcf1*,--
+SRX4547830,17.495018,seedlings,abcf4*,--
+SRX4547824,15.235314,seedlings,wild type,--
+SRX4550681,16.706173,seedlings,ABCF3-OE*,--
+SRX5240064,16.353973,seedlings,abcf3-a,--
+SRX4550680,16.504625,seedlings,wild type,--
+SRX4553473,23.149502,shoot,wild type,3AT
+SRX4553469,27.038286,shoot,wild type,AA
+SRX4553467,28.450523,shoot,wild type,ABA
+SRX4553461,22.525223,shoot,wild type,MV
+SRX4553459,24.672733,shoot,wild type,SA
+SRX4553477,11.818021,shoot,wild type,UVcont
+SRX4553465,12.500008,shoot,wild type,cont
+GSM3335932,17.714624,seedlings,wild type,Hlg22
+GSM3348235,28.84317,seedlings,phyAB mutant,1h red light
+GSM3348233,21.904139,seedlings,phyB mutant,1h red light
+GSM3348229,27.342434,seedlings,wild type,1h red light
+GSM3348231,22.027489,seedlings,wild type,darkness
+SRX4619878,1.1047094,Leaf,gl1-2*,--
+SRX4619634,0.0,Leaf,gl1-2*,--
+SRX4619604,0.83698773,Leaf,gl1-2*,--
+SRX4619904,0.0,Leaf,gl1-2*,--
+SRX4619663,2.502612,Leaf,wild type,--
+SRX4619685,0.57646006,Leaf,wild type,--
+SRX4619603,0.0,Leaf,wild type,--
+SRX4619679,0.0,Leaf,wild type,--
+SRX4619815,0.440175,Leaf,wild type,--
+GSM3370069,15.089368,whole plant,--,Heat
+GSM3370073,20.684313,whole plant,--,Heat
+GSM3371569,16.939032,seed,mpk8 mutant,Imbibed seeds (dormant) for 24h on filter paper with water in dark at 25C
+GSM3371572,25.283525,seed,mpk8 mutant,no treatment
+GSM3371575,24.463919,seed,tcp14 mutant,Imbibed seeds (dormant) for 24h on filter paper with water in dark at 25C
+GSM3371578,28.643238,seed,tcp14 mutant,no treatment
+GSM3371563,20.447346,seed,wild type,Imbibed seeds (dormant) for 24h on filter paper with water in dark at 25C
+GSM3371566,27.85312,seed,wild type,no treatment
+SRX5006594,15.915561,seed,wild type,--
+SRX4641270,20.98751,collet,--,Anchorene
+SRX4641272,24.848278,collet,--,Mock
+SRX4641268,26.331585,collet,--,NPA
+SRX4702161,13.022911,shoot,wild type,--
+SRX4702156,20.107119,shoot,wild type,--
+SRX4702157,28.584185,shoot,wild type,--
+GSM3389890,22.881351,seedlings,wild type,AGN 1h
+GSM3389896,17.243748,seedlings,wild type,AGN 24h
+GSM3389893,18.13158,seedlings,wild type,AGN 6h
+GSM3389881,18.559473,seedlings,wild type,Mock
+GSM3389887,13.2017765,seedlings,wild type,Mock
+GSM3389884,18.49055,seedlings,wild type,Mock
+GSM3391611,17.236637,whole plant,lst8 mutant,--
+GSM3391614,17.112679,whole plant,maktor mutant,--
+GSM3391617,13.667139,whole plant,maktor mutant,--
+GSM3391608,14.965994,whole plant,wild type,--
+GSM3391623,14.192709,whole plant,yak1 lst8 mutant,--
+GSM3391620,15.014743,whole plant,yak1 mutant,--
+SRX4734053,13.699227,seeding,ilp1-1*,--
+SRX4734051,19.17146,seeding,ntr1-1*,--
+SRX4734055,15.288424,seeding,wild type,--
+SRX4733741,27.16965,root,--,VOC
+SRX4733731,9.4308,shoot,--,Mock
+SRX4733729,11.579101,shoot,--,VOC
+GSM3400581,15.540653,leaves,wild type,wounding 4h
+GSM3402479,2.2977052,pollen,pVC::H1.1-mRFP,--
+GSM3402476,1.8704834,pollen,wild type,--
+SRX4778924,14.226372,Leaves,--,--
+SRX4778918,15.727703,Leaves,--,Pst DC3000 0hpi*
+SRX4778922,12.864764,Leaves,--,Pst DC3000 30hpi*
+SRX4778920,11.952198,Leaves,--,Pst DC3000 6hpi*
+SRX4778934,14.0280905,Leaves,--,Pst DC3000*
+SRX4778928,15.139898,Leaves,--,cold 10h and Pst DC3000 0hpi*
+SRX4778932,13.140326,Leaves,--,cold 10h and Pst DC3000 30hpi*
+SRX4778930,10.620319,Leaves,--,cold 10h and Pst DC3000 6hpi*
+SRX4778926,24.539202,Leaves,--,cold 10h*
+GSM3408065,13.14569,10-days Seedlings,mutant 17ab,--
+GSM3408062,9.902094,10-days Seedlings,wild type,--
+GSM3408856,17.686584,inflorescence,Wild type,--
+GSM3408859,16.276388,leaves,Wild type,--
+GSM3408813,24.34707,seedlings,Wild type,ABA 2h
+GSM3408818,33.4086,seedlings,Wild type,ABA 4h
+GSM3408823,37.656357,seedlings,Wild type,ABA 6h
+GSM3408828,31.91821,seedlings,Wild type,ABA 8h
+GSM3408808,12.313928,seedlings,Wild type,Mock
+GSM3408800,17.011639,seedlings,Wild type,Mock
+GSM3408831,14.493389,seedlings,Wild type,Mock
+GSM3408803,22.95946,seedlings,Wild type,cold 20d
+GSM3408834,29.428568,seedlings,Wild type,drought 2h
+GSM3408837,27.669327,seedlings,Wild type,drought 4h
+GSM3408840,33.607212,seedlings,Wild type,drought 6h
+GSM3408843,30.26628,seedlings,Wild type,drought 8h
+GSM3414843,17.605188,2weeks seedlings,eds4 -/-,--
+GSM3414848,14.901212,2weeks seedlings,eds4 -/-,--
+GSM3414839,17.349358,2weeks seedlings,wild type,--
+GSM3414846,13.58475,2weeks seedlings,wild type,--
+GSM3416966,14.816637,shoots,--,aerated
+GSM3430694,8.829924,shoots,--,aerated
+GSM3430686,7.282772,shoots,--,micropore filter
+GSM3416967,15.37497,shoots,--,non-aerated
+GSM3430690,10.753361,shoots,--,non-aerated
+SRX4803526,16.730804,seedlings,Col-0,ATP
+SRX4803529,14.955457,seedlings,Col-0,Mock
+SRX4803500,21.50176,seedlings,OxP2K1,500 uM ATP
+SRX4803499,18.896149,seedlings,OxP2K1,mock
+SRX4803509,16.87399,seedlings,coi1-30,500 uM ATP
+SRX4803546,11.901908,seedlings,coi1-30,mock
+SRX4803503,13.987178,seedlings,dorn1-3,500 uM ATP
+SRX4803506,17.620356,seedlings,dorn1-3,mock
+SRX4803552,17.537859,seedlings,ein2-1,500 uM ATP
+SRX4803513,15.040078,seedlings,ein2-1,mock
+SRX4803521,15.581579,seedlings,npr1-3,500 uM ATP
+SRX4803519,13.697899,seedlings,npr1-3,mock
+GSM3423810,6.114176,embryo,--,--
+GSM3423813,10.952478,embryo,--,--
+GSM3426997,13.426388,leaves,Wild type,excess-light
+GSM3427003,16.40323,leaves,Wild type,excess-light*
+GSM3433651,14.049585,seedlings,hda9-1 mutant,Mock
+GSM3433633,15.144304,seedlings,hda9-1 mutant,Mock
+GSM3433660,14.284508,seedlings,hda9-1 mutant,heat27
+GSM3433642,16.647852,seedlings,hda9-1 mutant,heat27
+GSM3433648,10.831324,seedlings,pif4-2 mutant,Mock
+GSM3433630,14.707008,seedlings,pif4-2 mutant,Mock
+GSM3433657,14.27743,seedlings,pif4-2 mutant,heat27
+GSM3433639,17.842272,seedlings,pif4-2 mutant,heat27
+GSM3433627,14.611049,seedlings,wild type,Mock
+GSM3433654,16.543201,seedlings,wild type,heat27
+GSM3433636,13.44725,seedlings,wild type,heat27
+SRX5413164,9.917982,leaf,crwn1,--
+SRX5413162,8.106658,leaf,wild type,--
+GSM3443225,15.421534,7-day-old whole seedling,hda9 SALK_007123,--
+GSM3443223,17.031282,7-day-old whole seedling,"hda9 SALK_007123, hos15-2 SALK_064435",--
+GSM3443227,16.017937,7-day-old whole seedling,hos15-2 SALK_064435,--
+GSM3443229,15.740713,7-day-old whole seedling,pwr SALK_071811C,--
+GSM3443221,17.504995,7-day-old whole seedling,wild type,--
+GSM3443231,14.337424,leaves,--,Isoprene emitting
+GSM3443234,11.291018,leaves,--,Non-emitting
+SRX4941731,20.431816,Etiolated Cotyledon,ccr2*,--
+SRX4941715,23.057335,Etiolated Cotyledon,wild type,--
+SRX4941723,8.363535,Leaf,ccr2*,--
+SRX4941719,10.51928,Leaf,wild type,--
+GSM3475784,18.501282,Whole seedlings,wild type,2h 25uM dexamethasone
+GSM3475790,27.954966,Whole seedlings,wild type,"2h 25uM dexamethasone,1uM trichostatin"
+SRX5024976,17.100271,seedlings,--,3d Zn2+ and recovery 3d*
+SRX5024975,25.275518,seedlings,--,3d Zn2+*
+SRX5024966,11.280256,seedlings,--,3d nanoparticles and recovery 3d*
+SRX5024968,18.328852,seedlings,--,3d nanoparticles*
+SRX5024970,14.229621,seedlings,--,control
+SRX5026096,14.08173,seedlings,MYB70-OX*,--
+SRX5026098,13.520299,seedlings,myb70*,--
+SRX5026097,13.866878,seedlings,wild type,--
+GSM3484754,30.039595,root,expressing INTACT,--
+GSM3490689,57.82864,root,wild type,--
+SRX5070539,14.990985,Rosette leaf,--,PHOA 100 um
+SRX5070538,16.535767,Rosette leaf,--,PHOS 100 um
+SRX5070543,12.191855,Rosette leaf,--,control line
+GSM3498720,14.379517,seedlings,arp6-1,--
+GSM3498724,18.321262,seedlings,"arp6-1,mbd9-3",--
+GSM3498716,15.289095,seedlings,mbd9-3,--
+GSM3498712,16.67923,seedlings,wild type,--
+GSM3499773,23.298409,Seed,dgat1-1,--
+GSM3499767,43.12065,Seed,wild type,--
+GSM3504391,16.920607,seedlings,wild type,Mock
+GSM3504394,20.804193,seedlings,wild type,vernalized 4 week
+SRX5130544,28.737492,leaf,oxs2,--
+SRX5130546,23.233624,leaf,wild type,--
+SRX6794798,13.089735,rosettes,--,Control
+GSM3511858,36.044357,Root,Wild type,Protoplasted
+GSM3511863,20.031143,Root,Wild type,Protoplasted
+GSM3511861,55.24389,Root,Wild type,Unprotoplasted
+GSM3516770,16.322561,14 day-old seedlings,nerd-1,--
+GSM3516772,15.20908,14 day-old seedlings,nerd-1+T,--
+GSM3516768,17.089064,14 day-old seedlings,wild type,--
+SRX5167930,18.785156,seedlings,--,--
+SRX5167932,20.823915,seedlings,--,--
+GSM3526278,16.181545,seedling,bli-1-/-,--
+GSM3526281,17.604403,seedling,bli-1-/-ire1a-/-,--
+GSM3526284,13.000471,seedling,bli-1-/-ire1b-/-,--
+GSM3526275,15.512505,seedling,wild type,--
+GSM3529057,15.367492,seedling,pSDG2:myc-SDG2,--
+GSM3529055,20.947136,seedling,wild type,--
+SRX5187275,5.7584705,apical part,myc234,1 (h) aHter high R/HR*
+SRX5187298,5.386511,apical part,myc234,1 (h) aHter low R/HR*
+SRX5187294,7.114308,apical part,myc234,49 (h) aHter high R/HR*
+SRX5187292,6.2280536,apical part,myc234,49 (h) aHter low R/HR*
+SRX5187318,6.0710874,apical part,wild type,1 (h) aHter high R/HR*
+SRX5187322,5.1979237,apical part,wild type,1 (h) aHter low R/HR*
+SRX5187274,6.1054006,apical part,wild type,49 (h) aHter high R/HR*
+SRX5187271,7.5447297,apical part,wild type,49 (h) aHter low R/HR*
+SRX5225109,14.838645,whole plant,glk,0h ABA
+SRX5225114,29.711182,whole plant,glk,1h ABA
+SRX5225112,30.718842,whole plant,glk,3h ABA
+SRX5225120,15.788821,whole plant,pyl,0h ABA
+SRX5225118,18.640661,whole plant,pyl,3h ABA
+SRX5225128,17.441164,whole plant,wild type,0h ABA
+SRX5225125,33.04821,whole plant,wild type,1h ABA
+SRX5225122,27.427414,whole plant,wild type,3h ABA
+SRX5237480,18.98177,shoot,--,0h_21Â°C_mock
+SRX5237474,20.224669,shoot,--,1h_21Â°C_100 Î¼M gibberellin
+SRX5237476,17.200668,shoot,--,1h_21Â°C_mock
+SRX5237457,22.914997,shoot,--,1h_4Â°C_100 Î¼M gibberellin
+SRX5237461,15.010841,shoot,--,1h_4Â°C_mock
+SRX5237453,27.336475,shoot,--,2h_21Â°C_100 Î¼M gibberellin
+SRX5237455,16.392973,shoot,--,2h_21Â°C_mock
+SRX5237471,16.985064,shoot,--,2h_4Â°C_100 Î¼M gibberellin
+SRX5237466,18.144043,shoot,--,2h_4Â°C_mock
+SRX5237451,19.48251,shoot,--,4h_21Â°C_100 Î¼M gibberellin
+SRX5237463,15.772702,shoot,--,4h_21Â°C_mock
+SRX5237446,29.361145,shoot,--,4h_4Â°C_100 Î¼M gibberellin
+SRX5237445,15.186627,shoot,--,4h_4Â°C_mock
+GSM3559379,19.717272,flower buds,BnA9,--
+GSM3559382,17.551485,flower buds,wild type,--
+SRX5244066,14.869867,Rosette leaf,cat2,--
+SRX5244064,8.658022,Rosette leaf,cat2 gsnor1-3,--
+SRX5244068,11.152996,Rosette leaf,gsnor1-3,--
+SRX5244067,7.5453777,Rosette leaf,wild type,--
+SRX5250637,8.860389,leaf,wild type,--
+GSM3566867,12.541992,leaves,22aa_SunTag_NtDRMcd_g4_10_g18_minus,--
+GSM3566829,9.023935,leaves,22aa_SunTag_VP64_g4_g17,--
+GSM3566832,7.835542,leaves,22aa_SunTag_VP64_g4_g17,--
+GSM3566836,10.514187,leaves,22aa_SunTag_VP64_g4_g17,--
+GSM3566822,8.303894,leaves,22aa_SunTag_VP64_nog,--
+GSM3566852,7.318519,leaves,SunTag_VP64_EVD,--
+GSM3566846,8.162238,leaves,SunTag_VP64_EVD,--
+GSM3566849,6.4606256,leaves,SunTag_VP64_EVD,--
+GSM3566815,8.268682,leaves,SunTag_VP64_g4,--
+GSM3566801,9.761669,leaves,SunTag_VP64_nog,--
+GSM3573045,9.38656,whole plant,--,MeJA
+GSM3573039,7.894269,whole plant,--,Mock
+SRX5312862,10.727589,shoot,ANAC017OE1,--
+SRX5312865,10.756723,shoot,ANAC017OE2,--
+SRX5312868,13.190371,shoot,ANAC017OE3,--
+SRX5312888,9.624625,shoot,ANAC017TMOE1,--
+SRX5312882,10.955779,shoot,ANAC017TMOE2,--
+SRX5312884,11.624099,shoot,anac017-TM,--
+SRX5312860,10.190963,shoot,anac017KO,--
+SRX5312878,10.252632,shoot,rao2-1EMS,--
+SRX5312872,11.8355255,shoot,wild type,--
+SRX5312870,15.580018,shoot,wild type,--
+GSM3596616,19.033932,10day seedling,wild type,GR244DO_2 hours
+GSM3596619,20.041313,10day seedling,wild type,GR244DO_4 hours
+GSM3596622,18.596754,10day seedling,wild type,solvent_0 hours (start point)
+GSM3596625,15.80607,10day seedling,wild type,solvent_2 hours
+GSM3596628,18.0903,10day seedling,wild type,solvent_4 hours
+GSM3605155,17.29963,6day seedlings,Wild type,JA_1h
+GSM3605160,16.223585,6day seedlings,Wild type,JA_3h
+GSM3605150,14.330848,6day seedlings,Wild type,untreated
+GSM3605170,16.735214,6day seedlings,ecap-2 mutant,JA_1h
+GSM3605175,16.311054,6day seedlings,ecap-2 mutant,JA_3h
+GSM3605165,13.113202,6day seedlings,ecap-2 mutant,untreated
+GSM3612828,18.912535,root,clf,iron deHicient
+GSM3612825,23.747282,root,clf,iron suHHicient
+GSM3612822,24.583971,root,wild type,iron deHicient
+GSM3612819,19.71495,root,wild type,iron suHHicient
+GSM3620625,11.150835,seedlings,--,--
+GSM3620641,15.492933,seedlings,--,--
+GSM3633925,15.602213,complete seedling,H89C11-7 transgenic line,--
+GSM3633928,17.539207,complete seedling,H89C23-10 transgenic line,--
+GSM3633931,20.827866,complete seedling,H89C4-7 transgenic line,--
+GSM3633934,17.83355,complete seedling,NEET10-10 transgenic line,--
+GSM3633937,17.26068,complete seedling,NEET11-9 transgenic line,--
+GSM3633940,15.089928,complete seedling,NEET5-4 transgenic line,--
+GSM3633922,18.740074,complete seedling,wild type,--
+GSM3636165,26.919641,seedling root,ein2-1/jar1-1,untreated plate
+GSM3636167,22.143145,seedling root,ein2-1/jar1-1,untreated plate
+GSM3636157,21.335781,seedling root,wild type,untreated plate
+GSM3636159,26.798794,seedling root,wild type,untreated plate
+SRX5453451,11.564259,--,OE5,control
+SRX5453444,20.875149,--,OE5,salt stress
+SRX5453448,17.543663,--,wild type,control
+SRX5453446,18.960873,--,wild type,salt stress
+GSM3639345,15.131207,seedlings,pk1-1,4 C Hor 0 h
+GSM3639351,26.342691,seedlings,pk1-1,4 C Hor 24 h
+GSM3639348,22.35493,seedlings,pk1-1,4 C Hor 3 h
+GSM3639336,11.934333,seedlings,wild type,Mock
+GSM3639342,30.76511,seedlings,wild type,cold 24h
+GSM3639339,23.478464,seedlings,wild type,cold 3h
+GSM3656400,38.127247,seedling,--,3'-butyl ABA
+GSM3656397,44.021446,seedling,--,3'-propyl ABA
+GSM3656394,38.456463,seedling,--,ABA
+GSM3656391,21.4211,seedling,--,DMSO
+GSM3656471,15.903926,leaves,pip5k1 pip5k2 mutant,Erysiphe cichoracearum 2dpi
+GSM3656477,16.065498,leaves,pip5k1 pip5k2 mutant,Erysiphe cichoracearum 5dpi
+GSM3656483,17.06231,leaves,pip5k1 pip5k2 mutant,Erysiphe cichoracearum 7dpi
+GSM3656489,18.00704,leaves,pip5k1 pip5k2 mutant,none 2d
+GSM3656495,15.180489,leaves,pip5k1 pip5k2 mutant,none 5d
+GSM3656501,17.28993,leaves,pip5k1 pip5k2 mutant,none 7d
+GSM3656468,11.765205,leaves,wild type,Erysiphe cichoracearum 2dpi
+GSM3656474,19.42608,leaves,wild type,Erysiphe cichoracearum 5dpi
+GSM3656480,12.196398,leaves,wild type,Erysiphe cichoracearum 7dpi
+GSM3656486,10.809517,leaves,wild type,none 2d
+GSM3656492,15.204462,leaves,wild type,none 5d
+GSM3656498,9.328072,leaves,wild type,none 7d
+SRX5494234,14.908087,seedling,wild type,37 heat shock 2.5 min*
+SRX5494229,18.049177,seedling,wild type,37 heat shock 7.5 min*
+SRX5494233,16.914059,seedling,wild type,control
+SRX5494605,12.846301,rosette leaf,wild type,37 heat shock 10 min*
+SRX5494597,8.597515,rosette leaf,wild type,control
+SRX5501278,17.818537,Rosette leaves,--,water+water*
+GSM3665904,13.624559,Root,wild type,CdCl2 72hr
+GSM3665907,12.503629,Root,wild type,CdCl2 72hr
+GSM3665910,19.276636,Root,wild type,CdCl2 72hr
+GSM3665895,18.92523,Shoot,wild type,CdCl2 72hr
+GSM3665898,22.36919,Shoot,wild type,CdCl2 72hr
+GSM3665901,21.429127,Shoot,wild type,CdCl2 72hr
+GSM3667125,47.316036,root protoplasts,--,0N
+GSM3667110,50.82547,root protoplasts,--,"0N, Cycloheximide, Dexamethasone"
+GSM3667141,54.957363,root protoplasts,--,"0N, Cycloheximide, Dexamethasone"
+GSM3667113,42.08782,root protoplasts,--,"5N, Cycloheximide, Dexamethasone"
+GSM3667144,45.75865,root protoplasts,--,"5N, Cycloheximide, Dexamethasone"
+GSM3667129,50.61701,root protoplasts,--,60N
+GSM3667116,55.31256,root protoplasts,--,"60N, Cycloheximide, Dexamethasone"
+GSM3667147,41.07747,root protoplasts,--,"60N, Cycloheximide, Dexamethasone"
+GSM3667122,89.81317,root protoplasts,--,"Nitrogen, plus Cycloheximide, Dexamethasone"
+GSM3667133,19.77763,whole roots,--,0N
+GSM3667137,19.659458,whole roots,--,60N
+SRX5576226,32.12376,root,--,--
+SRX5576222,32.102924,root,--,--
+GSM3674583,9.141964,leaf,--,--
+GSM3677733,17.725208,4PGD seedlings,Wild type,"grown in the dark for 4 days, at 22Â°C ."
+GSM3677735,15.170758,4PGD seedlings,fypp1 fypp3 homozygote,"grown in the dark for 4 days, at 22Â°C ."
+GSM3677737,13.676599,4PGD seedlings,pifq1 pifq3 piq4 pifq5 homozygote,"grown in the dark for 4 days, at 22Â°C ."
+SRX5544594,14.939636,Aerial,Transgenic: p35S::BAR and p35S::GFP,--
+GSM3687874,23.657885,10 day old roots,tex1-4,Petri dishes
+GSM3687871,18.948284,10 day old roots,wild type,Petri dishes
+GSM3687883,17.843328,3 weeks old roots,pho1-7,Pots
+GSM3687881,14.896489,3 weeks old roots,pho1-7hpr1-5,Pots
+GSM3687879,16.669514,3 weeks old roots,pho1-7tex1-4,Pots
+GSM3687877,18.372038,3 weeks old roots,wild type,Pots
+GSM3688580,10.654688,Inflorescence tissues,ddm1-2,--
+GSM3688568,13.071359,Inflorescence tissues,ddm1-2,--
+GSM3688574,20.10176,Inflorescence tissues,ddm1-2,--
+GSM3688583,11.437347,Inflorescence tissues,ddm1-2 rdr6-15,--
+GSM3688571,11.248217,Inflorescence tissues,ddm1-2 rdr6-15,--
+GSM3688577,16.787363,Inflorescence tissues,ddm1-2 rdr6-15,--
+GSM3690288,11.522005,leaf,--,Mock
+GSM3690303,11.669133,leaf,--,Pathogen
+GSM3690671,18.592766,seedlings,AtIPCS1 over expressing line,untreated
+GSM3690668,12.7607155,seedlings,AtIPCS1 over expressing line,untreated
+GSM3690677,14.51989,seedlings,AtIPCS2 over expressing line,untreated
+GSM3690674,15.090918,seedlings,AtIPCS2 over expressing line,untreated
+GSM3690683,14.495787,seedlings,AtIPCS3 over expressing line,untreated
+GSM3690680,17.135818,seedlings,AtIPCS3 over expressing line,untreated
+GSM3690686,12.455592,seedlings,wild type,untreated
+GSM3692910,16.39078,Seedlings,tfIIs-1 (SALK_056755),2 mM b-estradiol
+GSM3692916,21.269342,Seedlings,tfIIs-1 (SALK_056755),2 mM b-estradiol
+GSM3692907,19.78016,Seedlings,tfIIs-1 (SALK_056755),EtOH
+GSM3692913,18.313784,Seedlings,tfIIs-1 (SALK_056755),EtOH
+SRX5634102,20.05933,Root,--,control
+SRX5634099,22.981886,Root,--,perHluorooctanoic acid
+GSM3712372,6.742806,whole seedling,Col-0,1000Pi_NoBacteria
+GSM3712360,8.762288,whole seedling,Col-0,1000Pi_NoBacteria
+GSM3712366,13.233297,whole seedling,Col-0,1000Pi_SynCom
+GSM3712378,8.852375,whole seedling,Col-0,1000Pi_SynCom
+GSM3712363,13.5239105,whole seedling,Col-0,50Pi_NoBacteria
+GSM3712369,16.023191,whole seedling,Col-0,50Pi_SynCom
+GSM3712381,14.116671,whole seedling,Col-0,50Pi_SynCom
+GSM3714860,26.38468,14day seedlings,Hen2-2,4C cold treatment for 3h
+GSM3714858,21.130426,14day seedlings,Hen2-2,none
+GSM3714862,18.269857,14day seedlings,wild type,4C cold treatment for 3h
+GSM3716756,59.345,seedlings,wild type,--
+GSM3728301,18.17851,2-week seedlings,prp40c -/-,Continuous white light 22degreeC
+GSM3762827,24.37975,roots,--,grown with phosphate
+GSM3762833,29.504066,roots,--,grown with phosphate and treated with cis-zeatin
+GSM3762830,27.154884,roots,--,grown with phosphate and treated with trans-zeatin
+GSM3762836,26.886246,roots,--,grown without phosphate
+GSM3762842,30.567795,roots,--,grown without phosphate and treated with cis-zeatin
+GSM3762839,33.014717,roots,--,grown without phosphate and treated with trans-zeatin
+GSM3767882,11.584183,whole shoot,hos15-4 mutant,--
+GSM3767879,8.752743,whole shoot,wild type,--
+GSM3813847,10.174592,rosette leaves,wild type,--
+SRX5900576,31.902924,seedlings,MYB49OX,salt
+SRX5900575,21.284655,seedlings,MYB49SR,salt
+SRX5900580,19.200176,seedlings,wild type,salt
+SRX5979120,24.26895,leaf,--,Wounding
+SRX5979122,13.920689,leaf,--,trans-gene-AtMYB46
+SRX5979118,13.464045,leaf,--,trans-gene-AtMYB46
+SRX5979116,19.865313,leaf,wild type,Wounding
+GSM3851782,17.86948,Whole seedlings,Wild type,6h acclimation-level UV-B
+GSM3851780,18.281301,Whole seedlings,Wild type,low white light
+GSM3851791,13.955475,Whole seedlings,pif4-101 pif5-1,low white light
+GSM3851788,16.84887,Whole seedlings,uvr8-6,6h acclimation-level UV-B
+GSM3851785,15.905619,Whole seedlings,uvr8-6,low white light
+SRX5995786,19.282146,in vitro cotyledon,--,0hai
+SRX5995782,21.954782,in vitro cotyledon,--,0hai
+SRX5995784,24.773565,in vitro cotyledon,--,48hai
+SRX5995790,19.645159,in vitro cotyledon,--,48hai
+GSM3863056,17.988564,seedings,--,Control
+GSM3863058,19.927769,seedings,--,Heat
+GSM3863060,16.79544,seedings,--,Recovery
+SRX6043985,20.447033,collet,wild type,Hlg22 1 uM
+SRX6043988,20.569828,collet,wild type,Mock
+GSM3899026,10.338806,seedlings,wild type,6h_C6
+GSM3899023,17.09471,seedlings,wild type,6h_nlp20
+GSM3901393,23.011597,root,wild type,--
+GSM3949107,28.20508,Three day old etiolated seedlings,wild type,JA treatment for 0.25h
+GSM3949110,24.768871,Three day old etiolated seedlings,wild type,JA treatment for 0.5h
+GSM4125611,25.62804,Three day old etiolated seedlings,wild type,JA treatment for 0.5h
+GSM3949104,25.10723,Three day old etiolated seedlings,wild type,JA treatment for 0h
+GSM4125607,28.022623,Three day old etiolated seedlings,wild type,JA treatment for 0h
+GSM3949125,25.547243,Three day old etiolated seedlings,wild type,JA treatment for 12h
+GSM3949113,28.963818,Three day old etiolated seedlings,wild type,JA treatment for 1h
+GSM4125613,31.119968,Three day old etiolated seedlings,wild type,JA treatment for 1h
+GSM3949128,21.776684,Three day old etiolated seedlings,wild type,JA treatment for 24h
+GSM3949116,28.814135,Three day old etiolated seedlings,wild type,JA treatment for 2h
+GSM3949119,28.172344,Three day old etiolated seedlings,wild type,JA treatment for 4h
+GSM4125616,25.673311,Three day old etiolated seedlings,wild type,JA treatment for 4h
+GSM3949122,23.286797,Three day old etiolated seedlings,wild type,JA treatment for 8h
+GSM3908325,13.079201,2-week seedlings,fry1,--
+GSM3908329,16.084867,2-week seedlings,fry1rdr6,--
+GSM3908327,17.153101,2-week seedlings,fry1rdr6,--
+GSM3912166,22.888988,5-day-old whole seedlings,ML1p::PIF4;pifq,--
+GSM3912168,20.30933,5-day-old whole seedlings,SUC2p::PIF4;pifq,--
+GSM3912170,16.015831,5-day-old whole seedlings,pifq,--
+GSM3912164,16.269634,5-day-old whole seedlings,wild type,--
+GSM3933411,26.56652,seeds,wild type,Har red pulse Hor 20 min
+GSM3933408,26.34039,seeds,wild type,red-light pulse Hor 20 min
+GSM3936256,12.041797,rosette,wild type,0.1% EtOH*
+GSM3936269,16.613909,rosette,wild type,100Î¼M MEL*
+GSM3936261,18.507477,rosette,wild type,4.5Î¼M NAA*
+GSM3936265,10.543838,rosette,wild type,5Î¼M MEL*
+SRX6451342,17.331814,whole plant,crf2-2,untreated
+SRX6451337,56.883873,whole plant,crf5-6,oxidative stress (H2O2)*
+SRX6451346,21.10893,whole plant,crf5-6,untreated
+SRX6451334,26.377434,whole plant,wild type,oxidative stress (H2O2)*
+SRX6451332,32.79694,whole plant,wild type,salt stress(NaCl)*
+SRX6451336,13.879286,whole plant,wild type,untreated
+GSM3945669,24.14191,leaves,wild type,Heat stress
+GSM3945668,15.048991,leaves,wild type,High light
+GSM3945670,21.458866,leaves,wild type,Highlight + Heat stress
+GSM3945667,12.326847,leaves,wild type,control
+GSM3946190,7.479368,whole plant,atcgl20ab,--
+GSM3946187,7.960808,whole plant,wild type,--
+GSM3928334,6.437642,Apical cell,--,--
+GSM3928337,4.647547,Basal cell,--,--
+GSM3928340,7.822281,Embryo proper,--,--
+SRX6685613,23.988888,root,WRKY15 overexpression Line #43,--
+SRX6685607,24.8548,root,wild type,--
+SRX5187329,6.977487,apical part,npr1,1h aHter high R/HR*
+SRX5187324,6.1034365,apical part,npr1,1h aHter low R/HR*
+SRX5187309,7.512519,apical part,npr1,49h aHter high R/HR*
+SRX5187305,7.395928,apical part,npr1,49h aHter low R/HR*
+SRX5187285,6.666133,apical part,sid2,1h aHter high R/HR*
+SRX5187289,6.5186524,apical part,sid2,1h aHter low R/HR*
+SRX5187287,6.826701,apical part,sid2,49h aHter low R/HR*
+GSM4047435,14.498118,whole seedlings,lsm8-2,--
+GSM4047441,13.900131,whole seedlings,lsm8-2 rrp4-2,--
+GSM4047438,14.668394,whole seedlings,rrp4-2,--
+GSM4047432,16.984528,whole seedlings,wild type,--
+GSM4055164,41.36885,Seedling,tt19,--
+GSM4055146,43.69498,Seedling,tt19; suppressor S1,--
+GSM4055149,63.90332,Seedling,tt19; suppressor S2,--
+GSM4055152,38.18399,Seedling,tt19; suppressor S4,--
+GSM4055155,58.043686,Seedling,tt19; suppressor S5,--
+GSM4055158,37.77717,Seedling,tt19; suppressor S7,--
+GSM4055161,54.47289,Seedling,tt19; suppressor S8,--
+GSM4055167,43.18536,Seedling,wild type,--
+SRX6794372,12.804982,seedlings,--,Single-walled carbon nanohorns (SWCNHs)-treated
+SRX6794369,11.965038,seedlings,--,untreated
+GSM4083442,9.963179,leaf,--,mock
+GSM4086201,29.572567,seedling,--,continuous light
+GSM4086217,23.615318,seedling,--,long-day condition (16 h ligh/8 h dark)
+SRX6955491,20.93296,stamen,cop1-4 mutant,--
+GSM4109556,19.161182,seedlings,--,Diacetyl
+GSM4109548,24.904902,seedlings,--,GMV
+GSM4109552,20.026499,seedlings,--,GMV
+GSM4109546,21.789505,seedlings,--,mock
+GSM4109550,20.887836,seedlings,--,mock
+GSM4109554,20.449768,seedlings,--,mock
+SRX6986772,12.099591,whole plant,AtWRKY21*,control
+SRX6986769,15.972493,whole plant,AtWRKY21*,osmotic stress PEG*
+SRX6986767,11.180798,whole plant,wild type,control
+SRX6986775,17.138767,whole plant,wild type,osmotic stress PEG*
+GSM4132325,12.783036,wounded region of detached leaf explants with partial petiole,wild type,control
+GSM4132327,18.915276,wounded region of detached leaf explants with partial petiole,wild type,dark 2day
+GSM4133880,14.161698,Primary inflorescence of shoot apices,vip3-1 null,--
+GSM4133877,10.728495,Primary inflorescence of shoot apices,wild type,--
+GSM4142594,13.010323,complete rosette,--,--
+GSM4142597,17.683275,complete rosette,--,--
+GSM4142600,13.15489,complete rosette,--,--
+GSM4142591,8.712365,complete rosette,--,--
+GSM4142588,8.903967,complete rosette,wild type,--
+GSM4145026,15.40249,seedings,arid5(-/-),--
+GSM4145028,39.150764,seedings,chr11(-/-)chr17(-/-),--
+GSM4145030,16.51244,seedings,rlt1(-/-)rlt2(-/-),--
+GSM4145024,11.234401,seedings,wild type,--
+SRX7083038,21.460373,the whole plant,atbrca1-1,--
+SRX7083034,17.464006,the whole plant,wild type,--
+GSM4151811,27.060589,seedling,bsu-q,flg22-treated
+GSM4151805,23.111835,seedling,bsu-q,untreated
+GSM4151808,32.822483,seedling,wild type,flg22-treated
+SRX7136600,21.116844,flower buds,nacbeta1,--
+SRX7136597,12.465284,flower buds,nacbeta1nacbeta2,--
+SRX7136603,15.877557,flower buds,nacbeta2,--
+SRX7136595,14.861084,flower buds,wild type,--
+SRX7158154,16.646059,whole seedling,ccc1 mutant,CK
+SRX7158151,17.36715,whole seedling,wild type,CK
+GSM4196120,18.514551,whole seedling,MYB30- over expression,--
+GSM4196117,18.821634,whole seedling,myb30 mutant,--
+GSM4196114,18.120646,whole seedling,wild type,--
+GSM4200535,52.845406,seedling,stch4-1,24C treatment for 4 hours
+GSM4200532,28.588686,seedling,stch4-1,4C treatment for 4 hours
+GSM4200529,21.144518,seedling,stch4-1,without 4C treatment
+GSM4200526,53.986187,seedling,wild type,24C treatment for 4 hours
+GSM4200523,35.808598,seedling,wild type,4C treatment for 4 hours
+GSM4200520,20.785553,seedling,wild type,without 4C treatment
+SRX7261878,1.160767,pollen,atnot1-1 +/-,--
+SRX7261876,0.8037482,pollen,wild type,--
+GSM4216733,21.966011,whole seedling,clpp2-1: KO-1 of mtCLPP2 (AT5g23140),--
+GSM4216736,23.999918,whole seedling,clpp2-2: KO-2 of mtCLPP2 (AT5g23140),--
+GSM4216730,24.727512,whole seedling,wild type,--
+GSM4217890,24.797018,phloem cap,--,--
+GSM4217892,12.784986,pith,--,--
+GSM4217888,27.70492,vascular bundle without phloem cap,--,--
+GSM4224095,23.88815,Seedlings,35S-RTL1,--
+GSM4224091,21.135612,Seedlings,35S-RTL2,--
+GSM4224088,14.657605,Seedlings,dcl234,--
+GSM4224086,14.827441,Seedlings,dcl234/35S-RTL2,--
+GSM4224094,22.007717,Seedlings,rtl2,--
+GSM4224092,18.82351,Seedlings,wild type,--
+GSM4231547,10.594685,leaf,--,22C T1
+GSM4231549,14.959459,leaf,--,22C T2
+GSM4231556,17.6409,leaf,--,22C T6
+GSM4231558,20.331635,leaf,--,22C T7
+GSM4231560,35.721863,leaf,--,22C T8
+GSM4231562,16.68216,leaf,--,22C T9
+GSM4231568,10.154745,leaf,--,45C T1
+GSM4231588,13.854251,leaf,--,45C T11
+GSM4231570,13.028358,leaf,--,45C T2
+GSM4231572,13.949692,leaf,--,45C T3
+GSM4231576,30.518671,leaf,--,45C T5
+GSM4231580,16.195286,leaf,--,45C T7
+GSM4231582,35.16604,leaf,--,45C T8
+GSM4231584,14.7373705,leaf,--,45C T9
+SRX7489749,13.411221,seedlings,--,control
+SRX7489752,13.53861,seedlings,--,volatile organic compounds*
+GSM4274334,11.085724,whole rosette,jac1 mutant,Non-treated control
+GSM4274328,11.547585,whole rosette,wild type,Non-treated control
+GSM4274304,13.229565,whole rosette,phot1 mutant,Non-treated control
+GSM4274316,11.2276325,whole rosette,phot1/phot2 mutant,Non-treated control
+GSM4274310,11.376816,whole rosette,phot2 mutant,Non-treated control
+GSM4274298,11.625034,whole rosette,wild type,Non-treated control
+SRX7582592,47.62549,root,--,root AtRALH1 treatment
+SRX7582603,43.904564,root,--,root MhRALH3 treatment
+SRX7582596,25.32446,root,--,root MiRALH1 Mock
+SRX7582600,38.688557,root,--,root MiRALH1 treatment
+SRX7582594,29.219332,root,--,root Mock
+SRX7581662,6.891147,cotyledon,--,--
+SRX7581664,6.3464828,cotyledon,--,--
+SRX7581666,6.2470803,cotyledon,--,--
+SRX7582174,8.596135,first true leaf,--,--
+SRX7582176,7.9465756,first true leaf,--,--
+SRX7582178,7.9788527,first true leaf,--,--
+SRX7582578,6.981716,second true leaf,--,--
+SRX7582580,7.179053,second true leaf,--,--
+SRX7582582,7.3055525,second true leaf,--,--
+GSM4279797,23.110903,leaf,wild type,egg extract*
+GSM4282457,26.862328,root,cif1-2_cif2-2 (both are CRISPR alleles),100 nM CIF2 for 120 min
+GSM4282472,30.583303,root,cif1-2_cif2-2 (both are CRISPR alleles),100 nM CIF2 for 30 min
+GSM4282494,24.318472,root,cif1-2_cif2-2 (both are CRISPR alleles),100 nM CIF2 for 480 min
+GSM4282484,28.585257,root,cif1-2_cif2-2 (both are CRISPR alleles),no peptide for 120 min
+GSM4282475,28.950005,root,cif1-2_cif2-2 (both are CRISPR alleles),no peptide for 30 min
+GSM4282496,24.51546,root,cif1-2_cif2-2 (both are CRISPR alleles),no peptide for 480 min
+GSM4282454,25.289661,root,sgn3-3 (SALK_043282),100 nM CIF2 for 120 min
+GSM4282469,29.086666,root,sgn3-3 (SALK_043282),100 nM CIF2 for 30 min
+GSM4282464,27.935658,root,sgn3-3 (SALK_043282),100 nM CIF2 for 480 min
+GSM4282481,27.16094,root,sgn3-3 (SALK_043282),no peptide for 120 min
+GSM4282502,28.779133,root,sgn3-3 (SALK_043282),no peptide for 30 min
+GSM4282491,21.236214,root,sgn3-3 (SALK_043282),no peptide for 480 min
+GSM4282451,27.557556,root,wild type,100 nM CIF2 for 120 min
+GSM4282461,29.99274,root,wild type,100 nM CIF2 for 30 min
+GSM4282460,24.444942,root,wild type,100 nM CIF2 for 480 min
+GSM4282478,24.357819,root,wild type,no peptide for 120 min
+GSM4282499,38.88792,root,wild type,no peptide for 30 min
+GSM4282488,23.90737,root,wild type,no peptide for 480 min
+GSM4293394,13.76021,rosette,wild type,--
+SRX7688071,13.523976,leaf,--,1 week aHter TuMV
+SRX7688068,11.245931,leaf,--,Mock Inoculation 48Hrs Mpersicae Heeding 15 aphids
+SRX7754837,14.704773,Leaf,atmc1,--
+SRX7754834,11.968504,Leaf,wild type,--
+SRX7764739,23.527952,leave,ago2 mutant,Sclerotinia sclerotiorum
+SRX7764738,12.613028,leave,ago2 mutant,mock
+SRX7764737,16.617693,leave,wild type,Sclerotinia sclerotiorum
+SRX7764742,9.883445,leave,wild type,mock
+SRX7869423,24.559845,root tips,ktn1,--
+SRX7868578,35.583225,root tips,ktn1,ABA
+SRX7869410,26.850054,root tips,ktn1,CK
+SRX7869420,26.258017,root tips,wild type,--
+SRX7868575,41.591133,root tips,wild type,ABA
+SRX7869407,22.75616,root tips,wild type,CK
+GSM4404118,27.255781,root,Pro35SARR1,--
+GSM4404116,24.271992,root,arr1,--
+GSM4404114,19.589975,root,wild type,--
+SRX7913300,14.878288,leaf,--,Control
+SRX7913302,21.411818,leaf,--,pretreated with H2O2 and NaCl treated 12h
+SRX7913308,9.805448,leaf,--,pretreated with H2O2 and water treated 12h
+SRX7913305,26.106245,leaf,--,pretreated with water and NaCl treated 12h
+SRX7949143,14.31806,leaf,--,--
+SRX7949151,33.35503,leaf,--,--
+SRX7949154,24.155851,leaf,--,--
+GSM4422802,12.658216,shoot tip,wild type,45 minutes after 90 degree gravistimulation
+SRX145599,19.800003,seedlings,ctr1-1,--
+SRX145601,31.044037,seedlings,ein2,--
+SRX145572,21.19426,seedlings,wild type,ethylene

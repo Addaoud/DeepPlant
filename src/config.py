@@ -48,7 +48,7 @@ class CSPConfig:
 
 
 @dataclass
-class ExpressionConfig:
+class GEPConfig:
     h5_paths: list = field(default_factory=lambda: [""])
     train_indices_path: list = field(default_factory=lambda: [""])
     valid_indices_path: list = field(default_factory=lambda: [""])
@@ -85,13 +85,14 @@ class ExpressionConfig:
     find_unused_parameters: bool = False
     use_pos_encoding: bool = True
     max_seq_length: int = 100
+    consistency_regularization: bool = False
 
     def dict(self):
         return {k: v for k, v in asdict(self).items()}
 
 
 @dataclass
-class EnhancerConfig:
+class EAPConfig:
     sequences_paths: list = field(default_factory=lambda: [""])
     results_path: str = "results/results_DeepPlant"
     targets: str = "ALL"
@@ -126,6 +127,7 @@ class EnhancerConfig:
     find_unused_parameters: bool = False
     use_pos_encoding: bool = True
     max_seq_length: int = 100
+    consistency_regularization: bool = False
 
     def dict(self):
         return {k: v for k, v in asdict(self).items()}

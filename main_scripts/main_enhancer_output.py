@@ -14,11 +14,11 @@ from src.utils import (
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 from torch.cuda import device_count
-from src.config import EnhancerConfig
+from src.config import EAPConfig
 from src.enhancer_dataset_utils import load_dataset
 from src.train_utils import trainer
 from src.results_utils import evaluate_model_classification
-from src.DeepPlant_enhancer_output import build_model
+from src.DeepPlant_CSPtoEAP import build_model
 from src.seed import set_seed
 from src.optimizers import ScheduledOptim
 from src.logger import configure_logging_format
@@ -152,7 +152,7 @@ def main(
             dataloader=test_loader,
             activation_function=activation_function,
             device=device,
-            model_folder_path=model_folder_path,
+            results_folder_path=config.results_path,
         )
         data_dict = {
             "path": model_path,
@@ -173,7 +173,7 @@ if __name__ == "__main__":
         argparse.ArgumentParser(description="Train and evaluate Enhancer model")
     )
 
-    config = EnhancerConfig(**read_json(json_path=args.json))
+    config = EAPConfig(**read_json(json_path=args.json))
     update_paths(
         config=config,
         attributes_to_update=[

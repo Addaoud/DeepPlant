@@ -118,9 +118,7 @@ class load_dataset:
         """
         Loads and processes the data.
         """
-        self.h5_paths = [
-            os.path.join(os.getenv("DEEPPLANTPATH"), h5_path) for h5_path in h5_paths
-        ]
+        self.h5_paths = h5_paths
 
     def get_dataloader(
         self,

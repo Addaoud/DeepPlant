@@ -194,7 +194,12 @@ def hot_encode_sequence(
         end_pos = start_pos + len(sequence)
     elif length_after_padding < len(sequence):
         hot_encoded_seq = np.zeros((4, length_after_padding), dtype=np.float32)
-        sequence = sequence[:length_after_padding]
+        sequence = sequence[
+            (len(sequence) - length_after_padding)
+            // 2 : (len(sequence) - length_after_padding)
+            // 2
+            + length_after_padding
+        ]
         start_pos = 0
         end_pos = start_pos + length_after_padding
     else:

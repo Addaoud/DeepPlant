@@ -16,7 +16,7 @@ class model(nn.Module):
         backbone,
         transfomer,
         predictionHead,
-        consistency_regularization: Optional[bool] = True,
+        consistency_regularization: Optional[bool] = False,
     ):
         super(model, self).__init__()
         self.backbone = backbone
@@ -43,7 +43,7 @@ class model(nn.Module):
             )
         src = self.backbone(input, bit).permute(0, 2, 1)
         attention_output = self.transformer(src)
-        hs = self.attention_pool(attention_output)  #
+        hs = self.attention_pool(attention_output)
         out = self.fc(hs, bit)
         if self.consistency_regularization:
             return (out, hs)
@@ -54,11 +54,12 @@ class model(nn.Module):
 def build_model(
     args,
     new_model: bool,
+    task: str,
     model_path: Optional[str] = None,
 ):
     backbone = build_ConvNet(args)
     transformer = build_transformer(args)
-    predictionHead = build_predictionHead(args)
+    predictionHead = build_predictionHead(args, task=task)
     network = model(
         backbone=backbone,
         transfomer=transformer,
@@ -76,7 +77,7 @@ def build_model(
         if not new_model:
             model_weights[keys_net[-2]] = model_pretrained_dict[keys_pretrained[-2]]
             model_weights[keys_net[-1]] = model_pretrained_dict[keys_pretrained[-1]]
-            print("Model checkpoint loaded")
+            print("Model state loaded")
 
         network.load_state_dict(model_weights)
     return network

@@ -1,0 +1,351 @@
+Target,Prediction,Factor,Factor_type_specific,Tissue,Mutant_specific,Age,Temperature
+DRP000207/DRX000321,0.28823745,OSH1,Transcription factor,Panicle,WT,21.0,26.0
+DRP001345/DRX013534,0.53892523,OsTGAP1,Transcription factor,Whole plant,WT,,
+DRP001345/DRX013536,0.3873623,OsTGAP1,Transcription factor,Whole plant,WT,,
+DRP007210/DRX167898,0.7123038,OsTGAP1,Transcription factor,Root,WT,,
+DRP007210/DRX167899,0.4770918,OsTGAP1,Transcription factor,Root,WT,,
+DRP007210/DRX167904,1.0677524,OsMYC2,Transcription factor,Shoot,WT,,
+DRP007210/DRX167905,0.70006657,OsMYC2,Transcription factor,Shoot,WT,,
+SRP297261/DRX195228,0.82164717,H3K27me3,histone methylation,Endosperm,WT,80.0,
+ERP108685/ERR2575724,0.8184559,bZIP73,Transcription factor,Leaf,,14.0,28.0
+ERP106693/ERX2337661,0.5074804,OsIDS1,Transcription factor,Whole plant,,,27.0
+SRP229367/SRR10423448,0.854636,ONAC127,Transcription factor,Caryopsis,,81.0,30.0
+SRP229367/SRR10423451,0.8535335,ONAC129,Transcription factor,Caryopsis,,81.0,30.0
+SRP229367/SRR10423454,0.90159935,ONAC127,Transcription factor,Caryopsis,,81.0,30.0
+SRP229367/SRR10423457,0.8894682,ONAC129,Transcription factor,Caryopsis,,81.0,30.0
+SRP145259/SRR7142413,0.8504307,OsGRF4,Transcription factor,Whole plant,,14.0,
+SRP001787/SRX016122,0.25184223,H34me3,histone methylation,Shoot,,28.0,28.0
+SRP001787/SRX016123,0.20239247,H34me3,histone methylation,Shoot,,28.0,28.0
+SRP001787/SRX016124,0.12917489,H34me3,histone methylation,Shoot,,28.0,28.0
+SRP001787/SRX016125,0.19351716,H34me3,histone methylation,Shoot,,28.0,28.0
+SRP001787/SRX016126,0.44676763,H3K9ac,histone acetylation,Shoot,,28.0,28.0
+SRP001787/SRX016127,0.3363042,H3K9ac,histone acetylation,Shoot,,28.0,28.0
+SRP001787/SRX016128,0.2868881,H3K9ac,histone acetylation,Shoot,,28.0,28.0
+SRP001787/SRX016129,0.38875866,H3K9ac,histone acetylation,Shoot,,28.0,28.0
+SRP001787/SRX016130,0.3345426,H3K27me3,histone methylation,Shoot,,28.0,28.0
+SRP001787/SRX016131,0.2790446,H3K27me3,histone methylation,Shoot,,28.0,28.0
+SRP001787/SRX016132,0.22019082,H3K27me3,histone methylation,Shoot,,28.0,28.0
+SRP001787/SRX016133,0.2400631,H3K27me3,histone methylation,Shoot,,28.0,28.0
+SRP005296/SRX038423,0.5602467,open chromatin,open chromatin,Whole plant,,14.0,28.0
+SRP005296/SRX038424,0.5099225,open chromatin,open chromatin,Callus,,21.0,28.0
+SRP005403/SRX038891,1.8775076,H3K4me2,histone methylation,Whole plant,,14.0,28.0
+SRP005403/SRX038892,4.8497815,H3K4me3,histone methylation,Whole plant,,14.0,28.0
+SRP005403/SRX038893,0.5651593,H4K12ac,histone acetylation,Whole plant,,14.0,28.0
+SRP005607/SRX040548,0.5891912,H3K27me3,histone methylation,Endosperm,,82.0,
+SRP007423/SRX082182,0.6420196,H3K4me3,histone methylation,Whole plant,Hwayong,11.0,
+SRP007423/SRX082183,0.7198319,H3K4me3,histone methylation,Whole plant,CHD1,11.0,
+SRP007423/SRX082184,0.56865394,H3K27me3,histone methylation,Whole plant,Hwayong,11.0,
+SRP007423/SRX082185,0.5678721,H3K27me3,histone methylation,Whole plant,CHD1,11.0,
+SRP057432/SRX1001170,0.6459424,OsABF1,Transcription factor,Leaf,,28.0,
+SRP057712/SRX1011367,0.7569228,H3K4me3,histone methylation,Meristem,,,
+SRP057712/SRX1011368,0.7126667,H3K27me3,histone methylation,Meristem,,,
+SRP057712/SRX1011369,0.8720565,H3K4me3,histone methylation,Meristem,,25.0,
+SRP057712/SRX1011370,0.78332454,H3K27me3,histone methylation,Meristem,,25.0,
+SRP057712/SRX1011371,0.9490495,H3K4me3,histone methylation,Meristem,,25.0,
+SRP057712/SRX1011372,0.5456869,H3K27me3,histone methylation,Meristem,,25.0,
+SRP057712/SRX1011373,0.6643338,H3K4me3,histone methylation,Meristem,,25.0,
+SRP057712/SRX1011374,0.70910364,H3K27me3,histone methylation,Meristem,,25.0,
+SRP308960/SRX10215317,0.09945533,open chromatin,open chromatin,Root,,,
+SRP308960/SRX10215319,0.22490531,open chromatin,open chromatin,Root,,,
+SRP058921/SRX1044779,0.21196935,H3K23ac,histone acetylation,Leaf,,14.0,28.0
+SRP058921/SRX1044780,0.8771385,H4K16ac,histone acetylation,Leaf,,14.0,28.0
+SRP061969/SRX1131812,0.5023398,H3K27me3,histone methylation,Leaf,,12.0,
+SRP061969/SRX1131813,0.325993,H3K27me3,histone methylation,Leaf,,12.0,
+SRP061969/SRX1131815,0.57441485,SDG711,Methylase,Leaf,,12.0,
+SRP062590/SRX1158857,0.7673569,OsNF-YB1,Transcription factor,Caryopsis,,10.0,28.0
+SRP071339/SRX1620993,0.54248387,H3K9me1,histone methylation,Whole plant,,14.0,
+SRP071339/SRX1620994,0.28020838,H3K4ac,histone acetylation,Whole plant,,14.0,
+SRP071339/SRX1620995,0.18703005,H3K27me3,histone methylation,Whole plant,,14.0,
+SRP071339/SRX1620996,0.44776085,H3K27ac,histone acetylation,Whole plant,,14.0,
+SRP071339/SRX1620997,0.30020988,H3K9ac,histone acetylation,Whole plant,,14.0,
+SRP071339/SRX1620998,0.59179604,H3K9me3,histone methylation,Whole plant,,14.0,
+SRP074236/SRX1738208,0.8804383,OsNAC6,Transcription factor,Root,,14.0,28.0
+SRP074236/SRX1738209,0.80449533,OsNAC6,Transcription factor,Root,,14.0,28.0
+SRP075099/SRX1760740,0.30908895,H3K27me3,histone methylation,Whole plant,,12.0,27.0
+SRP075099/SRX1760741,0.30120558,H3K9me2,histone methylation,Whole plant,,12.0,27.0
+SRP075204/SRX1763595,0.93436325,OsbZIP23,Transcription factor,Whole plant,WT,21.0,
+SRP075204/SRX1763596,0.80899024,OsbZIP23,Transcription factor,Whole plant,WT,21.0,
+SRP075204/SRX1763597,0.88656044,OsbZIP23,Transcription factor,Whole plant,OsbZIP23 overexpressed,21.0,
+SRP077049/SRX1874293,0.6288843,H2AZ,histone related,Callus,,30.0,28.0
+SRP077049/SRX1883882,0.5751534,H2AZ,histone related,Shoot,,21.0,28.0
+SRP015910/SRX189766,0.5003091,H3K4me3,histone methylation,Whole plant,WT,7.0,27.0
+SRP015910/SRX189767,0.6288441,H3K4me3,histone methylation,Whole plant,jmj704,7.0,27.0
+SRP061969/SRX2004186,0.39752755,H3K27me3,histone methylation,Leaf,,12.0,
+SRP061969/SRX2004187,0.31282225,H3K27me3,histone methylation,Leaf,,12.0,
+SRP096362/SRX2481522,0.94746494,OsTF1L,Transcription factor,Leaf,,14.0,28.0
+SRP096362/SRX2481523,1.0302533,OsTF1L,Transcription factor,Leaf,,14.0,28.0
+SRP098855/SRX2538222,4.5655546,H3K4me1,histone methylation,Whole plant,,14.0,
+SRP102661/SRX2680215,0.42069504,H2AZ,histone related,Shoot,,35.0,
+SRP102661/SRX2680221,0.5813527,H2AZ,histone related,Shoot,,35.0,
+SRP102661/SRX2680227,0.47153002,H2AZ,histone related,Shoot,,35.0,
+SRP102661/SRX2680233,0.37941238,H2AZ,histone related,Shoot,,35.0,
+SRP102668/SRX2682071,0.9170695,H3K4me3,histone methylation,Shoot,,35.0,30.0
+SRP102668/SRX2682073,0.5553217,H3K4me3,histone methylation,Shoot,,35.0,30.0
+SRP102677/SRX2682756,0.921632,BSR-D1,Transcription factor,Whole plant,,21.0,
+SRP049212/SRX2832008,1.0089556,H3K4me3,histone methylation,Leaf,,21.0,30.0
+SRP049212/SRX2832009,0.5247341,H3K9me2,histone methylation,Leaf,,21.0,30.0
+SRP110225/SRX2949337,0.28915566,H3K4me3,histone methylation,Leaf,,,
+SRP111984/SRX3006642,0.15950999,open chromatin,open chromatin,Root,,7.0,28.0
+SRP112505/SRX3008390,0.8320758,OsASR2,Transcription factor,Leaf,,7.0,28.0
+SRP115109/SRX3081140,0.53096825,H4K12ac,histone acetylation,Callus,,,33.0
+SRP115109/SRX3081141,0.4804619,H4K12ac,histone acetylation,Panicle,,,33.0
+SRP115109/SRX3081143,0.14408723,H3K4me3,histone methylation,Leaf,,,33.0
+SRP115109/SRX3081151,0.09456457,H3K9me2,histone methylation,Leaf,,,33.0
+SRP125926/SRX3436029,0.1388583,OsNAC2,Transcription factor,Root,,14.0,28.0
+SRP029831/SRX347767,0.6396407,CenH3,histone related,Leaf,,14.0,
+SRP029831/SRX347769,2.7959228,CenH3,histone related,Leaf,,14.0,
+SRP029831/SRX347771,0.80455565,CenH3,histone related,Leaf,,14.0,
+SRP127580/SRX3515252,0.7584436,Kcr,histone related,Whole plant,,14.0,28.0
+SRP127580/SRX3515254,0.88613254,H3K14cr,histone related,Whole plant,,14.0,28.0
+SRP131213/SRX3599178,0.26194072,H3K4me3,histone methylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599179,3.2305026,H3K36me3,histone methylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599180,0.33461127,H3K27ac,histone acetylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599181,0.39974856,H3K9ac,histone acetylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599182,0.20487028,H4K12ac,histone acetylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599183,0.15431538,H3K27me3,histone methylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599184,0.5151627,H3K4me3,histone methylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599185,2.4723852,H3K36me3,histone methylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599186,0.4579159,H3K27ac,histone acetylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599187,0.48435923,H3K9ac,histone acetylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599189,0.4095503,H3K27me3,histone methylation,Whole plant,,14.0,28.0
+SRP131213/SRX3599190,0.5182612,H3K4me3,histone methylation,Shoot,,14.0,28.0
+SRP131213/SRX3599191,4.3721137,H3K36me3,histone methylation,Shoot,,14.0,28.0
+SRP131213/SRX3599192,0.33420178,H3K27ac,histone acetylation,Shoot,,14.0,28.0
+SRP131213/SRX3599193,0.42311782,H3K9ac,histone acetylation,Shoot,,14.0,28.0
+SRP131213/SRX3599194,0.37294018,H4K12ac,histone acetylation,Shoot,,14.0,28.0
+SRP131213/SRX3599195,0.30095854,H3K27me3,histone methylation,Shoot,,14.0,28.0
+SRP131213/SRX3599196,0.72473437,H3K4me3,histone methylation,Shoot,,14.0,28.0
+SRP131213/SRX3599197,1.8090634,H3K36me3,histone methylation,Shoot,,14.0,28.0
+SRP131213/SRX3599198,0.49057004,H3K27ac,histone acetylation,Shoot,,14.0,28.0
+SRP131213/SRX3599199,0.49334598,H3K9ac,histone acetylation,Shoot,,14.0,28.0
+SRP131213/SRX3599200,0.5231085,H4K12ac,histone acetylation,Shoot,,14.0,28.0
+SRP131213/SRX3599201,0.69095665,H3K27me3,histone methylation,Shoot,,14.0,28.0
+SRP133423/SRX3741414,0.5205482,H3K27me3,histone methylation,Root,,42.0,26.0
+SRP133423/SRX3741422,0.41249892,H3K4me3,histone methylation,Root,,42.0,26.0
+SRP133423/SRX3741426,0.76168686,H3K4me3,histone methylation,Leaf,,42.0,26.0
+SRP110225/SRX3752927,0.27890417,H3K27me3,histone methylation,Leaf,,,
+SRP133766/SRX3754667,0.4838186,H3K9ac,histone acetylation,Leaf,,12.0,30.0
+SRP133766/SRX3754669,0.22897938,Kbu,histone related,Leaf,,12.0,30.0
+SRP133766/SRX3754671,0.27769697,Kcr,histone related,Leaf,,12.0,30.0
+SRP133766/SRX3754673,0.499264,H3K9ac,histone acetylation,Leaf,,12.0,30.0
+SRP133766/SRX3754675,0.25471184,Kbu,histone related,Leaf,,12.0,30.0
+SRP133766/SRX3754677,0.2919254,Kcr,histone related,Leaf,,12.0,30.0
+SRP133766/SRX3754693,0.41761053,H3K9ac,histone acetylation,Leaf,,30.0,30.0
+SRP133766/SRX3754695,0.3931146,H3K9ac,histone acetylation,Leaf,,30.0,30.0
+SRP133766/SRX3754697,0.40674385,H3K9ac,histone acetylation,Leaf,,30.0,30.0
+SRP133766/SRX3754699,0.3975218,H3K9ac,histone acetylation,Leaf,,30.0,30.0
+SRP135631/SRX3787608,0.9415237,NGR2,Transcription factor,Whole plant,,14.0,
+SRP136689/SRX3861939,3.520046,H3K36me2,histone methylation,Shoot,,14.0,30.0
+SRP136689/SRX3861940,4.8726635,H3K36me3,histone methylation,Shoot,,14.0,30.0
+SRP136689/SRX3861942,1.0719932,H3K36me1,histone methylation,Shoot,,14.0,30.0
+SRP126351/SRX3898843,0.66219723,H3K27ac,histone acetylation,Panicle,,,
+SRP126351/SRX3898845,0.241265,H3K27me3,histone methylation,Panicle,,,
+SRP126351/SRX3898848,4.7311316,H3K36me3,histone methylation,Panicle,,,
+SRP126351/SRX3898849,4.23306,H3K4me1,histone methylation,Panicle,,,
+SRP126351/SRX3898851,0.3210669,H3K4me3,histone methylation,Panicle,,,
+SRP141123/SRX3971167,0.8073577,bZIP73,Transcription factor,Leaf,,14.0,28.0
+SRP153241/SRX4386791,6.0149717,H2Bub1,histone related,Whole plant,WT,,27.0
+SRP153241/SRX4386794,4.205162,H2Bub1,histone related,Whole plant,WT,,27.0
+SRP153241/SRX4386797,4.575928,H2Bub1,histone related,Whole plant,WT,,27.0
+SRP156906/SRX4524770,0.86907303,PIBP1,Transcription factor,Leaf,,14.0,
+SRP158087/SRX4558961,2.75147,H3K4me3,histone methylation,Endosperm,,,
+SRP159838/SRX4647158,0.32076272,OsNF-YC12,Transcription factor,Endosperm,,72.0,
+SRP153241/SRX4998108,1.6263728,H2Bub1,histone related,Leaf,WT,,27.0
+SRP153241/SRX4998114,3.3220334,H2Bub1,histone related,Leaf,WT,,27.0
+SRP153241/SRX4998120,1.2488283,H2Bub1,histone related,Leaf,obzip46 mutant,,27.0
+SRP153241/SRX4998126,2.8300812,H2Bub1,histone related,Leaf,obzip46 mutant,,27.0
+SRP174063/SRX5171003,0.64955217,OsbZIP81,Transcription factor,Leaf,,28.0,
+SRP188481/SRX5524718,0.30353832,Kbu,histone related,Whole plant,,14.0,28.0
+SRP188762/SRX5538657,0.78166294,SNAC1,Transcription factor,Whole plant,,15.0,28.0
+SRP188762/SRX5538663,0.8475292,SNAC1,Transcription factor,Whole plant,WT,15.0,28.0
+SRP201150/SRX6046228,0.66059285,H3K4me3,histone methylation,Leaf,,,30.0
+SRP201150/SRX6046230,0.23357058,H3K27me3,histone methylation,Leaf,,,30.0
+SRP201150/SRX6046231,0.3780713,H2AZ,histone related,Leaf,,,30.0
+SRP201150/SRX6046233,0.32810527,H2AZ,histone related,Leaf,,,30.0
+SRP201150/SRX6046234,0.37725294,H2AZ,histone related,Leaf,,,30.0
+SRP201150/SRX6046236,0.16545828,H3K27me3,histone methylation,Leaf,,,30.0
+SRP201150/SRX6046237,0.56604886,H3K4me3,histone methylation,Leaf,,,30.0
+SRP201150/SRX6046238,0.13841169,H3K27me3,histone methylation,Leaf,,,30.0
+SRP219719/SRX6773605,0.20565207,H2AZ,histone related,Whole plant,,14.0,30.0
+SRP227871/SRX7082153,0.92773414,H3K27me3,histone methylation,Leaf,,17.0,
+SRP227871/SRX7082156,0.84178793,H3K27ac,histone acetylation,Leaf,,17.0,
+SRP227871/SRX7082157,0.7902232,H3K18ac,histone acetylation,Leaf,,17.0,
+SRP227871/SRX7082158,1.0370392,H3K4me3,histone methylation,Leaf,,17.0,
+SRP049100/SRX737109,5.015657,H3K27me3,histone methylation,Panicle,WT,,
+SRP238435/SRX7426330,0.29439837,H3K4me3,histone methylation,Leaf,,14.0,32.0
+SRP238435/SRX7426347,0.09237959,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426353,0.19415538,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426355,0.26888597,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426357,0.13366906,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426359,5.156551,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426361,0.10629544,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426363,0.9745689,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426365,0.38792393,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426367,0.551673,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426369,0.288148,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426371,5.2496653,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426373,0.101657204,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426375,1.0919104,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426377,0.17985137,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426379,0.36779281,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426381,0.14265038,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426383,5.594912,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426385,0.13685243,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426387,0.9689934,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426389,0.2701107,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426391,0.45581675,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426393,0.09947073,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426395,5.157451,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426397,0.13693906,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426399,1.1741629,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426401,0.46153432,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426403,0.610054,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426405,0.2414505,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426407,4.3967853,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426409,0.16660212,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426411,1.0051368,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426413,0.27117267,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426415,0.55745524,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426417,0.16634744,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426419,4.5625315,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426421,0.11160334,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426423,0.94507813,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426425,0.33758205,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426427,0.55020595,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426429,0.2027571,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426431,4.764757,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426433,0.1333274,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426435,1.079166,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426437,0.4361476,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426439,0.6267054,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426441,0.32341233,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426443,4.909822,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426445,0.23409334,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426447,1.0211942,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426449,0.35734078,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426451,0.50152427,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426453,0.20391297,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426455,5.5822406,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426457,0.10304996,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426459,0.9536148,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426461,0.24933682,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426463,0.5580544,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426465,0.24543735,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426467,4.3836346,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426469,0.3440877,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426471,0.5213402,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426473,0.15909551,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426475,0.24670623,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426477,0.10971609,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426479,5.3043227,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426481,0.071406774,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426483,0.8219481,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426485,0.21701205,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426487,0.29510146,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426489,0.15609743,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426491,3.0497649,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426493,0.16681184,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426495,1.8362285,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426497,0.24119952,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426499,0.35655978,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426501,0.19178212,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426503,9.8137045,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426505,0.1048214,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426507,1.0829408,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426509,0.5776792,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426511,0.79160726,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426513,0.43033278,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426515,4.7090764,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426517,0.30962253,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426519,1.0405943,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426521,0.22292973,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426523,0.40472037,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426525,0.11725758,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426527,9.45904,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426529,0.17097181,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426531,0.8762945,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426533,0.27618265,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426535,0.42125642,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426537,0.20164594,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426539,5.144966,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426541,0.23679769,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426543,1.0076898,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426545,0.36127657,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426547,0.49964854,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426549,0.17861587,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426551,5.364218,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426553,0.17502853,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426555,0.9701276,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426569,0.16535598,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426571,5.742671,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426573,0.082770854,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426581,5.0052414,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426583,0.1110902,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426585,0.63390595,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426587,0.23277935,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426589,0.14969538,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426591,0.5437224,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426593,6.3029456,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426595,0.1891101,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426597,1.2136794,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426599,0.37155807,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426601,0.74787986,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426603,0.74622536,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426605,9.380104,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426607,0.25834665,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426609,1.3151064,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426611,0.6782662,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426613,0.18647699,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426615,0.11986388,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426617,6.0770144,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426619,0.092248216,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426621,0.2979422,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426623,0.24623093,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426625,0.1728332,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426627,4.126033,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426629,0.1463675,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426631,0.9013023,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426633,0.33458585,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426635,0.16030674,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426637,0.26438454,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426639,4.7039595,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426641,0.0868481,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426643,0.5593301,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426645,0.3967885,H3K4me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426647,0.30964828,H3K27ac,histone acetylation,Panicle,,20.0,32.0
+SRP238435/SRX7426649,0.255566,H3K27me3,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426651,4.602471,H3K4me1,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426653,0.17167304,H3K9me2,histone methylation,Panicle,,20.0,32.0
+SRP238435/SRX7426655,1.3476624,Pol II,RNA polymerase,Panicle,,20.0,32.0
+SRP238435/SRX7426657,0.17925945,H3K4me3,histone methylation,Root,,20.0,32.0
+SRP238435/SRX7426659,0.13361768,H3K27ac,histone acetylation,Root,,7.0,32.0
+SRP238435/SRX7426661,0.06674297,H3K27me3,histone methylation,Root,,7.0,32.0
+SRP238435/SRX7426663,4.7304134,H3K4me1,histone methylation,Root,,7.0,32.0
+SRP238435/SRX7426665,0.089412816,H3K9me2,histone methylation,Root,,7.0,32.0
+SRP238435/SRX7426667,0.33711684,H3K4me3,histone methylation,Leaf,,20.0,32.0
+SRP238435/SRX7426669,0.40090367,H3K27ac,histone acetylation,Leaf,,20.0,32.0
+SRP238435/SRX7426671,0.27596092,H3K27me3,histone methylation,Leaf,,20.0,32.0
+SRP238435/SRX7426673,4.6579766,H3K4me1,histone methylation,Leaf,,20.0,32.0
+SRP238435/SRX7426675,0.16840398,H3K9me2,histone methylation,Leaf,,20.0,32.0
+SRP238435/SRX7426677,0.77764726,Pol II,RNA polymerase,Leaf,,20.0,32.0
+SRP238435/SRX7426679,0.23677044,H3K9me2,histone methylation,Leaf,,14.0,32.0
+SRP238435/SRX7426680,0.07243052,H3K9me2,histone methylation,Leaf,,14.0,32.0
+SRP238435/SRX7426681,0.07188622,H3K9me2,histone methylation,Leaf,,14.0,32.0
+SRP238435/SRX7426682,0.044207916,H3K9me2,histone methylation,Leaf,,14.0,32.0
+SRP238435/SRX7426683,0.08808981,H3K4me3,histone methylation,Leaf,,14.0,32.0
+SRP201150/SRX8071823,0.8400946,CHR729,Transcription factor,Whole plant,,12.0,30.0
+SRP295617/SRX9623929,0.69380486,OsGLK2,Transcription factor,Leaf,,28.0,
+SRP295617/SRX9623950,0.57477576,OsGLK1,Transcription factor,Leaf,,28.0,
+SRP303912/SRX9981788,1.2106955,ZH11,Transcription factor,Whole plant,,,
+SRP303912/SRX9981790,0.4457298,HHC4,Transcription factor,Panicle,,,
+SRP303912/SRX9981792,0.4523126,HHC4,Transcription factor,Panicle,,,
+SRP303912/SRX9981794,0.53335726,HHC4,Transcription factor,Panicle,,,
+SRP303912/SRX9981796,0.64001447,bZIP23,Transcription factor,Panicle,,,
+SRP303912/SRX9981798,0.22939265,bZIP23,Transcription factor,Panicle,,,
+SRP303912/SRX9981801,0.6622905,bZIP23,Transcription factor,Panicle,,,
+SRP303912/SRX9981803,0.5178194,bZIP23,Transcription factor,Panicle,,,
+SRP303912/SRX9981805,0.3856857,ARF4,Transcription factor,Whole plant,,,
+SRP303912/SRX9981807,1.0021417,ARF4,Transcription factor,Whole plant,,,
+SRP303912/SRX9981808,0.75048006,ZH11,Transcription factor,Panicle,,,
+SRP303912/SRX9981810,0.32615456,HHC4,Transcription factor,Panicle,,,
+SRP303912/SRX9981814,1.13887,HHC4,Transcription factor,Panicle,,,

@@ -8,3 +8,5 @@ DeepPlant.egg-info
 .env
 results/
 .vscode
+ISM.py
+usage.ipynb

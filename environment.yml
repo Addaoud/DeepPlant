@@ -1,0 +1,11 @@
+name: deepplant
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - python=3.11
+  - bedtools
+  - pip
+  - pip:
+      - -r requirements.txt
+      - -e .

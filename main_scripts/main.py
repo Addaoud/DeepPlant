@@ -47,9 +47,9 @@ def main(
     data_class: Optional[Any] = None,
 ):
     logger = configure_logging_format(file_path=model_folder_path)
-    model = build_model(args=config, new_model=new_model, model_path=model_path).to(
-        device=device
-    )
+    model = build_model(
+        args=config, new_model=new_model, task="CSP", model_path=model_path
+    ).to(device=device)
     if new_model and is_main_process():
         with open(file=os.path.join(model_folder_path, "model.txt"), mode="w") as f:
             print(
@@ -159,7 +159,7 @@ def main(
             model=best_model,
             dataloader=test_loader,
             device=device,
-            model_folder_path=model_folder_path,
+            results_folder_path=config.results_path,
             experiment_names=config.experiment_name,
         ):
             data_dict = {

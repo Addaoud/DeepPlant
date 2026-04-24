@@ -45,13 +45,13 @@ def evaluate_model(
     dataloader: torch.utils.data.dataloader,
     device: str,
     activation_function: torch.nn.modules.loss = None,
-    model_folder_path: Optional[str] = "",
+    results_folder_path: Optional[str] = "",
     experiment_names: Optional[List[str]] = [],
 ):
     """
     evaluate the model on dataloader and return the mse, pearsonR, and SpearmanR
     """
-    logger = configure_logging_format(file_path=model_folder_path)
+    logger = configure_logging_format(file_path=results_folder_path)
     logger.info(f"Device: {device} - Evaluating the model")
     target_dict = dict()
     preds_dict = dict()
@@ -67,10 +67,7 @@ def evaluate_model(
             preds = output.cpu().detach().numpy()
             if target.ndim == 3:
                 target = target.view(target.shape[0] * target.shape[1], target.shape[2])
-            # try:
-            #     target = torch.concat([target[:, :1574], target[:, 1576:]], dim=1)
-            # except:
-            #     print(target.shape)
+
             target_dict[bit] = target_dict.get(bit, list()) + target.tolist()
             preds_dict[bit] = preds_dict.get(bit, list()) + preds.tolist()
     target_array_dict = {
@@ -120,17 +117,17 @@ def evaluate_model(
             pearsonr_list = (pearsonr_list / dist.get_world_size()).tolist()
             spearmanr_list = (spearmanr_list / dist.get_world_size()).tolist()
             mse_list = (mse_list / dist.get_world_size()).tolist()
-        if model_folder_path and is_main_process():
+        if results_folder_path and is_main_process():
             plot_distribution(
                 list=pearsonr_list,
-                file_path=os.path.join(model_folder_path, f"distribution{key}.png"),
+                file_path=os.path.join(results_folder_path, f"distribution{key}.png"),
             )
             try:
                 target_list = load_targets(targets_file_path=experiment_names[key])
             except:
                 target_list = np.arange(0, len(pearsonr_list))
             Correlation_csv_file = os.path.join(
-                model_folder_path, f"Correlation_df{key}.csv"
+                results_folder_path, f"Correlation_df{key}.csv"
             )
             experiment_id = np.arange(0, len(target_list))
             df = pd.DataFrame(
@@ -166,12 +163,12 @@ def evaluate_model_classification(
     dataloader: torch.utils.data.dataloader,
     device: str,
     activation_function: torch.nn.modules.loss = None,
-    model_folder_path: Optional[str] = "",
+    results_folder_path: Optional[str] = "",
 ) -> tuple[float, float, float]:
     """
     evaluate the model on dataloader and return the accuracy, auroc, and auprc
     """
-    logger = configure_logging_format(file_path=model_folder_path)
+    logger = configure_logging_format(file_path=results_folder_path)
     logger.info(f"Device: {device} - Evaluating the model")
     target_list = list()
     preds_list = list()
@@ -231,13 +228,12 @@ def evaluate_model_classification(
         auroc /= dist.get_world_size()
         auprc /= dist.get_world_size()
         accuracy /= dist.get_world_size()
-    if model_folder_path:
+    if results_folder_path:
         target_list = [tar.item() for tar in target_list]
         if preds.shape[1] == 2:
             preds_list = np.array(preds_list)[:, 1].tolist()
-        results_csv_file = os.path.join(model_folder_path, f"predictions.csv")
-        save_data_to_csv(
-            {"seq_idx": seq_idx_list, "label": target_list, "prediction": preds_list},
-            csv_file_path=results_csv_file,
-        )
+        results_csv_file = os.path.join(results_folder_path, f"predictions.csv")
+        pd.DataFrame(
+            {"seq_idx": seq_idx_list, "label": target_list, "prediction": preds_list}
+        ).to_csv(results_csv_file, index=False)
     return (accuracy.item(), auroc.item(), auprc.item())
