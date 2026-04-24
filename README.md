@@ -184,7 +184,7 @@ DeepPlant uses ISM to infer activators and repressors of *Arabidopsis thaliana* 
 * Stress conditions (cold, heat, drought, wounding, etc...)
 
 #### Example Results
-You can view the analysis of DREB1 genes (DREB1A, DREB1B, DREB1C) here: [analysis/ISM](https://github.com/Addaoud/DeepPlant/tree/main/analysis/ISM) directory.
+You can view the analysis of DREB1 genes (DREB1A, DREB1B, DREB1C) here [analysis/ISM](https://github.com/Addaoud/DeepPlant/tree/main/analysis/ISM).
 
 ## Replicating Paper Results
 To replicate the model training and evaluation results presented in the DeepPlant paper:
