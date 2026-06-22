@@ -192,10 +192,6 @@ To replicate the model training and evaluation results presented in the DeepPlan
 2. Use the main model training scripts located in the [main_scripts](https://github.com/Addaoud/DeepPlant/tree/main/main_scripts) directory.
 3. The exact model architectures, training parameters, and hyperparameters used in the paper are stored in the `.json` files inside the [config](https://github.com/Addaoud/DeepPlant/tree/main/config) directory.
 
-## under constructions
-**Try it out:** We are developing a Hugging Face web portal that allows you to view and compare DeepPlant's epigenomic predictions against real, genome-wide tracks. The tool automatically generates ready-to-use Integrative Genomics Viewer (IGV) links for seamless exploration.
-*  **[DeepPlant Web Portal](https://huggingface.co/spaces/soumya160497/plant_genome_1)**
-
 ## Licence
 This project is covered under the **Apache 2.0 License**.
 
