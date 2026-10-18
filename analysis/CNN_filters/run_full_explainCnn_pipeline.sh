@@ -9,11 +9,11 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 # Config
-PY_SCRIPT="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan/explainCnn_pretrain.py"
-STREME_SH="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan/runstreme.sh"
-TOMTOM_SH="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan/runtomtom.sh"
+PY_SCRIPT="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters/explainCnn_pretrain.py"
+STREME_SH="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters/runstreme.sh"
+TOMTOM_SH="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters/runtomtom.sh"
 
-LOG_DIR="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan/logs"
+LOG_DIR="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters/logs"
 mkdir -p "${LOG_DIR}"
 
 TIMESTAMP() { date +"%F_%H-%M-%S"; }

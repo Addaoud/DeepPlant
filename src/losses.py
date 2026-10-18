@@ -61,6 +61,56 @@ class relative_mse_loss(nn.Module):
         return torch.mean(((y_pred - y_true) / (y_true + self.eps)) ** 2)
 
 
+def per_gene_corr_loss(pred, target, eps=1e-8):
+    # pred, target: (G, C) — G genes, C conditions each (same conditions or not)
+    pred = pred - pred.mean(dim=1, keepdim=True)
+    target = target - target.mean(dim=1, keepdim=True)
+    num = (pred * target).sum(dim=1)
+    den = pred.norm(dim=1) * target.norm(dim=1) + eps
+    return (1 - num / den).mean()  # 1 - r, averaged over genes
+
+
+class expression_loss(nn.Module):
+    def __init__(self, eps=1e-6, lam=1e-1):
+        super().__init__()
+        self.eps = eps
+        self.lam = lam
+        self.mse = nn.MSELoss(reduction="mean")
+
+    def forward(self, y_pred, y_true):
+        if y_pred.dim() == 1:
+            y_pred = y_pred.unsqueeze(0)
+        assert (
+            y_pred.shape == y_true.shape and y_pred.dim() == 2
+        ), "expected (genes, conditions)"
+        return self.mse(y_pred, y_true)
+
+
+class FocalLoss(torch.nn.Module):
+    def __init__(self, gamma=2.0, alpha=None, reduction="mean"):
+        super().__init__()
+        self.gamma = gamma
+        self.reduction = reduction
+        # alpha: per-class weight tensor (like CE's weight), or None
+        self.register_buffer(
+            "alpha",
+            torch.tensor(alpha, dtype=torch.float32) if alpha is not None else None,
+        )
+
+    def forward(self, logits, target):
+        # logits: (N, C), target: (N,) class indices
+        ce = torch.nn.functional.cross_entropy(
+            logits, target, weight=self.alpha, reduction="none"
+        )
+        pt = torch.exp(-ce)  # prob of the true class
+        loss = (1 - pt) ** self.gamma * ce
+        if self.reduction == "mean":
+            return loss.mean()
+        elif self.reduction == "sum":
+            return loss.sum()
+        return loss
+
+
 def get_loss_fn(config):
     if config.loss.upper() == "MSE":
         return torch.nn.MSELoss(reduction="mean")
@@ -70,8 +120,21 @@ def get_loss_fn(config):
         )  # torch.nn.HuberLoss(reduction="mean")
     elif config.loss.upper() == "RMSE":
         return relative_mse_loss()
-    else:
+    elif config.loss.upper() == "BCE":
+        return torch.nn.BCEWithLogitsLoss()
+    elif config.loss.upper() == "CE":
+        return torch.nn.CrossEntropyLoss(reduction="mean")
+    elif config.loss.upper() == "WCE":
+        weight = torch.tensor(config.class_weights, dtype=torch.float32)
+        return torch.nn.CrossEntropyLoss(weight=weight, reduction="mean")
+    elif config.loss.upper() == "FOCAL":
+        alpha = getattr(config, "focal_alpha", None)  # per-class weights, optional
+        gamma = getattr(config, "focal_gamma", 2.0)
+        return FocalLoss(gamma=gamma, alpha=alpha, reduction="mean")
+    elif config.loss.upper() == "POISSON":
         return torch.nn.PoissonNLLLoss(log_input=False)
+    else:
+        raise Exception("Loss function not found")
 
 
 class CustomEmbeddingLoss(nn.Module):
@@ -174,3 +237,23 @@ class BCEWithL1(nn.Module):
         # Total loss
         loss = ce + self.l1_lambda * l1_norm
         return loss
+
+
+class LLMRegressionLoss(nn.Module):
+    """
+    Supervised regression loss for the LLM benchmark. Drop-in replacement for
+    CustomEmbeddingLoss, but with the consistency-regularization path removed:
+    the LLM regressor returns a single (B, n_tasks) tensor against (B, n_tasks)
+    targets, so no augmentation grouping or reshaping is needed.
+    """
+
+    def __init__(self, config):
+        super().__init__()
+        self.loss = get_loss_fn(config)
+
+    def forward(self, y_pred, y_true):
+        # LLM regressor never returns a tuple; guard anyway in case a backbone
+        # hands back (logits, hidden_states).
+        if isinstance(y_pred, tuple):
+            y_pred = y_pred[0]
+        return self.loss(y_pred, y_true)

@@ -40,111 +40,129 @@ def onehot_encode_labels(labels_list: List[int], num_labels: int) -> np.array:
     return np.eye(num_labels)[labels_list]
 
 
+def _gather_eval(records, preds, targets):
+    """Gather (records, preds, targets) from all ranks and drop the duplicates
+    added by DistributedSampler padding. All ranks must call this."""
+    out = [None] * dist.get_world_size()
+    dist.all_gather_object(out, (records, preds.cpu(), targets.cpu()))
+    recs = [r for o in out for r in o[0]]
+    P = torch.cat([o[1] for o in out])
+    T = torch.cat([o[2] for o in out])
+    _, keep = np.unique(recs, return_index=True)
+    keep = np.sort(keep)
+    return [recs[i] for i in keep], P[keep], T[keep]
+
+
 def evaluate_model(
-    model: torch.nn.Module,
-    dataloader: torch.utils.data.dataloader,
-    device: str,
-    activation_function: torch.nn.modules.loss = None,
-    results_folder_path: Optional[str] = "",
-    experiment_names: Optional[List[str]] = [],
+    model,
+    dataloader,
+    device,
+    activation_function=None,
+    results_folder_path="",
+    experiment_names=[],
+    per_gene: bool = False,
+    distributed: bool = False,  # True only if ALL ranks call evaluate_model
 ):
-    """
-    evaluate the model on dataloader and return the mse, pearsonR, and SpearmanR
-    """
     logger = configure_logging_format(file_path=results_folder_path)
-    logger.info(f"Device: {device} - Evaluating the model")
-    target_dict = dict()
-    preds_dict = dict()
-    if activation_function == None:
+    logger.info(f"Device: {device} - Evaluating the model (per_gene={per_gene})")
+    target_dict, preds_dict, record_dict = dict(), dict(), dict()
+    if activation_function is None:
         activation_function = torch.nn.Identity()
+
     with torch.no_grad():
         model.eval()
-        for idx, ((_, data, target), bit) in enumerate(progress_bar(dataloader)):
-            data = {key: data[key].to(device) for key in data}
+        for (record, data, target), bit in progress_bar(dataloader):
+            data = {k: v.to(device) for k, v in data.items()}
             output = activation_function(model(**data, bit=bit))
-            if type(output) == tuple:
+            if isinstance(output, tuple):
                 output = output[0]
-            preds = output.cpu().detach().numpy()
+            if output.ndim == 1:
+                output = output.unsqueeze(0)
             if target.ndim == 3:
-                target = target.view(target.shape[0] * target.shape[1], target.shape[2])
+                target = target.reshape(-1, target.shape[2])
+            preds_dict.setdefault(bit, []).append(output.float().cpu())
+            target_dict.setdefault(bit, []).append(target.float().cpu())
+            record_dict.setdefault(bit, []).extend(list(record))
 
-            target_dict[bit] = target_dict.get(bit, list()) + target.tolist()
-            preds_dict[bit] = preds_dict.get(bit, list()) + preds.tolist()
-    target_array_dict = {
-        key: np.array(target_list) for key, target_list in target_dict.items()
-    }
-    preds_array_dict = {
-        key: np.array(preds_list) for key, preds_list in preds_dict.items()
-    }
-    mean_pearsonr = torch.zeros(1).to(device)
-    mean_spearmanr = torch.zeros(1).to(device)
-    mean_mse = torch.zeros(1).to(device)
-    for key, target_array in target_array_dict.items():
-        mse_list = list()
-        pearsonr_list = list()
-        spearmanr_list = list()
-        preds_array = preds_array_dict[key]
-        for i in range(target_array.shape[1]):
-            pcc, _ = pearsonr(preds_array[:, i], target_array[:, i])
-            spm, _ = spearmanr(preds_array[:, i], target_array[:, i])
-            mse = metrics.mean_squared_error(preds_array[:, i], target_array[:, i])
+    for key in target_dict:
+        records_full = record_dict[key]
+        preds_full = torch.cat(preds_dict[key], dim=0)
+        target_full = torch.cat(target_dict[key], dim=0)
+        if distributed:
+            records_full, preds_full, target_full = _gather_eval(
+                records_full, preds_full, target_full
+            )
+        if not is_main_process():
+            continue
+
+        preds_np = preds_full.numpy().astype(np.float32)
+        target_np = target_full.numpy().astype(np.float32)
+        logger.info(
+            f"Evaluating {len(records_full)} records, "
+            f"{preds_np.shape[1]} targets (bit={key})"
+        )
+
+        # ---- per-track (always) ----
+        pearsonr_list, spearmanr_list, mse_list = [], [], []
+        for i in range(preds_np.shape[1]):
+            pcc, _ = pearsonr(preds_np[:, i], target_np[:, i])
+            spm, _ = spearmanr(preds_np[:, i], target_np[:, i])
             pearsonr_list.append(pcc)
             spearmanr_list.append(spm)
-            mse_list.append(mse)
-        pearson_corr = np.nanmean(pearsonr_list)
-        mean_pearsonr += pearson_corr
-        spearman_corr = np.nanmean(spearmanr_list)
-        mean_spearmanr += spearman_corr
-        mse = np.nanmean(mse_list)
-        mean_mse += mse
-        if is_dist_avail_and_initialized():
-            pearsonr_list = torch.tensor(
-                pearsonr_list, dtype=torch.float32, device=device
-            )
-            spearmanr_list = torch.tensor(
-                spearmanr_list, dtype=torch.float32, device=device
-            )
-            mse_list = torch.tensor(mse_list, dtype=torch.float32, device=device)
-            dist.all_reduce(mean_pearsonr, dist.ReduceOp.SUM)
-            dist.all_reduce(mean_spearmanr, dist.ReduceOp.SUM)
-            dist.all_reduce(mean_mse, dist.ReduceOp.SUM)
-            dist.all_reduce(pearsonr_list, dist.ReduceOp.SUM)
-            dist.all_reduce(spearmanr_list, dist.ReduceOp.SUM)
-            dist.all_reduce(mse_list, dist.ReduceOp.SUM)
-            mean_pearsonr /= dist.get_world_size()
-            mean_spearmanr /= dist.get_world_size()
-            mean_mse /= dist.get_world_size()
-            pearsonr_list = (pearsonr_list / dist.get_world_size()).tolist()
-            spearmanr_list = (spearmanr_list / dist.get_world_size()).tolist()
-            mse_list = (mse_list / dist.get_world_size()).tolist()
-        if results_folder_path and is_main_process():
+            mse_list.append(metrics.mean_squared_error(preds_np[:, i], target_np[:, i]))
+
+        mean_pearsonr = np.nanmean(pearsonr_list)
+        mean_spearmanr = np.nanmean(spearmanr_list)
+        mean_mse = np.nanmean(mse_list)
+
+        if results_folder_path:
             plot_distribution(
                 list=pearsonr_list,
                 file_path=os.path.join(results_folder_path, f"distribution{key}.png"),
             )
             try:
                 target_list = load_targets(targets_file_path=experiment_names[key])
-            except:
-                target_list = np.arange(0, len(pearsonr_list))
-            Correlation_csv_file = os.path.join(
-                results_folder_path, f"Correlation_df{key}.csv"
-            )
-            experiment_id = np.arange(0, len(target_list))
-            df = pd.DataFrame(
+            except Exception:
+                target_list = np.arange(len(pearsonr_list))
+            pd.DataFrame(
                 {
-                    "Experiment ID": experiment_id,
+                    "Experiment ID": np.arange(len(target_list)),
                     "Target": target_list,
                     "Pearsonr correlation": pearsonr_list,
                     "Spearman correlation": spearmanr_list,
                     "MSE": mse_list,
                 }
-            ).sort_values(by="Pearsonr correlation", ascending=False)
-            df.to_csv(Correlation_csv_file, index=False)
-            yield (
-                mean_mse.item(),
-                pearson_corr.item(),
-                spearman_corr.item(),
+            ).sort_values(by="Pearsonr correlation", ascending=False).to_csv(
+                os.path.join(results_folder_path, f"Correlation_df{key}.csv"),
+                index=False,
             )
+
+            if per_gene:
+                g_pcc, g_spm, g_mse = [], [], []
+                for r in range(preds_np.shape[0]):
+                    pcc, _ = pearsonr(preds_np[r, :], target_np[r, :])
+                    spm, _ = spearmanr(preds_np[r, :], target_np[r, :])
+                    g_pcc.append(pcc)
+                    g_spm.append(spm)
+                    g_mse.append(
+                        metrics.mean_squared_error(preds_np[r, :], target_np[r, :])
+                    )
+                pd.DataFrame(
+                    {
+                        "Gene index": np.arange(len(g_pcc)),
+                        "Gene": records_full,
+                        "Pearsonr correlation": g_pcc,
+                        "Spearman correlation": g_spm,
+                        "MSE": g_mse,
+                    }
+                ).sort_values(by="Pearsonr correlation", ascending=False).to_csv(
+                    os.path.join(
+                        results_folder_path, f"Correlation_perGene_df{key}.csv"
+                    ),
+                    index=False,
+                )
+
+        yield (float(mean_mse), float(mean_pearsonr), float(mean_spearmanr))
 
 
 def plot_distribution(
@@ -158,82 +176,67 @@ def plot_distribution(
     plt.close()
 
 
+def _to_scores(P: torch.Tensor) -> torch.Tensor:
+    """(N,), (N,1) or (N,2) model outputs -> P(class 1).
+    Applies softmax/sigmoid if the outputs are logits rather than probabilities."""
+    if P.ndim == 2 and P.shape[1] == 2:
+        if not torch.allclose(P.sum(1), torch.ones(len(P)), atol=1e-4):
+            P = torch.softmax(P, dim=1)
+        return P[:, 1]
+    P = P.reshape(-1)
+    if P.min() < 0 or P.max() > 1:
+        P = torch.sigmoid(P)
+    return P
+
+
 def evaluate_model_classification(
     model: torch.nn.Module,
-    dataloader: torch.utils.data.dataloader,
+    dataloader: torch.utils.data.DataLoader,
     device: str,
-    activation_function: torch.nn.modules.loss = None,
+    activation_function=None,
     results_folder_path: Optional[str] = "",
+    distributed: bool = False,  # True only if ALL ranks call this function
 ) -> tuple[float, float, float]:
-    """
-    evaluate the model on dataloader and return the accuracy, auroc, and auprc
-    """
+    """Evaluate on the full dataloader; return (accuracy, auroc, auprc)."""
     logger = configure_logging_format(file_path=results_folder_path)
     logger.info(f"Device: {device} - Evaluating the model")
-    target_list = list()
-    preds_list = list()
-    seq_idx_list = list()
-    auroc_fn = AUROC(task="binary")
-    aupr_fn = AveragePrecision(task="binary")
-    print(len(dataloader))
-    if activation_function == None:
+    if activation_function is None:
         activation_function = torch.nn.Identity()
+
+    preds, targets, records = [], [], []
     with torch.no_grad():
         model.eval()
-        for _, ((header, data, target), bit) in enumerate(progress_bar(dataloader)):
-            data = {key: data[key].to(device) for key in data}
+        for (header, data, target), bit in progress_bar(dataloader):
+            data = {k: v.to(device) for k, v in data.items()}
             output = activation_function(model(**data, bit=bit))
-            preds = output.cpu().detach().numpy()
-            target_list.extend(target)
-            preds_list.extend(preds)
-            seq_idx_list.extend(header)
-    if preds.ndim == 1:
-        auroc = auroc_fn(
-            torch.from_numpy(np.array(preds_list)),
-            torch.from_numpy(np.array(target_list)),
-        ).to(device)
+            if isinstance(output, tuple):
+                output = output[0]
+            preds.append(output.float().cpu())
+            targets.append(target.reshape(-1).cpu())
+            records.extend(header.tolist() if torch.is_tensor(header) else list(header))
 
-        auprc = aupr_fn(
-            torch.from_numpy(np.array(preds_list)),
-            torch.from_numpy(np.array(target_list)),
-        ).to(device)
-        amax = np.round(preds_list) == target_list
-        accuracy = sum(list(amax)).item() / len(target_list)
-    elif preds.shape[1] == 1:
-        auroc = auroc_fn(
-            torch.from_numpy(np.array(preds_list)),
-            torch.from_numpy(np.array(target_list)),
-        ).to(device)
-        auprc = aupr_fn(
-            torch.from_numpy(np.array(preds_list)),
-            torch.from_numpy(np.array(target_list)),
-        ).to(device)
-        amax = np.round(preds_list) == target_list
-        accuracy = sum(list(amax)).item() / len(target_list)
-    elif preds.shape[1] == 2:
-        auroc = auroc_fn(
-            torch.from_numpy(np.array(preds_list)[:, 1]),
-            torch.from_numpy(np.array(target_list)),
-        ).to(device)
-        auprc = aupr_fn(
-            torch.from_numpy(np.array(preds_list)[:, 1]),
-            torch.from_numpy(np.array(target_list)),
-        ).to(device)
-        amax = np.round(np.array(preds_list)[:, 1]) == target_list
-        accuracy = torch.tensor(sum(list(amax)).item() / len(target_list)).to(device)
-    if is_dist_avail_and_initialized():
-        dist.all_reduce(auroc, dist.ReduceOp.SUM)
-        dist.all_reduce(auprc, dist.ReduceOp.SUM)
-        dist.all_reduce(accuracy, dist.ReduceOp.SUM)
-        auroc /= dist.get_world_size()
-        auprc /= dist.get_world_size()
-        accuracy /= dist.get_world_size()
-    if results_folder_path:
-        target_list = [tar.item() for tar in target_list]
-        if preds.shape[1] == 2:
-            preds_list = np.array(preds_list)[:, 1].tolist()
-        results_csv_file = os.path.join(results_folder_path, f"predictions.csv")
-        pd.DataFrame(
-            {"seq_idx": seq_idx_list, "label": target_list, "prediction": preds_list}
-        ).to_csv(results_csv_file, index=False)
-    return (accuracy.item(), auroc.item(), auprc.item())
+    P, T = torch.cat(preds), torch.cat(targets)
+    if distributed:
+        records, P, T = _gather_eval(records, P, T)
+
+    result = None
+    if is_main_process():
+        scores, T = _to_scores(P), T.long()
+        auroc = AUROC(task="binary")(scores, T).item()
+        auprc = AveragePrecision(task="binary")(scores, T).item()
+        accuracy = ((scores >= 0.5).long() == T).float().mean().item()
+        logger.info(
+            f"Evaluated {len(records)} sequences "
+            f"({int(T.sum())} positives): AUROC={auroc:.4f}, AUPRC={auprc:.4f}"
+        )
+        if results_folder_path:
+            pd.DataFrame(
+                {"seq_idx": records, "label": T.tolist(), "prediction": scores.tolist()}
+            ).to_csv(os.path.join(results_folder_path, "predictions.csv"), index=False)
+        result = (accuracy, auroc, auprc)
+
+    if distributed:  # every rank gets the same metrics (e.g., for early stopping)
+        obj = [result]
+        dist.broadcast_object_list(obj, src=0)
+        result = obj[0]
+    return result

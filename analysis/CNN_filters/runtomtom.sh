@@ -1,9 +1,9 @@
 #!/bin/bash
 
-base_dir="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan"
+base_dir="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters"
 streme_dir="${base_dir}/stremeresult"
 tomtom_dir="${base_dir}/tomtomresult"
-database="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan/ArabidopsisDAPv1.meme"  
+database="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters/ArabidopsisDAPv1.meme"  
 
 for filter_path in "${streme_dir}"/filter*; do
     filter_name=$(basename "$filter_path")

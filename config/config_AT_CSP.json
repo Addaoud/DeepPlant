@@ -17,7 +17,7 @@
     "loss": "poisson",
     "dist": "cosine",
     "metric": "loss",
-    "alpha":0.0001,
+    "alpha":0.001,
     "lazyLoad": true,
     "batchSize": 16,
     "num_workers": 8,

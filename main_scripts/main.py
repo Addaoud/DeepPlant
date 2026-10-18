@@ -31,7 +31,6 @@ from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
 import torch.distributed as dist
 
-
 set_seed()
 
 
@@ -46,6 +45,8 @@ def main(
     evaluate: Optional[bool] = True,
     data_class: Optional[Any] = None,
 ):
+    if isinstance(device, int):
+        torch.cuda.set_device(device)
     logger = configure_logging_format(file_path=model_folder_path)
     model = build_model(
         args=config, new_model=new_model, task="CSP", model_path=model_path
@@ -100,6 +101,7 @@ def main(
         logger.info(f"Device: {device} - Loading train dataset")
         train_loader = data_class.get_dataloader(
             indices_paths=config.train_indices_path,
+            length_after_padding=config.sequence_length,
             device=device,
             n_gpu=n_gpu,
             **config.dict(),
@@ -107,6 +109,7 @@ def main(
         logger.info(f"Device: {device} - Loading valid dataset")
         valid_loader = data_class.get_dataloader(
             indices_paths=config.valid_indices_path,
+            length_after_padding=config.sequence_length,
             device=device,
             n_gpu=n_gpu,
             **config.dict(),
@@ -150,6 +153,7 @@ def main(
         config_dict.update({"consistency_regularization": False})
         test_loader = data_class.get_dataloader(
             indices_paths=config.test_indices_path,
+            length_after_padding=config.sequence_length,
             device=device,
             n_gpu=n_gpu,
             **config_dict,
@@ -159,8 +163,9 @@ def main(
             model=best_model,
             dataloader=test_loader,
             device=device,
-            results_folder_path=config.results_path,
+            results_folder_path=model_folder_path or config.results_path,
             experiment_names=config.experiment_name,
+            distributed=True if n_gpu > 1 else False,
         ):
             data_dict = {
                 "path": model_path,
@@ -210,6 +215,11 @@ if __name__ == "__main__":
     logger = configure_logging_format(file_path=model_folder_path)
     for key, value in config.dict().items():
         logger.info(f"Device: {device} - {key}: {value}")
+    if args.model:
+        log_info = f"Device: {device} - Initializing model weights with a pretrained model loaded from {args.model}"
+        if args.new:
+            log_info = log_info + " with a new prediction head"
+        logger.info(log_info)
     logger.info(f"Device: {device} - Processing data files")
     data_class = load_dataset(
         h5_paths=config.h5_paths,

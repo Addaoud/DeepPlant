@@ -36,6 +36,40 @@ class model(nn.Module):
                 else self.backbone.conv_features[i][0].weight.detach()
             )
 
+    def freeze(self, mode: str = "none", bit: int = 0):
+        if mode == "none":
+            self._frozen = []
+        elif mode == "first_conv":
+            self._frozen = [self.backbone.conv_features[bit]]
+        elif mode == "all_but_pool_head":
+            self._frozen = [self.backbone, self.transformer]
+        elif mode == "all_but_head":
+            self._frozen = [self.backbone, self.transformer, self.attention_pool]
+
+        elif mode == "linear_probe":
+            self._frozen = [
+                self.backbone,
+                self.transformer,
+                self.attention_pool,
+                self.fc.linear,
+            ]
+        else:
+            raise ValueError(f"Unknown freeze mode: {mode}")
+        for m in self._frozen:
+            for p in m.parameters():
+                p.requires_grad = False
+        n_train = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        n_all = sum(p.numel() for p in self.parameters())
+        print(f"freeze='{mode}': {n_train:,} / {n_all:,} parameters trainable")
+        return self
+
+    def train(self, mode: bool = True):
+        # Keep frozen modules in eval mode: fixed BatchNorm statistics, no dropout
+        super().train(mode)
+        for m in getattr(self, "_frozen", []):
+            m.eval()
+        return self
+
     def forward(self, input: torch.Tensor, bit: int = 0):
         if input.ndim == 4:
             input = input.view(
@@ -80,4 +114,5 @@ def build_model(
             print("Model state loaded")
 
         network.load_state_dict(model_weights)
+    network.freeze(getattr(args, "freeze_mode", "none"), bit=getattr(args, "bit", 0))
     return network

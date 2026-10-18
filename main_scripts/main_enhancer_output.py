@@ -41,6 +41,8 @@ def main(
     evaluate: Optional[bool] = True,
     data_class: Optional[Any] = None,
 ):
+    if isinstance(device, int):
+        torch.cuda.set_device(device)
     logger = configure_logging_format(file_path=model_folder_path)
     model = build_model(
         args=config,
@@ -152,7 +154,7 @@ def main(
             dataloader=test_loader,
             activation_function=activation_function,
             device=device,
-            results_folder_path=config.results_path,
+            results_folder_path=model_folder_path or config.results_path,
         )
         data_dict = {
             "path": model_path,

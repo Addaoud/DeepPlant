@@ -126,7 +126,7 @@ class load_dataset:
         lazyLoad: Optional[bool] = True,
         shuffle: Optional[bool] = True,
         batchSize: Optional[int] = 8,
-        length_after_padding: Optional[int] = 2500,
+        length_after_padding: Optional[int] = 5000,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
         **kwargs,

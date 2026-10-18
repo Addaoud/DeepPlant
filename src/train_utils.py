@@ -10,7 +10,6 @@ from torchmetrics import AveragePrecision
 from fastprogress import progress_bar
 from typing import Optional
 import torch.distributed as dist
-from copy import deepcopy
 from datetime import datetime
 from scipy.stats import pearsonr
 from contextlib import nullcontext
@@ -18,36 +17,45 @@ from contextlib import nullcontext
 set_seed()
 
 
-def pearson(preds_array: np.array, target_array: np.array) -> torch.Tensor:
+def _gather_cat(x: torch.Tensor) -> torch.Tensor:
+    """Concatenate a tensor across all ranks (CPU). No-op when not distributed.
+    Must be called by every rank."""
+    if not is_dist_avail_and_initialized():
+        return x.cpu()
+    out = [None] * dist.get_world_size()
+    dist.all_gather_object(out, x.detach().cpu())
+    return torch.cat(out)
+
+
+def _to_scores(P: torch.Tensor) -> torch.Tensor:
+    """(N,), (N,1) or (N,2) model outputs -> P(class 1).
+    Applies softmax/sigmoid if the outputs are logits rather than probabilities."""
+    if P.ndim == 2 and P.shape[1] == 2:
+        if not torch.allclose(P.sum(1), torch.ones(len(P)), atol=1e-4):
+            P = torch.softmax(P, dim=1)
+        return P[:, 1]
+    P = P.reshape(-1)
+    if P.min() < 0 or P.max() > 1:
+        P = torch.sigmoid(P)
+    return P
+
+
+def pearson(preds_array: np.ndarray, target_array: np.ndarray) -> torch.Tensor:
+    """Mean per-target Pearson correlation."""
     if target_array.ndim == 3:
         target_array = target_array.reshape(-1, target_array.shape[2])
-    pearsonr_list = list()
-    for i in range(target_array.shape[1]):
-        pcc, _ = pearsonr(preds_array[:, i], target_array[:, i])
-        pearsonr_list.append(pcc)
-    pearson_corr = torch.zeros(1)
-    pearson_corr += np.nanmean(pearsonr_list)
-    return pearson_corr
+    pearsonr_list = [
+        pearsonr(preds_array[:, i], target_array[:, i])[0]
+        for i in range(target_array.shape[1])
+    ]
+    return torch.tensor([np.nanmean(pearsonr_list)], dtype=torch.float32)
 
 
-def auprc(preds_array: np.array, target_array: np.array) -> torch.Tensor:
-    aupr_fn = AveragePrecision(task="binary")
-    if preds_array.ndim == 1:
-        auprc_value = aupr_fn(
-            torch.from_numpy(preds_array),
-            torch.from_numpy(target_array),
-        )
-    elif preds_array.shape[1] == 1:
-        auprc_value = aupr_fn(
-            torch.from_numpy(preds_array),
-            torch.from_numpy(target_array),
-        )
-    elif preds_array.shape[1] == 2:
-        auprc_value = aupr_fn(
-            torch.from_numpy(preds_array[:, 1]),
-            torch.from_numpy(target_array),
-        )
-    return auprc_value
+def auprc(preds_array: np.ndarray, target_array: np.ndarray) -> torch.Tensor:
+    """AUPRC on class-1 probabilities (logits are converted first)."""
+    scores = _to_scores(torch.as_tensor(preds_array).float())
+    target = torch.as_tensor(target_array).long().reshape(-1)
+    return AveragePrecision(task="binary")(scores, target).reshape(1)
 
 
 class trainer:
@@ -68,8 +76,8 @@ class trainer:
         use_scheduler: Optional[bool] = False,
         **kwargs,
     ):
-        self.best_model = model
         self.model = model
+        self.best_state = None
         self.model_folder_path = model_folder_path
         self.max_epochs = max_epochs
         self.device = device
@@ -115,6 +123,8 @@ class trainer:
                 dist.all_reduce(early_stopping_flag, op=dist.ReduceOp.SUM)
             if early_stopping_flag.item() == 1:
                 break
+            if hasattr(self.train_dataloader, "set_epoch"):
+                self.train_dataloader.set_epoch(epoch)
             train_loss_per_epoch = self.train_loop()
             if self.is_distributed:
                 dist.all_reduce(train_loss_per_epoch, op=dist.ReduceOp.SUM)
@@ -135,6 +145,8 @@ class trainer:
                 and self.valid_dataloader != None
             ):
                 valid_loss_per_epoch, metric_value = self.get_valid_loss()
+                valid_loss_per_epoch = valid_loss_per_epoch.to(self.device)
+                metric_value = metric_value.to(self.device)
                 if self.is_distributed:
                     dist.all_reduce(valid_loss_per_epoch, op=dist.ReduceOp.SUM)
                     dist.all_reduce(metric_value, op=dist.ReduceOp.SUM)
@@ -160,9 +172,12 @@ class trainer:
                 if metric_value > self.best_metric_value:
                     self.counter_for_early_stop = 0
                     self.best_metric_value = metric_value
-                    self.best_model = deepcopy(self.model)
+                    self.best_state = {
+                        k: v.detach().cpu().clone()
+                        for k, v in self.model.state_dict().items()
+                    }
                     torch.save(
-                        self.best_model.state_dict(),
+                        self.best_state,
                         os.path.join(checkpoints_path, f"model_{epoch}.pt"),
                     )
                 elif (
@@ -175,9 +190,16 @@ class trainer:
 
         if is_main_process():
             self.logger.info(f"Device: {self.device} - Finished training")
-            torch.save(self.best_model.state_dict(), model_path)
+            if self.best_state is not None:
+                self.model.load_state_dict(self.best_state)
+            else:
+                self.logger.info(
+                    f"Device: {self.device} - No validation improvement recorded; "
+                    "keeping the final model"
+                )
+            torch.save(self.model.state_dict(), model_path)
             plot_loss(loss_csv_path=loss_csv_path, loss_path=loss_plot_path)
-        return self.best_model, model_path
+        return self.model, model_path
 
     def train_loop(self):
         # Executes a single epoch of training.
@@ -216,37 +238,33 @@ class trainer:
         """
         get the average loss function on valid dataloader
         """
-        y_pred = []
-        y_true = []
+        y_pred, y_true = [], []
+        valid_loss = torch.tensor(0.0, device=self.device)
         with torch.no_grad():
             self.model.eval()
-            valid_loss = torch.tensor(0.0, device=self.device)
             for batch_idx, ((_, data, target), bit) in enumerate(self.valid_dataloader):
-                data, target = {
-                    key: data[key].to(self.device) for key in data
-                }, target.to(self.device)
+                data = {key: data[key].to(self.device) for key in data}
+                target = target.to(self.device)
                 output = self.model(**data, bit=bit)
                 loss = self.loss_fn(output, target)
                 valid_loss += loss
                 if isinstance(output, tuple):
                     output = output[0]
-                if self.metric == "pearson" or self.metric == "auprc":
-                    y_pred.append(output)
-                    y_true.append(target)
+                if self.metric in ("pearson", "auprc"):
+                    y_pred.append(output.detach().cpu())
+                    y_true.append(target.detach().cpu())
+        valid_loss = valid_loss / (batch_idx + 1)
+
         if self.metric == "pearson":
-            pred = torch.cat(y_pred, dim=0)
-            true = torch.cat(y_true, dim=0)
-            pred = pred.detach().cpu().numpy()
-            true = true.detach().cpu().numpy()
-            metric_value = pearson(pred, true).to(self.device)
+            pred = _gather_cat(torch.cat(y_pred, dim=0)).numpy()
+            true = _gather_cat(torch.cat(y_true, dim=0)).numpy()
+            metric_value = pearson(pred, true)
         elif self.metric == "auprc":
-            pred = torch.cat(y_pred, dim=0)
-            true = torch.cat(y_true, dim=0)
-            pred = pred.detach().cpu().numpy()
-            true = true.detach().cpu().numpy()
-            metric_value = auprc(pred, true).to(self.device)
+            pred = _gather_cat(torch.cat(y_pred, dim=0)).numpy()
+            true = _gather_cat(torch.cat(y_true, dim=0)).numpy()
+            metric_value = auprc(pred, true)
         elif self.metric == "loss":
-            metric_value = -valid_loss / (batch_idx + 1)
+            metric_value = -valid_loss.detach().cpu().reshape(1)
         else:
-            metric_value = None
-        return valid_loss / (batch_idx + 1), metric_value
+            raise ValueError(f"Unknown validation metric: {self.metric}")
+        return valid_loss, metric_value

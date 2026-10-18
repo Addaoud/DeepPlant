@@ -22,12 +22,11 @@ from src.DeepPlant import build_model
 from src.seed import set_seed
 from src.config import GEPConfig
 from src.optimizers import ScheduledOptim
-from src.losses import get_loss_fn
+from src.losses import get_loss_fn, expression_loss
 from src.logger import configure_logging_format
 from typing import Optional, Any
 from src.ddp import setup, cleanup, is_main_process
 import torch.distributed as dist
-
 
 set_seed()
 
@@ -43,6 +42,8 @@ def main(
     evaluate: Optional[bool] = True,
     data_class: Optional[Any] = None,
 ):
+    if isinstance(device, int):
+        torch.cuda.set_device(device)
     logger = configure_logging_format(file_path=model_folder_path)
     model = build_model(
         args=config, new_model=new_model, task="GEP", model_path=model_path
@@ -89,7 +90,7 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
-    loss_function = get_loss_fn(config)
+    loss_function = expression_loss(lam=1.0)
     # loss_function = torch.nn.MSELoss(reduction="mean")
 
     if train:
@@ -97,6 +98,7 @@ def main(
         logger.info(f"Device: {device} - Loading train dataset")
         train_loader = data_class.get_dataloader(
             indices_paths=config.train_indices_path,
+            length_after_padding=config.sequence_length,
             device=device,
             n_gpu=n_gpu,
             **config.dict(),
@@ -104,6 +106,7 @@ def main(
         logger.info(f"Device: {device} - Loading valid dataset")
         valid_loader = data_class.get_dataloader(
             indices_paths=config.valid_indices_path,
+            length_after_padding=config.sequence_length,
             device=device,
             n_gpu=n_gpu,
             **config.dict(),
@@ -139,14 +142,16 @@ def main(
     else:
         best_model = model
 
-    if evaluate:
-        if n_gpu > 1:
-            dist.barrier()
+    if n_gpu > 1:
+        dist.barrier()
+    if evaluate and is_main_process():
         logger.info(f"Device: {device} - Loading test dataset")
         test_loader = data_class.get_dataloader(
             indices_paths=config.test_indices_path,
+            length_after_padding=config.sequence_length,
             device=device,
-            n_gpu=n_gpu,
+            n_gpu=1,
+            shuffle=False,
             **config.dict(),
         )
         # Evaluate model
@@ -154,8 +159,9 @@ def main(
             model=best_model,
             dataloader=test_loader,
             device=device,
-            results_folder_path=config.results_path,
+            results_folder_path=model_folder_path or config.results_path,
             experiment_names=config.experiment_name,
+            per_gene=True,
         ):
             data_dict = {
                 "path": model_path,
@@ -165,11 +171,9 @@ def main(
             }
             results_csv_path = os.path.join(config.results_path, "results.csv")
             # Save model performance
-            if is_main_process():
-                save_data_to_csv(
-                    data_dictionary=data_dict, csv_file_path=results_csv_path
-                )
+            save_data_to_csv(data_dictionary=data_dict, csv_file_path=results_csv_path)
     if n_gpu > 1:
+        dist.barrier()
         cleanup()
 
 
@@ -206,6 +210,11 @@ if __name__ == "__main__":
     logger = configure_logging_format(file_path=model_folder_path)
     for key, value in config.dict().items():
         logger.info(f"Device: {device} - {key}: {value}")
+    if args.model:
+        log_info = f"Device: {device} - Initializing model weights with a pretrained model loaded from {args.model}"
+        if args.new:
+            log_info = log_info + " with a new prediction head"
+        logger.info(log_info)
     logger.info(f"Device: {device} - Processing data files")
     data_class = load_dataset(
         h5_paths=config.h5_paths,

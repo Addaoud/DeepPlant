@@ -1,5 +1,5 @@
 {
-    "sequences_paths": ["data/arabidopsis/EAP/enhancer_dataset_full.csv"],
+    "sequences_paths": ["data/arabidopsis/EAP/enhancer_dataset_full_1_50.csv"],
     "results_path": "results/EAP_AT",
     "use_reverse_complement": false,
     "optimizer_type": "adamw",
@@ -12,8 +12,12 @@
     "max_lr": 0.0001,
     "final_lr": 0.0001,
     "lazyLoad": false,
+    "loss": "focal",
+    "focal_gamma": 2.0,
+    "focal_alpha": [0.25, 0.75],
+    "class_weights": [1.0, 7.0],
     "metric": "auprc",
-    "batchSize": 128,
+    "batchSize": 64,
     "num_workers": 0,
     "counter_for_early_stop_threshold": 5,
     "epochs_to_check_loss": 1,
@@ -30,5 +34,6 @@
     "n_features": [2],
     "find_unused_parameters": false,
     "use_pos_encoding": true,    
-    "max_seq_length": 100
+    "max_seq_length": 100,
+    "use_imbalanced_loader": false
 }

@@ -11,7 +11,6 @@ from Bio.Seq import reverse_complement
 from random import randint
 from src.seed import set_seed
 
-
 set_seed()
 
 
@@ -56,7 +55,7 @@ class DatasetLoad(Dataset):
     def __init__(
         self,
         h5_path,
-        indices_path: Optional[str] = None,
+        indices_path: Optional[Any] = None,
         length_after_padding: Optional[int] = 0,
         lazyLoad: Optional[bool] = False,
         device: Optional[Any] = "cpu",
@@ -183,7 +182,7 @@ class load_dataset:
         lazyLoad: Optional[bool] = True,
         shuffle: Optional[bool] = True,
         batchSize: Optional[int] = 8,
-        length_after_padding: Optional[int] = 2500,
+        length_after_padding: Optional[int] = 5000,
         num_workers: Optional[int] = 0,
         n_gpu: Optional[int] = 0,
         consistency_regularization: Optional[bool] = True,

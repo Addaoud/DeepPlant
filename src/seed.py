@@ -4,7 +4,7 @@ import random
 import os
 
 
-def set_seed(seed: int = 42) -> None:
+def set_seed(seed: int = 17) -> None:
     """
     Code was obtained from https://wandb.ai/sauravmaheshkar/RSNA-MICCAI/reports/How-to-Set-Random-Seeds-in-PyTorch-and-Tensorflow--VmlldzoxMDA2MDQy
     The torch.backends.cudnn.benchmark is set to true to improve running time

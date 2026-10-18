@@ -31,7 +31,9 @@ def parse_locus(locus_str):
         end = int(match.group(3))
         return chrom, start, end
     except Exception as e:
-        raise argparse.ArgumentTypeError(f"Invalid locus format: {e}")
+        raise argparse.ArgumentTypeError(
+            f"Invalid locus format: {e}. An example of correct locus format is Chr1:1000-3500"
+        )
 
 
 def main():

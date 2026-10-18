@@ -1,7 +1,7 @@
 #!/bin/bash
 
-input_base="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan/motifresult"
-output_base="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan/stremeresult"
+input_base="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters/motifresult"
+output_base="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters/stremeresult"
 
 for fasta_file in "$input_base"/filter*/top_motifs_*.fasta; do
     filter_dir=$(basename "$(dirname "$fasta_file")")

@@ -22,6 +22,11 @@ from functools import lru_cache
 from pdf2image import convert_from_path
 import logomaker
 from math import ceil
+import gffutils
+from pathlib import Path
+
+# Module-level cache, keyed by DB path so multiple DBs can coexist.
+_db_cache: dict[str, gffutils.FeatureDB] = {}
 
 
 def ppm_to_pwm(ppm, background):
@@ -148,7 +153,7 @@ def get_latest_motifs(motif_dict):
     }
 
 
-def relative_to_genomic_position(rel_pos, tss, strand):
+def relative_to_genomic_position(rel_pos, tss, strand, center=1250):
     """
     Convert relative position (0-2499) in 2500bp TSS-centered sequence
     to genomic coordinate.
@@ -157,7 +162,6 @@ def relative_to_genomic_position(rel_pos, tss, strand):
     tss: integer TSS coordinate
     strand: '+' or '-'
     """
-    center = 1250
     rel_pos = int(rel_pos)
     tss = int(tss)
     strand = int(strand)
@@ -447,10 +451,12 @@ def analyze_mutations_with_chip(
     mutation_threshold=0.7,
     score_threshold=0.7,
     pad=20,
+    seq_len=2500,
 ):
     nuc_to_index = {"A": 0, "C": 1, "G": 2, "T": 3}
     rows = np.array([nuc_to_index[n] for n in ref_sequence])
     cols = np.arange(len(ref_sequence))
+    center = seq_len // 2
 
     ISM_values = (sum_lfc - sum_lfc.mean(0))[rows, cols]
     results = []
@@ -490,13 +496,15 @@ def analyze_mutations_with_chip(
             continue
 
         # Convert to genomic coordinate
-        genomic_pos = relative_to_genomic_position(rel_pos=pos, tss=tss, strand=strand)
+        genomic_pos = relative_to_genomic_position(
+            rel_pos=pos, tss=tss, strand=strand, center=center
+        )
 
         # Check each motif
         for motif_name, effect, motif_rel_pos in affected:
             tf_name = motif_name.split(".")[2]
             motif_strand = "1" if motif_rel_pos > 0 else "-1"
-            gene_region = "promoter" if pos < 1250 else "downstream"
+            gene_region = "promoter" if pos < center else "downstream"
             bed_df = load_bed_for_tf(tf_name, metadata, bed_files, bed_files_path)
 
             if bed_df is None:
@@ -510,7 +518,7 @@ def analyze_mutations_with_chip(
                     "gene": gene,
                     "gene_strand": strand,
                     "chromosome": chromosome,
-                    "tss_relative_position": pos - 1250,
+                    "tss_relative_position": pos - center,
                     "gene_region": gene_region,
                     "sequence_relative_position": pos,
                     "genomic_position": genomic_pos,
@@ -657,6 +665,108 @@ def plot_pwm(ax, meme_path, motifs_list):
         ax_logo.spines["left"].set_visible(True)  # Optional:
 
 
+def get_db(db_path: Path) -> gffutils.FeatureDB:
+    """Open (and cache) an existing gffutils SQLite DB.
+
+    Raises FileNotFoundError if the DB has not been built yet.
+    """
+    key = str(db_path)
+    cached = _db_cache.get(key)
+    if cached is not None:
+        return cached
+
+    if not Path(db_path).exists():
+        raise FileNotFoundError(
+            f"GFF DB not found at {db_path}. "
+            f"Build it first with: python scripts/build_gff_db.py "
+            f"--gff-dir <dir> --db-path {db_path}"
+        )
+    db = gffutils.FeatureDB(str(db_path))
+    _db_cache[key] = db
+    return db
+
+
+def _get_gene_feature(
+    db: gffutils.FeatureDB, gene_id: str
+) -> Optional[gffutils.Feature]:
+    """Look up a gene feature by ID, trying both raw and 'gene:'-prefixed
+    forms (Ensembl Plants uses the prefix, others don't)."""
+    try:
+        return db[gene_id]
+    except gffutils.FeatureNotFoundError:
+        return None
+
+
+def get_gene_structure(db: gffutils.FeatureDB, gene_id: str) -> dict:
+    """Retrieve all sub-features of a gene with coordinates relative to the TSS.
+
+    Args:
+        db: The loaded gffutils.FeatureDB.
+        gene_id: The stable gene ID (e.g., 'AT5G52310').
+
+    Returns:
+        A dictionary containing the gene's global info and a list of its
+        features with both genomic and TSS-relative coordinates.
+    """
+    gene_id = f"gene:{gene_id}"
+    gene = _get_gene_feature(db, gene_id)
+    if gene is None:
+        print("Gene %s not found in the GFF database.", gene_id)
+        return {}
+
+    strand = gene.strand
+
+    # In GFF (1-based), TSS is the start for '+' strand, and end for '-' strand.
+    tss = gene.start if strand == "+" else gene.end
+
+    features = []
+
+    # Retrieve all sub-features (exons, CDS, UTRs, mRNAs, etc.)
+    for child in db.children(gene):
+        # Calculate coordinates relative to the TSS.
+        if strand == "+":
+            rel_start = child.start - tss
+            rel_end = child.end - tss
+        else:
+            # For '-' strand, transcription flows opposite to genomic coords.
+            # The closest genomic coord to TSS (child.end) becomes rel start.
+            rel_start = tss - child.end
+            rel_end = tss - child.start
+
+        features.append(
+            {
+                "feature_id": child.id,
+                "feature_type": child.featuretype,
+                "transcript_id": next(iter(child.attributes.get("Parent", [])), None),
+                "genomic_start": child.start,
+                "genomic_end": child.end,
+                "relative_start": rel_start,
+                "relative_end": rel_end,
+                "attributes": dict(child.attributes),
+            }
+        )
+
+    # Sort features 5' to 3' based on transcription direction
+    features.sort(key=lambda x: x["relative_start"])
+
+    return {
+        "gene_id": gene_id,
+        "strand": strand,
+        "tss": tss,
+        "genomic_start": gene.start,
+        "genomic_end": gene.end,
+        "features": features,
+    }
+
+
+FEATURE_STYLE = {
+    "five_prime_UTR": ("orange", "5'UTR"),
+    "three_prime_UTR": ("brown", "3'UTR"),
+    "CDS": ("darkgreen", "Gene body"),
+}
+segments = []
+
+
 def plot_ref_alt_ism(
     figure_path,
     gene,
@@ -669,6 +779,9 @@ def plot_ref_alt_ism(
     tss=0,
     strand="1",
     meme_path="",
+    gff_db="",
+    TSS_CENTER=1250,
+    SEQ_LEN=2500,
 ):
     sum_lfc = sum_lfc - sum_lfc.mean(0)
     letters = ["A", "C", "G", "T"]
@@ -748,7 +861,7 @@ def plot_ref_alt_ism(
         else:
             for mut in list(set(mutation_dict[pos])):
                 print(
-                    f"A mutation at position {pos-1250} relative to the gene TSS, {ref_sequence[pos]} -> {mut} causes the loss of the binding site of {results_df.loc[(results_df.sequence_relative_position==pos)&(results_df.ref==ref_sequence[pos])&(results_df.alt==mut)].motif.values.tolist()}"
+                    f"A mutation at position {pos-TSS_CENTER} relative to the gene TSS, {ref_sequence[pos]} -> {mut} causes the loss of the binding site of {results_df.loc[(results_df.sequence_relative_position==pos)&(results_df.ref==ref_sequence[pos])&(results_df.alt==mut)].motif.values.tolist()}"
                 )
             if len(mutation_dict[pos]) > 1:
                 idx = sum_lfc[:, pos].argmin()
@@ -766,24 +879,81 @@ def plot_ref_alt_ism(
             ax_alt.axvspan(x, x + size, ymin=-0.9, color="pink", alpha=0.3)
         ks += size
 
+    # Left edge and center x-coord for each sequence position.
+    x_left = {}
     x_coords = {}
     current_x = 0
     for pos in region:
         size = get_size(all_mutations_pos, pos, region_length)
+        x_left[pos] = current_x
         x_coords[pos] = current_x + (size / 2)  # center of the base
         current_x += size
 
-    # 1. Draw the TSS if it's in range
-    if start <= 1250 < end:
-        tss_x = x_coords[1250]
-        # We draw the arrow from the bottom (-0.5) to the top (0.5)
+    def _x_at(pos):
+        """Left edge x of a sequence position; `end` maps to the far right (ks)."""
+        if pos <= start:
+            return 0
+        if pos >= end:
+            return ks
+        return x_left[pos]
+
+    # ---------------------------
+    # Region map: recover feature coords from the GFF
+    # ---------------------------
+    def _to_seq(rel):
+        """TSS-relative GFF offset -> sequence index (0..SEQ_LEN)."""
+        return TSS_CENTER + rel
+
+    segments = []  # (seq_start, seq_end, color, label)
+    rel_starts = rel_ends = None
+
+    try:
+        db = get_db(Path(gff_db))
+        struct = get_gene_structure(db, gene)
+    except Exception as exc:
+        print(f"GFF lookup failed for {gene}: {exc}")
+        struct = None
+
+    if struct and struct["features"]:
+        rel_starts = [f["relative_start"] for f in struct["features"]]
+        rel_ends = [f["relative_end"] for f in struct["features"]]
+
+        # Gene body = union of all annotated features (5'UTR..3'UTR).
+        gb_start = _to_seq(min(rel_starts))
+        gb_end = _to_seq(max(rel_ends) + 1)
+        segments.append((gb_start, gb_end, "darkgreen", "Gene body"))
+
+        # UTRs, drawn over the gene body.
+        for ftype, color, label in (
+            ("five_prime_UTR", "orange", "5'UTR"),
+            ("three_prime_UTR", "brown", "3'UTR"),
+        ):
+            matching = [f for f in struct["features"] if f["feature_type"] == ftype]
+            if not matching:
+                continue
+            s = _to_seq(min(f["relative_start"] for f in matching))
+            e = _to_seq(max(f["relative_end"] for f in matching) + 1)
+            segments.append((s, e, color, label))
+
+    # Promoter / upstream / downstream, relative to TSS and gene body.
+    PROMOTER_BP = 400
+    prom_start = max(0, TSS_CENTER - PROMOTER_BP)
+    segments.append((prom_start, TSS_CENTER, "purple", "Promoter (400 bps)"))
+    segments.append((0, prom_start, "blue", "Upstream"))
+    if rel_ends is not None:
+        segments.append((_to_seq(max(rel_ends) + 1), SEQ_LEN, "teal", "Downstream"))
+
+    # ---------------------------
+    # TSS arrow
+    # ---------------------------
+    if start <= TSS_CENTER < end:
+        tss_x = x_coords[TSS_CENTER]
         ax_map.annotate(
             "",
-            xy=(tss_x, 0.25),  # Tip of the arrow at the top
-            xytext=(tss_x, -0.05),  # Base of the arrow at the bottom
+            xy=(tss_x, 0.25),
+            xytext=(tss_x, -0.05),
             arrowprops=dict(arrowstyle="->", color="black", lw=2),
         )
-        # Place "TSS" text slightly offset from the top to avoid clipping
         ax_map.text(
             tss_x,
             0.3,
@@ -792,44 +962,55 @@ def plot_ref_alt_ism(
             va="top",
             fontsize=10,
             fontweight="bold",
-            bbox=dict(
-                facecolor="white", edgecolor="none", pad=1
-            ),  # White box to handle line overlap
+            bbox=dict(facecolor="white", edgecolor="none", pad=1),
         )
 
-    # 2. Promoter Region (Positions < 1250)
-    promoter_start = max(start, 0)
-    promoter_end = min(end, 1250)
-    if promoter_start < promoter_end:
-        x_start = 0 if promoter_start == start else x_coords[promoter_start]
-        x_end = x_coords[promoter_end - 1]
-        ax_map.hlines(0, x_start, x_end, colors="blue", lw=4)
+    # ---------------------------
+    # Draw only the segments visible in [start, end),
+    # stacking labels onto separate rows when they'd overlap.
+    # ---------------------------
+    label_rows = []  # list of lists of (x0, x1) occupied per row
+
+    def _pick_row(lx0, lx1):
+        for r, spans in enumerate(label_rows):
+            if all(lx1 < s0 or lx0 > s1 for s0, s1 in spans):
+                spans.append((lx0, lx1))
+                return r
+        label_rows.append([(lx0, lx1)])
+        return len(label_rows) - 1
+
+    half_w = ks * 0.06  # assumed half-width of a label in x-units; tune if needed
+
+    for seg_start, seg_end, color, label in segments:
+        vis_start = max(seg_start, start)
+        vis_end = min(seg_end, end)
+        if vis_end <= vis_start:
+            continue  # feature not in the plotted window
+
+        x0 = _x_at(vis_start)
+        x1 = _x_at(vis_end)
+        if x1 <= x0:
+            continue
+
+        # Genomic coords of the visible span, for the label.
+        g0 = relative_to_genomic_position(vis_start, tss, strand, TSS_CENTER)
+        g1 = relative_to_genomic_position(vis_end - 1, tss, strand, TSS_CENTER)
+
+        ax_map.hlines(0, x0, x1, colors=color, lw=4)
+
+        cx = (x0 + x1) / 2
+        text = f"{label} {min(g0, g1)}–{max(g0, g1)}"
+        row = _pick_row(cx - half_w, cx + half_w)
         ax_map.text(
-            (x_start + x_end) / 2,
-            -0.05,
-            "Promoter",
-            color="blue",
+            cx,
+            -0.08 - row * 0.32,
+            text,
+            color=color,
             ha="center",
             va="top",
-            fontsize=9,
+            fontsize=8,
         )
 
-    # 3. Downstream Region (Positions > 1250)
-    down_start = max(start, 1251)
-    down_end = end
-    if down_start < down_end:
-        x_start = x_coords[down_start]
-        x_end = ks
-        ax_map.hlines(0, x_start, x_end, colors="darkgreen", lw=4)
-        ax_map.text(
-            (x_start + x_end) / 2,
-            -0.05,
-            "Downstream",
-            color="darkgreen",
-            ha="center",
-            va="top",
-            fontsize=9,
-        )
     # ---------------------------
     # Scale Y consistently
     # ---------------------------
@@ -843,7 +1024,7 @@ def plot_ref_alt_ism(
     ax_alt.set_ylim(0.75 * ymin, ymax + pad)
     ax_ref.set_xlim(-0.5, ks + 0.5)
     ax_alt.set_xlim(-0.5, ks + 0.5)
-    ax_map.set_ylim(-0.5, 0.5)
+    ax_map.set_ylim(-1.2, 0.5)
 
     # ---------------------------
     # Titles and annotations
@@ -868,7 +1049,7 @@ def plot_ref_alt_ism(
     )
 
     # Variant text (top right)
-    variant_text = f"{gene} ({chrom}: {relative_to_genomic_position(start,tss,strand)} > {relative_to_genomic_position(end,tss,strand)}), strand {strand}"
+    variant_text = f"{gene} ({chrom}: {relative_to_genomic_position(start,tss,strand, TSS_CENTER)} > {relative_to_genomic_position(end,tss,strand, TSS_CENTER)}), strand {strand}"
     ax_ref.text(
         0.99, 0.85, variant_text, transform=ax_ref.transAxes, fontsize=13, ha="right"
     )
@@ -939,6 +1120,13 @@ height = 1
 title = OC(Root)
 min_value = 0
 max_value = 10
+
+[test bigwig5]
+file = {deep_plant_path}/data/arabidopsis/bw/SRX7780559_Rep0.rpgc.bw
+height = 1
+title = OC(Cold)
+min_value = 0
+max_value = 5
 
 [spacer]
 height = 0.5

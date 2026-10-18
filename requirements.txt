@@ -12,4 +12,6 @@ ipykernel==7.2.0
 pyGenomeTracks==3.9
 logomaker==0.8.7
 pdf2image==1.17.0
+peft==0.20.0
+transformers==5.16.1
 torch

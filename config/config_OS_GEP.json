@@ -4,7 +4,7 @@
     "valid_indices_path": ["data/oryza/GEP/Val.txt"],
     "test_indices_path": ["data/oryza/GEP/Test.txt"],
     "experiment_name": ["data/oryza/GEP/GEP_label.txt"],
-    "results_path": "results/GEP_AT",
+    "results_path": "/s/chromatin/a/nobackup/ahmed/DeepPlant/results/GEP_OS",
     "optimizer_type": "adamw",
     "weight_decay": 0.01,
     "momentum": 0.95,
@@ -13,11 +13,11 @@
     "warmup_steps": 5,
     "warmup_begin_lr": 0.0001,
     "max_lr": 0.0001,
-    "final_lr": 0.00005,
-    "loss": "huber",
+    "final_lr": 0.0001,
+    "loss": "mse",
     "metric": "pearson",
     "lazyLoad": true,
-    "batchSize": 128,
+    "batchSize": 64,
     "num_workers": 8,
     "counter_for_early_stop_threshold": 5,
     "epochs_to_check_loss": 1,
@@ -34,5 +34,6 @@
     "n_features": [405],
     "find_unused_parameters": false,
     "use_pos_encoding": true,
-    "max_seq_length": 100
+    "max_seq_length": 100,
+    "freeze_mode": "none"
 }

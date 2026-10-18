@@ -13,6 +13,7 @@ from src.utils import (
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 from torch.cuda import device_count
+from src.losses import get_loss_fn
 from src.config import EAPConfig
 from src.enhancer_dataset_utils import load_dataset
 from src.train_utils import trainer
@@ -39,6 +40,8 @@ def main(
     evaluate: Optional[bool] = True,
     data_class: Optional[Any] = None,
 ):
+    if isinstance(device, int):
+        torch.cuda.set_device(device)
     logger = configure_logging_format(file_path=model_folder_path)
     model = build_model(
         args=config,
@@ -88,11 +91,12 @@ def main(
     optimizer(model.parameters())
 
     # Prepare the loss function
+    loss_function = get_loss_fn(config).to(device)
     if config.n_features[0] == 1:
-        loss_function = torch.nn.BCEWithLogitsLoss()
+        # loss_function = torch.nn.BCEWithLogitsLoss()
         activation_function = torch.nn.Sigmoid()
     else:
-        loss_function = torch.nn.CrossEntropyLoss(reduction="mean")
+        # loss_function = torch.nn.CrossEntropyLoss(reduction="mean")
         activation_function = torch.nn.Softmax(dim=1)
     if train:
         # Prepare the data
@@ -148,7 +152,8 @@ def main(
             dataloader=test_loader,
             activation_function=activation_function,
             device=device,
-            results_folder_path=config.results_path,
+            results_folder_path=model_folder_path or config.results_path,
+            distributed=True if n_gpu > 1 else False,
         )
         data_dict = {
             "path": model_path,
@@ -193,6 +198,11 @@ if __name__ == "__main__":
     logger = configure_logging_format(file_path=model_folder_path)
     for key, value in config.dict().items():
         logger.info(f"Device: {device} - {key}: {value}")
+    if args.model:
+        log_info = f"Device: {device} - Initializing model weights with a pretrained model loaded from {args.model}"
+        if args.new:
+            log_info = log_info + " with a new prediction head"
+        logger.info(log_info)
     logger.info(f"Device: {device} - Processing data files")
     data_class = load_dataset(
         sequences_paths=config.sequences_paths,

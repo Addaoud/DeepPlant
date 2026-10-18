@@ -1,19 +1,13 @@
 # %%
-import torch
-import collections
-from DeepPlant_full_new import build_model, DeepPlantConfig
+from src.DeepPlant import build_model
+from src.config import CSPConfig
 import argparse, os
 import numpy as np
 import pandas as pd
-import logging
-from typing import Literal, List
-from datetime import datetime
-from scipy.stats import pearsonr
-from torch.nn.utils.rnn import pad_sequence
-import torch.nn.functional as F
 import json
 import argparse
 import os
+import torch
 
 # pretrain
 # Argument parsing
@@ -34,21 +28,21 @@ def parse_args():
     p.add_argument(
         "--train_id_txt",
         type=str,
-        default="/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50_old/Test.txt",
+        default="/s/chromatin/c/nobackup/deepplant/Data/Arabidopsis_thaliana/Non_Overlap_avg_2500_200_50_old/Train.txt",
         help="Text file listing seq IDs to use",
     )
 
     p.add_argument(
         "--model_dir",
         type=str,
-        default="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan",
+        default="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/analysis/CNN_filters",
         help="Directory to save CNN filter motif results",
     )
 
     p.add_argument(
         "--config_json",
         type=str,
-        default="/s/chromatin/m/nobackup/ahmed/DeepPlant/haoxuan/config_AT_2500.json",
+        default="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/config/config_AT_CSP.json",
         help="DeepPlant model config JSON",
     )
 
@@ -97,38 +91,37 @@ def save_selected_seqs_to_fasta(selected_seqs, output_path="motifs.fasta"):
 
 def plot_pwm_from_selected_seqs(selected_seqs, save_prefix="motif"):
     base_order = ["A", "C", "G", "T"]
-    kernel_size = len(selected_seqs[0][0])  # motif length
+    kernel_size = len(selected_seqs[0][0])
 
     counts = np.zeros((kernel_size, 4))
-    for motif_str, (score, _) in selected_seqs:
+    for motif_str, _ in selected_seqs:
         for i, base in enumerate(motif_str):
             if base in base_order:
-                counts[i, base_order.index(base)] += score  # weighted by score
+                counts[i, base_order.index(base)] += 1  # unweighted: +1 per occurrence
 
-    pwm = counts / counts.sum(axis=1, keepdims=True)
+    # guard against empty columns before normalizing
+    col_sums = counts.sum(axis=1, keepdims=True)
+    pwm = np.divide(
+        counts, col_sums, out=np.full_like(counts, 0.25), where=col_sums > 0
+    )
     df_pwm = pd.DataFrame(pwm, columns=base_order)
 
-    # PWM logo
     plt.figure(figsize=(kernel_size // 2, 2))
     logomaker.Logo(df_pwm)
-    plt.title("Motif PWM (weighted)")
+    plt.title("Motif PWM")
     plt.xlabel("Position")
     plt.ylabel("Frequency")
     plt.savefig(f"{save_prefix}_pwm.png", dpi=300, bbox_inches="tight")
     plt.close()
 
-    # IC logo
     s = 4
-    n = len(selected_seqs)
-    en = (1 / np.log(2)) * (s - 1) / (2 * n)
-
+    n = sum(counts[0])  # actual number of aligned occurrences
+    en = (1 / np.log(2)) * (s - 1) / (2 * n) if n > 0 else 0
     with np.errstate(divide="ignore", invalid="ignore"):
         Hi = -np.nansum(pwm * np.log2(pwm), axis=1)
         Hi = np.nan_to_num(Hi)
-
     Ri = np.log2(s) - Hi - en
-    logo_mat = pwm * Ri[:, None]
-    df_logo = pd.DataFrame(logo_mat, columns=base_order)
+    df_logo = pd.DataFrame(pwm * Ri[:, None], columns=base_order)
 
     plt.figure(figsize=(kernel_size // 2, 2))
     logomaker.Logo(df_logo)
@@ -152,12 +145,13 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # pretrain
 with open(args.config_json) as f:
     cfg_json = json.load(f)
-config = DeepPlantConfig(**cfg_json)
+config = CSPConfig(**cfg_json)
 
 model = build_model(
-    False,
-    model_path="/s/chromatin/a/nobackup/ahmed/DeepPlant/results/DeepPlant_AT/177318/model_25_12_18:05:28.pt",
-    json_path=args.config_json,
+    args=config,
+    new_model=False,
+    model_path="/s/chromatin/m/nobackup/ahmed/GitRepositries/DeepPlant/models/model_AT_CSP.pt",
+    task="CSP",
 ).to(device)
 
 model.eval()
@@ -186,7 +180,7 @@ if "sequence" in df.columns:
 else:
     seq_col = df.columns[1]
 
-df = df[df["seq_id"].isin(train_ids)]
+df = df[df["seq_id"].isin(train_ids)][:100000]
 print(f"Using {len(df)} sequences for motif extraction")
 
 # pretrain
@@ -222,84 +216,81 @@ os.makedirs(motif_dir, exist_ok=True)
 batch_size = args.batch_size
 num_seqs = onehot_seqs.shape[0]
 seq_len = onehot_seqs.shape[2]
+window = first_conv.conv.kernel_size[0]
+base_map = ["A", "C", "G", "T"]
 
 for filter_idx in range(num_filters):
-    # if filter_idx < 512:
-    #     continue
-    print(f"=== Filter {filter_idx}/{num_filters} ===")
-
     filter_dir = os.path.join(motif_dir, f"filter{filter_idx}")
-    os.makedirs(filter_dir, exist_ok=True)
+    if not os.path.exists(filter_dir):
+        print(f"=== Filter {filter_idx}/{num_filters} ===")
 
-    max_acts, max_pos, raw_idx = [], [], []
+        os.makedirs(filter_dir, exist_ok=True)
 
-    with torch.no_grad():
-        for i in range(0, num_seqs, batch_size):
-            batch = onehot_seqs[i : i + batch_size]
-            batch_tensor = torch.tensor(batch, dtype=torch.float32).to(device)
+        # ---- pass 1: gather the full activation distribution (all positions) ----
+        all_acts = []
+        with torch.no_grad():
+            for i in range(0, num_seqs, batch_size):
+                batch = torch.tensor(
+                    onehot_seqs[i : i + batch_size], dtype=torch.float32
+                ).to(device)
+                act = first_conv(batch)[:, filter_idx, :]  # (B, L_out)
+                all_acts.append(act.cpu().numpy().ravel())
+        all_acts = np.concatenate(all_acts)
 
-            act = first_conv(batch_tensor)[:, filter_idx, :]
-            batch_max, batch_arg = act.max(dim=1)
+        # distribution-based threshold, consistent in meaning across filters:
+        #   half-max between this filter's min and max activation (Basset convention)
+        a_min, a_max = all_acts.min(), all_acts.max()
+        if a_max <= 0:  # filter never fires positively -> skip
+            print("  filter never activates positively; skipped")
+            continue
+        thr = a_min + args.threshold_ratio * (a_max - a_min)
+        print(f"  min={a_min:.4f} max={a_max:.4f} thr={thr:.4f}")
 
-            max_acts.extend(batch_max.cpu().numpy())
-            max_pos.extend(batch_arg.cpu().numpy())
-            raw_idx.extend(range(i, min(i + batch_size, num_seqs)))
+        # ---- pass 2: extract EVERY window above threshold (all positions) ----
+        dedup = {}
+        with torch.no_grad():
+            for i in range(0, num_seqs, batch_size):
+                batch_np = onehot_seqs[i : i + batch_size]
+                batch = torch.tensor(batch_np, dtype=torch.float32).to(device)
+                act = first_conv(batch)[:, filter_idx, :].cpu().numpy()  # (B, L_out)
 
-    max_acts = np.array(max_acts)
-    max_pos = np.array(max_pos)
-    raw_idx = np.array(raw_idx)
+                hit_rows, hit_pos = np.where(act >= thr)  # all hits, not just argmax
+                for b, pos in zip(hit_rows, hit_pos):
+                    if pos + window > seq_len:
+                        continue
+                    frag = batch_np[b, :, pos : pos + window]
+                    # skip windows overlapping N-padding (all-zero columns)
+                    if np.any(frag.sum(axis=0) == 0):
+                        continue
+                    seq_str = "".join(
+                        base_map[np.argmax(frag[:, j])] for j in range(window)
+                    )
+                    score = act[b, pos]
+                    if (seq_str not in dedup) or (score > dedup[seq_str][0]):
+                        dedup[seq_str] = (score, i + b)
 
-    # threshold = 80% of global max
-    global_max = np.max(max_acts)
-    thr = args.threshold_ratio * global_max
-    idxs = np.where(max_acts >= thr)[0]
-
-    print(f"  Global max: {global_max:.4f}, threshold: {thr:.4f}")
-    print(f"  Sequences above threshold: {len(idxs)}")
-
-    if len(idxs) == 0:
-        continue
-
-    window = first_conv.conv.kernel_size[0]
-    dedup = {}
-    base_map = ["A", "C", "G", "T"]
-
-    for i in idxs:
-        seq_i = raw_idx[i]
-        pos = max_pos[i]
-        score = max_acts[i]
-
-        if pos + window > seq_len:
+        selected = sorted(dedup.items(), key=lambda x: x[1][0], reverse=True)
+        print(f"  windows above threshold (unique): {len(selected)}")
+        if not selected:
             continue
 
-        frag = onehot_seqs[seq_i, :, pos : pos + window]
-        seq_str = "".join([base_map[np.argmax(frag[:, j])] for j in range(window)])
+        # filter weight heatmap
+        plt.figure(figsize=(10, 2))
+        sns.heatmap(
+            weights[filter_idx], cmap="coolwarm", yticklabels=["A", "C", "G", "T"]
+        )
+        plt.title(f"Filter {filter_idx} weights")
+        plt.savefig(
+            os.path.join(filter_dir, f"filter{filter_idx}_weights.png"),
+            dpi=300,
+            bbox_inches="tight",
+        )
+        plt.close()
 
-        if (seq_str not in dedup) or (score > dedup[seq_str][0]):
-            dedup[seq_str] = (score, seq_i)
-
-    selected = sorted(dedup.items(), key=lambda x: x[1][0], reverse=True)
-    print(f"  Unique sequences kept: {len(selected)}")
-
-    # Save conv filter weights
-    motif = weights[filter_idx]
-    plt.figure(figsize=(10, 2))
-    sns.heatmap(motif, cmap="coolwarm", yticklabels=["A", "C", "G", "T"])
-    plt.title(f"Filter {filter_idx} weights")
-    plt.savefig(
-        os.path.join(filter_dir, f"filter{filter_idx}_weights.png"),
-        dpi=300,
-        bbox_inches="tight",
-    )
-    plt.close()
-
-    # PWM + IC logo
-    if len(selected) != 0:
         prefix = os.path.join(filter_dir, f"filter{filter_idx}")
         plot_pwm_from_selected_seqs(selected, save_prefix=prefix)
-
-        # FASTA
-        fasta_path = os.path.join(filter_dir, f"top_motifs_{filter_idx}.fasta")
-        save_selected_seqs_to_fasta(selected, fasta_path)
+        save_selected_seqs_to_fasta(
+            selected, os.path.join(filter_dir, f"top_motifs_{filter_idx}.fasta")
+        )
 
 print("\n=== All filters processed successfully! ===")

@@ -123,7 +123,7 @@ class PredictionHead(nn.Module):
                         nn.Linear(
                             self.expand_factor * self.embed_dim, self.n_features[i]
                         ),
-                        nn.ReLU(inplace=True),
+                        # nn.ReLU(inplace=True),
                     )
                 )
             elif task == "EAP":
