@@ -93,6 +93,8 @@ class PredictionHead(nn.Module):
         super(PredictionHead, self).__init__()
         self.embed_dim = embed_dim
         self.n_features = n_features
+        if type(self.n_features) == int:
+            self.n_features = [self.n_features]
         self.n_genomes = len(self.n_features)
         self.expand_factor = expand_factor
         self.linear = nn.Sequential(

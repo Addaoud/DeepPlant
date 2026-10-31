@@ -2,12 +2,33 @@ import torch.nn as nn
 from typing import Optional
 import torch
 from src.seed import set_seed
-
+from dataclasses import dataclass, asdict
 from src.transformer import build_transformer
 from src.ConvNet import build_ConvNet
+from huggingface_hub import PyTorchModelHubMixin
 from src.layers import AttentionPool, build_predictionHead
 
 set_seed()
+
+
+@dataclass
+class Config:
+    n_filters: int = 512
+    encoder_type: str = "attention"
+    embed_dim: int = 2048
+    num_heads: int = 8
+    dim_forwardfeed: int = 2048
+    dropout: float = 0.2
+    encoder_num_layers: int = 6
+    decoder_num_layers: int = 0
+    expand_factor: int = 2
+    n_features: int = 2935
+    find_unused_parameters: bool = False
+    use_pos_encoding: bool = True
+    max_seq_length: int = 100
+
+    def dict(self):
+        return {k: v for k, v in asdict(self).items()}
 
 
 class model(nn.Module):
@@ -83,6 +104,67 @@ class model(nn.Module):
             return (out, hs)
         else:
             return out
+
+
+class DeepPlantModel(
+    nn.Module,
+    PyTorchModelHubMixin,
+    repo_url="https://huggingface.co/your-username/deepplant",
+    pipeline_tag="other",
+    license="mit",  # or whatever you choose
+    tags=["plant-genomics", "regulatory-genomics", "bioinformatics"],
+):
+    def __init__(
+        self,
+        # All Config fields, expanded as kwargs so the mixin can serialize them
+        n_filters: int = 512,
+        encoder_type: str = "attention",
+        embed_dim: int = 2048,
+        num_heads: int = 8,
+        dim_forwardfeed: int = 2048,
+        dropout: float = 0.2,
+        encoder_num_layers: int = 6,
+        decoder_num_layers: int = 0,
+        expand_factor: int = 2,
+        n_features: int = 2935,
+        use_pos_encoding: bool = True,
+        max_seq_length: int = 100,
+        task: str = "GEP",
+    ):
+        super().__init__()
+
+        # Reconstruct the Config dataclass internally so the existing
+        # build_* functions don't need to change
+        args = Config(
+            n_filters=n_filters,
+            encoder_type=encoder_type,
+            embed_dim=embed_dim,
+            num_heads=num_heads,
+            dim_forwardfeed=dim_forwardfeed,
+            dropout=dropout,
+            encoder_num_layers=encoder_num_layers,
+            decoder_num_layers=decoder_num_layers,
+            expand_factor=expand_factor,
+            n_features=n_features,
+            use_pos_encoding=use_pos_encoding,
+            max_seq_length=max_seq_length,
+        )
+
+        self.task = task
+        self.backbone = build_ConvNet(args)
+        self.transformer = build_transformer(args)
+        self.attention_pool = AttentionPool(args.embed_dim)
+        self.fc = build_predictionHead(args, task=task)
+
+    def forward(self, input: torch.Tensor):
+        if input.ndim == 4:
+            input = input.view(
+                input.shape[0] * input.shape[1], input.shape[2], input.shape[3]
+            )
+        src = self.backbone(input).permute(0, 2, 1)
+        attention_output = self.transformer(src)
+        hs = self.attention_pool(attention_output)
+        return self.fc(hs)
 
 
 def build_model(

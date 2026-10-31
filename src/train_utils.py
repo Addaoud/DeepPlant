@@ -188,8 +188,9 @@ class trainer:
                     )
                     early_stopping_flag += 1
 
+        self.logger.info(f"Device: {self.device} - Finished training")
         if is_main_process():
-            self.logger.info(f"Device: {self.device} - Finished training")
+
             if self.best_state is not None:
                 self.model.load_state_dict(self.best_state)
             else:

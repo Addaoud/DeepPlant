@@ -127,5 +127,8 @@ class ConvNet(nn.Module):
 
 
 def build_ConvNet(args):
-    convnet = ConvNet(n_filters=args.n_filters, n_genomes=len(args.n_features))
+    convnet = ConvNet(
+        n_filters=args.n_filters,
+        n_genomes=len(args.n_features) if type(args.n_features) == list else 1,
+    )
     return convnet
